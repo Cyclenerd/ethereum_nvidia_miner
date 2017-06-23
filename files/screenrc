@@ -1,0 +1,26 @@
+vbell off			# default: off
+vbell_msg "  Ring, Ring!!  "	# default: "Wuff,Wuff!!"
+autodetach on			# default: on
+startup_message off		# default: on
+crlf off			# default: off
+defscrollback 5000		# default: 100
+silencewait 15			# default: 30
+
+# hardstatus alwayslastline "%{= dR} %-Lw%50>%{= dG}%n%f* %{= dW}%t%{= dR}%+Lw%<"
+hardstatus alwayslastline
+hardstatus string '%{gk}[ %{G}%H %{g}][%= %{wk}%?%-Lw%?%{=b kR}(%{W}%n*%f %t%?(%u)%?%{=b kR})%{= kw}%?%+Lw%?%?%= %{g}][%{Y}%l%{g}]%{=b C}[ %m/%d %c ]%{W}'
+
+termcapinfo xterm-256color|xterm-color|xterm|xterms|xs|rxvt ti@:te@
+
+bindkey "^[k" eval "copy" "stuff ^b"  # enter copy mode and move up one page
+bindkey "^k" eval "copy" "stuff k"    # enter copy mode and move up one line
+bindkey -m "^[k" stuff ^b             # move up one page
+bindkey -m "^k" stuff k               # move up one line
+
+screen -t top   htop
+screen -t cpu   watch -n 5 "sensors"
+screen -t gpu   watch -n 5 "nvidia-smi; echo; nvidia-smi --format=csv --query-gpu=name,power.draw,fan.speed,temperature.gpu,clocks.video,clocks.mem"
+screen -t miner bash "/home/prospector/miner.sh"
+screen          bash
+
+shell bash
