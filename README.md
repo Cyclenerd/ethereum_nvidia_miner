@@ -102,6 +102,10 @@ Enter `mine` to get it in the foreground:
 
 Use <kbd>Ctrl</kbd> + <kbd>n</kbd> (next) and <kbd>Ctrl</kbd> + <kbd>p</kbd> (previous) to navigate through the windows (consoles).
 
+![htop](https://www.nkn-it.de/img/ethereum_nvidia_miner/mine-top.jpg)
+![nvidia-smi](https://www.nkn-it.de/img/ethereum_nvidia_miner/mine-gpu.jpg)
+![etherminer](https://www.nkn-it.de/img/ethereum_nvidia_miner/mine-miner.jpg)
+
 More help is available here:
 https://help.ubuntu.com/community/Screen
 
@@ -200,6 +204,8 @@ But `munin` and the `lighttpd` web server are also installed. You can use it to 
 
 Here you can find diagrams of the sensors, etc.
 
+![munin](https://www.nkn-it.de/img/ethereum_nvidia_miner/munin-sensors.jpg)
+
 ### VNC
 
 Start `x11vnc` server.
@@ -209,6 +215,8 @@ Start `x11vnc` server.
 Enter the IP address and display in VNC Viewer to establish a direct connection. For example:
 
     minerIP:0
+
+![x11vnc](https://www.nkn-it.de/img/ethereum_nvidia_miner/mine-vnc.jpg)
 
 ### Fail2ban
 
