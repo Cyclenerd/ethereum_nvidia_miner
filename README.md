@@ -1,4 +1,6 @@
-# Ethereum Mining with NVIDIA Graphics Cards and Ubuntu GNU/Linux
+# Ethereum Mining with NVIDIA Graphics Cards and Ubuntu
+
+USB flash drive image for Ethereum mining with NVIDIA graphics cards and Ubuntu GNU/Linux (64-bit Intel/AMD (x86_64)).
 
 ![Ubuntu](https://www.nkn-it.de/img/distro/logos/ubuntu.png)
 ![NVIDIA](https://www.nkn-it.de/img/logos/nvidia_cuda.jpg)
