@@ -37,7 +37,7 @@ If you want to get started quickly, simply use the image.
 
 ### Download
 
-💾 [**Download**](https://github.com/Cyclenerd/ethereum_nvidia_miner/raw/master/ethereum-ubuntu-nvidia-miner.torrent) ([Magnet](magnet:?xt=urn:btih:5c73f1fe7754285207a46ad719f4c9612c2121c6&dn=ethereum-ubuntu-nvidia-miner.img.zip&tr=udp%3A%2F%2Ftracker.opentrackr.org%3A1337&tr=udp%3A%2F%2Ftracker.coppersurfer.tk%3A6969&tr=udp%3A%2F%2Ftracker.leechers-paradise.org%3A6969&tr=udp%3A%2F%2Fzer0day.ch%3A1337&tr=udp%3A%2F%2Fexplodie.org%3A6969)) the image via BitTorrent (`ethereum-ubuntu-nvidia-miner.torrent`). Compressed 5.8GB, unzipped 30.7GB.
+💾 [**Download**](https://github.com/Cyclenerd/ethereum_nvidia_miner/raw/master/ethereum-ubuntu-nvidia-miner.torrent) the image via BitTorrent (`ethereum-ubuntu-nvidia-miner.torrent`). Compressed 5.8GB, unzipped 30.7GB.
 
 
 
