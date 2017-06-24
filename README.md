@@ -112,7 +112,7 @@ Get the latest scripts:
     prospector@mine ~ $ curl "https://raw.githubusercontent.com/Cyclenerd/ethereum_nvidia_miner/master/files/update.sh" -o ~/update.sh
     prospector@mine ~ $ bash update.sh
 
-For security delete my public SSH keys (also make the `update.sh` script):
+For security delete my public SSH keys (also performed by the `update.sh` script):
 
     prospector@mine ~ $ rm .ssh/authorized_keys
 
