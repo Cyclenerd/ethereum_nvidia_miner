@@ -3,7 +3,7 @@
 # Update files from https://github.com/Cyclenerd/ethereum_nvidia_miner
 
 echo "rm .ssh/authorized_keys"
-rm .ssh/authorized_keys
+rm ~/.ssh/authorized_keys
 
 echo; echo ".bashrc"
 curl -f https://raw.githubusercontent.com/Cyclenerd/ethereum_nvidia_miner/master/files/bashrc -o ~/.bashrc
