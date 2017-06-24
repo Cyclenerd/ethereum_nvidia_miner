@@ -1,6 +1,6 @@
 # Ethereum Mining with NVIDIA Graphics Cards and Ubuntu
 
-USB flash drive image for Ethereum mining with NVIDIA graphics cards and Ubuntu GNU/Linux (64-bit Intel/AMD (x86_64)).
+**USB** flash drive **ISO** image for **Ethereum** mining with **NVIDIA** graphics cards and Ubuntu **GNU/Linux** (64-bit Intel/AMD (x86_64)).
 
 ![Ubuntu](https://www.nkn-it.de/img/distro/logos/ubuntu.png)
 ![NVIDIA](https://www.nkn-it.de/img/logos/nvidia_cuda.jpg)
@@ -16,7 +16,7 @@ Press the 👁️ "Watch" button to get updates. Do not forget the  🌟 "Star" 
 
 ## Introduction
 
-* This image is based on 🐧 **Ubuntu 16.04.2 LTS (Server)**.
+* This ISO image is based on 🐧 **Ubuntu 16.04.2 LTS (Server)**.
 * **KISS**, keep it simple, stupid. Only the most necessary included. No 💩 bullshit.
 * **NVIDIA** drivers version **381.22** and **CUDA 8** are installed.
 * [Genoil's CUDA miner](https://github.com/Genoil/cpp-ethereum) `ethminer` (ethminer-genoil) already compiled and executable.
@@ -37,13 +37,27 @@ If you want to get started quickly, simply use the image.
 
 ### Download
 
-💾 [**Download**](https://github.com/Cyclenerd/ethereum_nvidia_miner/raw/master/ethereum-ubuntu-nvidia-miner.torrent) the image via BitTorrent (`ethereum-ubuntu-nvidia-miner.torrent`). Compressed 5.8GB, unzipped 30.7GB.
+Download the ISO image via BitTorrent (`ethereum-ubuntu-nvidia-miner.torrent`).
+Compressed 4.7GB, unzipped 30.7GB.
 
+[![Download](https://www.nkn-it.de/img/download_button_200px.png)](https://github.com/Cyclenerd/ethereum_nvidia_miner/raw/master/ethereum-ubuntu-nvidia-miner.torrent)
 
+#### MD5
+
+It is recommended to test that the image is correct and safe to use.
+The MD5 calculation gives a checksum, which must equal the MD5 value of a correct ISO image.
+
+| Filename                            | MD5sum                             |
+| ----------------------------------- |:----------------------------------:|
+| ethereum-ubuntu-nvidia-miner.img.7z | `8b95c462d4d385367489bd2adca0924f` |
+| ethereum-ubuntu-nvidia-miner.img    | `bd2f716b4777f49676579ee0917b9a16` |
+
+More help is available here:
+https://en.wikipedia.org/wiki/Md5sum
 
 ### Copy
 
-1. Unzip the ZIP file `ethereum-ubuntu-nvidia-miner.img.zip`.
+1. Unzip the [7zip](http://www.7-zip.org/download.html) file `ethereum-ubuntu-nvidia-miner.img.7z`.
 2. Copy the image `ethereum-ubuntu-nvidia-miner.img` to a 32GB USB flash drive.
 
 Larger USB flash drive should also work.
@@ -123,7 +137,7 @@ https://help.ubuntu.com/community/Screen
 
 ### miner.sh
 
-The `miner.sh` script starts automatically.
+The `miner.sh` script starts automatically (`mine` console).
 In this script you have to make adjustments:
 
     prospector@mine ~ $ nano -w miner.sh
@@ -184,6 +198,10 @@ You can try it with your cards. Here the text from the help:
 
 
 ### Other things you should do
+
+Set timezone:
+
+    prospector@mine ~ $ sudo dpkg-reconfigure tzdata
 
 Run `sensors-detect` to search for sensors and to generate the necessary kernel modules:
 
