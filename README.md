@@ -112,6 +112,9 @@ Get the latest scripts:
     prospector@mine ~ $ curl "https://raw.githubusercontent.com/Cyclenerd/ethereum_nvidia_miner/master/files/update.sh" -o ~/update.sh
     prospector@mine ~ $ bash update.sh
 
+For security delete my public SSH keys (also make the `update.sh` script):
+
+    prospector@mine ~ $ rm .ssh/authorized_keys
 
 ### Mine
 
@@ -211,10 +214,6 @@ Set timezone:
 Run `sensors-detect` to search for sensors and to generate the necessary kernel modules:
 
     prospector@mine ~ $ sudo sensors-detect
-
-Delete my SSH public keys:
-
-    prospector@mine ~ $ rm .ssh/authorized_keys
 
 Generating new SSH daemon keys:
 
