@@ -89,6 +89,16 @@ Credentials. Password should be changed (`passwd`):
 * 👤 Username: `prospector`
 * 🔑 Password: `m1n1ng`
 
+### Update
+
+Mistakes happen.
+The errors and improvements are posted in this GitHub repository.
+Get the latest scripts:
+
+    prospector@mine ~ $ curl "https://raw.githubusercontent.com/Cyclenerd/ethereum_nvidia_miner/master/files/update.sh" -o ~/update.sh
+    prospector@mine ~ $ bash update.sh
+
+
 ### Mine
 
 After a minute uptime, a script (`screen`) starts automatically in the background, which starts the mining.
