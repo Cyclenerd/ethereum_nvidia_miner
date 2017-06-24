@@ -27,4 +27,6 @@ do
 	DISPLAY=:0 XAUTHORITY=/var/lib/mdm/:0.Xauth nvidia-settings -a "[gpu:$MY_DEVICE]/GPUMemoryTransferRateOffset[3]=$MY_MEM"
 done
 
+echo
 echo "Done"
+echo
