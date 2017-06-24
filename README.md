@@ -126,7 +126,12 @@ Enter `mine` to get it in the foreground:
 
     prospector@mine ~ $ mine
 
-Use <kbd>Ctrl</kbd> + <kbd>n</kbd> (next) and <kbd>Ctrl</kbd> + <kbd>p</kbd> (previous) to navigate through the windows (consoles).
+Use key combination <kbd>Ctrl</kbd> + <kbd>a</kbd>, and subsequently pressing a key to execute one of the commands given below:
+
+* <kbd>n</kbd> : switches to the next available console
+* <kbd>p</kbd> : switches back to the previous console
+* <kbd>c</kbd> : creates a new virtual Bash console
+* <kbd>d</kbd> : detatches the current screen sessions and brings you back to the normal terminal
 
 ![htop](https://www.nkn-it.de/img/ethereum_nvidia_miner/mine-top.jpg)
 ![nvidia-smi](https://www.nkn-it.de/img/ethereum_nvidia_miner/mine-gpu.jpg)
