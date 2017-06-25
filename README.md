@@ -33,7 +33,8 @@ If you do not trust me and do not want to use the image,
 you will find all configuration files and scripts in the [files](https://github.com/Cyclenerd/ethereum_nvidia_miner/tree/master/files) folder.
 You only have to install an Ubuntu Linux with all the drivers and tools yourself.
 
-If you want to get started quickly, simply use the image.
+If you want to get started quickly, simply use the pre-configured ISO image
+(contains the shell scripts, tools, and all necessary drivers).
 
 ### Download
 
