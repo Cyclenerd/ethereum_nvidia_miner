@@ -86,8 +86,9 @@ Btw. `rdisk3` (with r) not `disk3` is not a write error.
 
 
 
-## Set Up
+## Moinbord Set Up
 
+Set the primary graphics output to on one of your NVIDIA cards.
 Disable Secure Boot (UEFI) and boot from the USB flash drive.
 
 ### Login
