@@ -226,10 +226,13 @@ Generating new SSH daemon keys:
 
 Update ethminer-genoil:
 
+    # Install CUDA without the driver!!!
+    prospector@mine ~ $ sudo apt-get install -y cuda-command-line-tools-8-0
+    # Compile ethminer
     prospector@mine ~ $ cd cpp-ethereum/
     prospector@mine cpp-ethereum $ git pull
     prospector@mine cpp-ethereum $ cd build/
-    prospector@mine build $ cmake -DBUNDLE=cudaminer ..
+    prospector@mine build $ cmake -D CUDA_TOOLKIT_ROOT_DIR=/usr/local/cuda-8.0 -DBUNDLE=cudaminer ..
     prospector@mine build $ make -j8
 
 
