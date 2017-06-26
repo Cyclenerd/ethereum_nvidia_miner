@@ -215,6 +215,8 @@ You can try it with your cards. Here the text from the help:
 
     prospector@mine ~ $ sudo dpkg-reconfigure tzdata
 
+#### Sensors
+
 Run `sensors-detect` to search for sensors and to generate the necessary kernel modules:
 
     prospector@mine ~ $ sudo sensors-detect
