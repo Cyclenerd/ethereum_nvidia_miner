@@ -1,13 +1,13 @@
 #!/usr/bin/env bash
 
-#Skip manual settings per card.
-SKIP_MANUAL_SETTINGS=true
+# Use different settings per card.
+USE_INDIVIDUAL_SETTINGS=false
 # GPUGraphicsClockOffset
 MY_CLOCK="150"
 # GPUMemoryTransferRateOffset
 MY_MEM="600"
 # GPUTargetFanSpeed (%)
-MY_FAN="85"
+MY_FAN="75"
 
 LINE_COUNT="$(nvidia-smi -L | wc -l)"
 for (( MY_DEVICE = 0; MY_DEVICE < ${LINE_COUNT}; MY_DEVICE++ )); do
@@ -18,7 +18,7 @@ for (( MY_DEVICE = 0; MY_DEVICE < ${LINE_COUNT}; MY_DEVICE++ )); do
     # Enable fan speed control.
     DISPLAY=:0 XAUTHORITY=/var/lib/mdm/:0.Xauth nvidia-settings -a "[gpu:$MY_DEVICE]/GPUFanControlState=1"
 
-    if [ $SKIP_MANUAL_SETTINGS = false ]; then
+    if [ $USE_INDIVIDUAL_SETTINGS = true ]; then
         echo "Enter clock speed offset for GPU:$MY_DEVICE (${GPU_NAME}) [Press enter/return to skip. | Don't include the + symbol.]"
         read CLOCK_OFFSET
         if ! [ "$CLOCK_OFFSET" -eq "$CLOCK_OFFSET" ] 2> /dev/null; then
