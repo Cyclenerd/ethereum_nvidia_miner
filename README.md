@@ -211,7 +211,7 @@ You can try it with your cards. Here the text from the help:
 
 ### Other things you should do
 
-Set timezone:
+#### Set timezone
 
     prospector@mine ~ $ sudo dpkg-reconfigure tzdata
 
@@ -219,12 +219,12 @@ Run `sensors-detect` to search for sensors and to generate the necessary kernel 
 
     prospector@mine ~ $ sudo sensors-detect
 
-Generating new SSH daemon keys:
+#### Generating new SSH daemon keys
 
     prospector@mine ~ $ sudo ssh-keygen -q -b 8192 -t "ed25519" -f "/etc/ssh/ssh_host_ed25519_key"
     prospector@mine ~ $ sudo ssh-keygen -q -b 8192 -t "rsa" -f "/etc/ssh/ssh_host_rsa_key"
 
-Update ethminer-genoil:
+#### Update ethminer-genoil
 
     # Install CUDA without the driver!!!
     prospector@mine ~ $ sudo apt-get install -y cuda-command-line-tools-8-0
