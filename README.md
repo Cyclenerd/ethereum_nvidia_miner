@@ -85,6 +85,17 @@ Copy the image to your USB flash drive:
 
 Btw. `rdisk3` (with r) not `disk3` is not a write error.
 
+## Leave a Tip 🙏
+
+With this ISO image, you can immediately mine Ethereum (ETH).
+Do not spend long time searching and researching.
+
+I would be happy about a small donation. Thank you very much.
+
+|   | Currency | Address                                      |
+|---|----------|----------------------------------------------|
+| Ξ | Ethereum | `0xfbbc9f870bccadf8847eba29b0ed3755e30c9f0d` |
+| Ƀ | Bitcoin  |`13fQA3mCQPmnXBDSmfautP4VMq6Sj2GVSA`          |
 
 
 ## Set Up
@@ -278,13 +289,3 @@ https://help.ubuntu.com/community/Fail2ban
 
 If you have found a bug (English is not my mother tongue) or have any improvements, send me a pull request.
 
-
-## Leave a Tip 🙏
-
-With the image, you can immediately mine Ethereum.
-Do not spend long time searching and researching.
-
-I would be happy about a small donation.
-
-* Ξ - Ethereum: `0xfbbc9f870bccadf8847eba29b0ed3755e30c9f0d`
-* Ƀ - Bitcoin: `13fQA3mCQPmnXBDSmfautP4VMq6Sj2GVSA`
