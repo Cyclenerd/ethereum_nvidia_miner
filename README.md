@@ -237,16 +237,19 @@ Run `sensors-detect` to search for sensors and to generate the necessary kernel 
     prospector@mine ~ $ sudo ssh-keygen -q -b 8192 -t "ed25519" -f "/etc/ssh/ssh_host_ed25519_key"
     prospector@mine ~ $ sudo ssh-keygen -q -b 8192 -t "rsa" -f "/etc/ssh/ssh_host_rsa_key"
 
-#### Update ethminer-genoil
+#### Update ethminer
+
+If you run the latest `update.sh script, this is already done.
+But you can always update the version and recompile it.
 
     # Install CUDA without the driver!!!
     prospector@mine ~ $ sudo apt-get install -y cuda-command-line-tools-8-0
     # Compile ethminer
-    prospector@mine ~ $ cd cpp-ethereum/
-    prospector@mine cpp-ethereum $ git pull
-    prospector@mine cpp-ethereum $ cd build/
-    prospector@mine build $ cmake -D CUDA_TOOLKIT_ROOT_DIR=/usr/local/cuda-8.0 -DBUNDLE=cudaminer ..
-    prospector@mine build $ make -j8
+    prospector@mine ~ $ cd ~/ethereum-mining/ethminer
+    prospector@mine ethminer $ git pull
+    prospector@mine ethminer $ cd build/
+    prospector@mine build $ cmake -D CUDA_TOOLKIT_ROOT_DIR=/usr/local/cuda-8.0 -DETHASHCL=OFF -DETHASHCUDA=ON ..
+    prospector@mine build $ cmake --build .
 
 
 ## Monitoring
