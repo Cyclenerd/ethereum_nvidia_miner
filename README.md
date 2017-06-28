@@ -20,6 +20,7 @@ Press the 👁️ "Watch" button to get updates. Do not forget the  🌟 "Star" 
 * **KISS**, keep it simple, stupid. Only the most necessary included. No 💩 bullshit.
 * **NVIDIA** drivers version **381.22** and **CUDA 8** are installed.
 * [Genoil's CUDA miner](https://github.com/Genoil/cpp-ethereum) `ethminer` (ethminer-genoil) already compiled and executable.
+* Update script for compiling [ethereum-mining/ethminer](https://github.com/ethereum-mining/ethminer/pull/18) with the optimized code by [David Li](https://github.com/davilizh) (from NVIDIA). The code is optimized for NVIDIA GTX 1060, can improve NVIDIA GTX 1060 with 2 GPC performance by 15%, and NVIDIA GTX 1060 with 1 GPC performance by more than 30%. Meanwhile, it also increases performance on NVIDIA GTX 1070.
 * Claymore's CUDA miner `ethdcrminer64` is also included.
 * Already configured to participate in the [ethermine](https://ethermine.org/) ethereum mining pool.
 * The installation is optimized for operation **without monitor** (headless).
