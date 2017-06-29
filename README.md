@@ -25,7 +25,7 @@ Press the 👁️ "Watch" button to get updates. Do not forget the  🌟 "Star" 
 * Already configured to participate in the [ethermine](https://ethermine.org/) ethereum mining pool.
 * The installation is optimized for operation **without monitor** (headless).
 * No hard disk drive (HDD/SSD) required. Installation on USB flash drive.
-* Created and **tested** with two NVIDIA GTX 1060s.
+* Created and **tested** with two NVIDIA GTX 1060 and two NVIDIA GTX 1070.
 
 
 ## Installation
