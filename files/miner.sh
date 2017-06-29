@@ -9,7 +9,7 @@ MY_RIG="mine"
 
 # Specifies maximum power limit in watts.
 # Accepts integer and floating point numbers. Only on supported devices from Kepler family.
-MY_WATT="70"
+MY_WATT="120"
 
 
 
