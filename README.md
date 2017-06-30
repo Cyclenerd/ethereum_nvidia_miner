@@ -293,7 +293,9 @@ https://help.ubuntu.com/community/Fail2ban
 
 If you have found a bug (English is not my mother tongue) or have any improvements, send me a pull request.
 
-#### Known issues
+## Known Issues
 
-Nvidia tools (especially nvidia-smi) seems to be lagging on 7 GPU rigs, crashing the system and/or causing some system instabilities. Issue reproduced on 2 differents 7 GPUs rigs (different motherboard & GPU brands)
+NVIDIA tools (especially `nvidia-smi`) seems to be lagging on 7 GPU rigs, 
+crashing the system and/or causing some system instabilities.
+Issue reproduced on two differents 7 GPUs rigs (different motherboard & GPU brands).
 
