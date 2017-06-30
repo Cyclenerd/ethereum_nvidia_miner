@@ -25,7 +25,7 @@ Press the 👁️ "Watch" button to get updates. Do not forget the  🌟 "Star" 
 * Already configured to participate in the [ethermine](https://ethermine.org/) ethereum mining pool.
 * The installation is optimized for operation **without monitor** (headless).
 * No hard disk drive (HDD/SSD) required. Installation on USB flash drive.
-* Created and **tested** with two NVIDIA GTX 1060 and two NVIDIA GTX 1070.
+* Created and **tested** with two NVIDIA GTX 1060 and six NVIDIA GTX 1070.
 
 
 ## Installation
@@ -292,4 +292,8 @@ https://help.ubuntu.com/community/Fail2ban
 ## Help 👍
 
 If you have found a bug (English is not my mother tongue) or have any improvements, send me a pull request.
+
+#### Known issues
+
+Nvidia tools (especially nvidia-smi) seems to be lagging on 7 GPU rigs, crashing the system and/or causing some system instabilities. Issue reproduced on 2 differents 7 GPUs rigs (different motherboard & GPU brands)
 
