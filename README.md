@@ -242,7 +242,6 @@ Run `sensors-detect` to search for sensors and to generate the necessary kernel 
 #### Generating new SSH daemon keys
 
    sudo ssh-keygen -q -b 8192 -t "ed25519" -f "/etc/ssh/ssh_host_ed25519_key"
-   
    sudo ssh-keygen -q -b 8192 -t "rsa" -f "/etc/ssh/ssh_host_rsa_key"
 
 #### Update ethminer
