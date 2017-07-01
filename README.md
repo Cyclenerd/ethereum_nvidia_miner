@@ -250,9 +250,11 @@ Run `sensors-detect` to search for sensors and to generate the necessary kernel 
 #### But you can always update the version and recompile it.
 
 Install CUDA without the driver!!!
+    
     sudo apt-get install -y cuda-command-line-tools-8-0
 
 Compile ethminer
+    
     cd ~/ethereum-mining/ethminer
     ethminer $ git pull
     ethminer $ cd build/
