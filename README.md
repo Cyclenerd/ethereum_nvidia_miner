@@ -250,13 +250,13 @@ If you run the latest `update.sh script, this is already done.
 But you can always update the version and recompile it.
 
     # Install CUDA without the driver!!!
-    prospector@mine ~ $ sudo apt-get install -y cuda-command-line-tools-8-0
+    sudo apt-get install -y cuda-command-line-tools-8-0
     # Compile ethminer
-    prospector@mine ~ $ cd ~/ethereum-mining/ethminer
-    prospector@mine ethminer $ git pull
-    prospector@mine ethminer $ cd build/
-    prospector@mine build $ cmake -D CUDA_TOOLKIT_ROOT_DIR=/usr/local/cuda-8.0 -DETHASHCL=OFF -DETHASHCUDA=ON ..
-    prospector@mine build $ cmake --build .
+    cd ~/ethereum-mining/ethminer
+    ethminer $ git pull
+    ethminer $ cd build/
+    build $ cmake -D CUDA_TOOLKIT_ROOT_DIR=/usr/local/cuda-8.0 -DETHASHCL=OFF -DETHASHCUDA=ON ..
+    build $ cmake --build .
 
 
 ## Monitoring
