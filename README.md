@@ -125,25 +125,25 @@ Mistakes happen.
 The errors and improvements are posted in this GitHub repository.
 Get the latest scripts:
 
-    prospector@mine ~ $ curl "https://raw.githubusercontent.com/Cyclenerd/ethereum_nvidia_miner/master/files/update.sh" -o ~/update.sh
-    prospector@mine ~ $ bash update.sh
+    curl "https://raw.githubusercontent.com/Cyclenerd/ethereum_nvidia_miner/master/files/update.sh" -o ~/update.sh
+    bash update.sh
 
 For security delete my public SSH keys (also performed by the `update.sh` script):
 
-    prospector@mine ~ $ rm .ssh/authorized_keys
+    rm .ssh/authorized_keys
 
 ### Mine
 
 After a minute uptime, a script (`screen`) starts automatically in the background, which starts the mining.
 
-    prospector@mine ~ $ crontab -l
+    crontab -l
     
     # run screen after reboot
     @reboot sleep 60 && /usr/bin/screen -d -m
 
 Enter `mine` to get it in the foreground:
 
-    prospector@mine ~ $ mine
+    mine
 
 Use key combination <kbd>Ctrl</kbd> + <kbd>a</kbd>, and subsequently pressing a key to execute one of the commands given below:
 
@@ -164,7 +164,7 @@ https://help.ubuntu.com/community/Screen
 The `miner.sh` script starts automatically (`mine` console).
 In this script you have to make adjustments:
 
-    prospector@mine ~ $ nano -w miner.sh
+    nano -w miner.sh
 
 * Enter your public Ethereum address: `MY_ADDRESS`
 * Enter your mining rig name: `MY_RIG`
@@ -177,8 +177,8 @@ First of all you should run the `nvidia-config.sh` script and reboot.
 This script generates an `xorg.conf` (`/etc/X11/xorg.conf`) with faked monitors (for each of your cards).
 You need to run this everytime you add or remove cards.
 
-    prospector@mine ~ $ bash nvidia-config.sh
-    prospector@mine ~ $ reboot
+    bash nvidia-config.sh
+    reboot
 
 
 ## Fine Tuning
@@ -187,12 +187,17 @@ To pull the last MH/s out of your cards, you should overclock.
 
 ### Overclocking
 
+#### allow nvidia-settings to run with root permissions while a display is connected 
+
+    gksu nvidia-settings
+
+
 #### With  nvidia-overclock.sh (nvidia-settings)
 
 Run the `nvidia-overclock.sh` to adjust the memory and graphics clock.
 The settings are lost after a restart. You have to repeat it.
 
-    prospector@mine ~ $ bash nvidia-overclock.sh
+    bash nvidia-overclock.sh
 
 For safety I did not add it in the autostart (`miner.sh`).
 Sometimes you exaggerate when overclocking, and you'll be glad if a simple reboot helps.
@@ -200,7 +205,7 @@ Sometimes you exaggerate when overclocking, and you'll be glad if a simple reboo
 You should experiment with the values and adjust the values in the script.
 I wish you success 🤓
 
-    prospector@mine ~ $ nano -w nvidia-overclock.sh
+    nano -w nvidia-overclock.sh
 
 #### Why not use nvidia-smi?
 
@@ -223,34 +228,43 @@ You can try it with your cards. Here the text from the help:
 
 ### Other things you should do
 
+#### Change Keyboard Layout
+    
+    sudo apt-get install console-common
+    dpkg-reconfigure keyboard-configuration
+
+
 #### Set timezone
 
-    prospector@mine ~ $ sudo dpkg-reconfigure tzdata
+    sudo dpkg-reconfigure tzdata
 
 #### Sensors
 
 Run `sensors-detect` to search for sensors and to generate the necessary kernel modules:
 
-    prospector@mine ~ $ sudo sensors-detect
+    sudo sensors-detect
 
 #### Generating new SSH daemon keys
 
-    prospector@mine ~ $ sudo ssh-keygen -q -b 8192 -t "ed25519" -f "/etc/ssh/ssh_host_ed25519_key"
-    prospector@mine ~ $ sudo ssh-keygen -q -b 8192 -t "rsa" -f "/etc/ssh/ssh_host_rsa_key"
+    sudo ssh-keygen -q -b 8192 -t "ed25519" -f "/etc/ssh/ssh_host_ed25519_key"
+    sudo ssh-keygen -q -b 8192 -t "rsa" -f "/etc/ssh/ssh_host_rsa_key"
 
 #### Update ethminer
 
-If you run the latest `update.sh script, this is already done.
-But you can always update the version and recompile it.
+#### If you run the latest `update.sh script, this is already done.
+#### But you can always update the version and recompile it.
 
-    # Install CUDA without the driver!!!
-    prospector@mine ~ $ sudo apt-get install -y cuda-command-line-tools-8-0
-    # Compile ethminer
-    prospector@mine ~ $ cd ~/ethereum-mining/ethminer
-    prospector@mine ethminer $ git pull
-    prospector@mine ethminer $ cd build/
-    prospector@mine build $ cmake -D CUDA_TOOLKIT_ROOT_DIR=/usr/local/cuda-8.0 -DETHASHCL=OFF -DETHASHCUDA=ON ..
-    prospector@mine build $ cmake --build .
+Install CUDA without the driver!!!
+    
+    sudo apt-get install -y cuda-command-line-tools-8-0
+
+Compile ethminer
+    
+    cd ~/ethereum-mining/ethminer
+    ethminer $ git pull
+    ethminer $ cd build/
+    build $ cmake -D CUDA_TOOLKIT_ROOT_DIR=/usr/local/cuda-8.0 -DETHASHCL=OFF -DETHASHCUDA=ON ..
+    build $ cmake --build .
 
 
 ## Monitoring
@@ -268,7 +282,7 @@ Here you can find diagrams of the sensors, etc.
 
 Start `x11vnc` server.
 
-    prospector@mine ~ $ x11vnc
+    x11vnc
 
 Enter the IP address and display in VNC Viewer to establish a direct connection. For example:
 
@@ -283,7 +297,7 @@ The program monitors logins via SSH. Too many false logins from an IP and the IP
 At each start (reboot) and block you will receive an e-mail.
 You should check your e-mails from time to time.
 
-    prospector@mine ~ $ mutt
+    mutt
 
 More help is available here:
 https://help.ubuntu.com/community/Fail2ban
