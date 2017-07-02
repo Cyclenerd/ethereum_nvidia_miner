@@ -187,6 +187,11 @@ To pull the last MH/s out of your cards, you should overclock.
 
 ### Overclocking
 
+#### allow nvidia-settings to run with root permissions while a display is connected 
+
+    gksu nvidia-settings
+
+
 #### With  nvidia-overclock.sh (nvidia-settings)
 
 Run the `nvidia-overclock.sh` to adjust the memory and graphics clock.
