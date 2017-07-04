@@ -103,7 +103,7 @@ I would be happy about a small donation. Thank you very much.
 
 ### Mainboard
 
-Set the primary graphics output to on one of your NVIDIA cards.
+Set the primary graphics output to one of your NVIDIA cards.
 Disable Secure Boot (UEFI) and boot from the USB flash drive.
 
 ### Login
