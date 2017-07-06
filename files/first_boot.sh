@@ -22,6 +22,9 @@ if [ -f /home/prospector/first_boot ]; then
 	# Delete RRD munin files
 	rm -v /var/lib/munin/localhost/*
 	
+	# Send a nice welcome mail
+	echo "Greetings from Cyclenerd <https://github.com/Cyclenerd/ethereum_nvidia_miner>" | mail -s "Happy Mining" prospector@localhost
+	
 	# Delete 'first_boot' file
 	rm -v /home/prospector/first_boot
 	
