@@ -1,0 +1,28 @@
+#!/usr/bin/env bash
+
+
+#
+# first_boot.sh
+# Author: Nils Knieling - https://github.com/Cyclenerd/ethereum_nvidia_miner
+#
+# This script will reset a few settings. It runs after the first start.
+#
+
+if [ -f /home/prospector/first_boot ]; then
+	
+	# Delete SSH daemon keys
+	rm -v /etc/ssh/ssh_host_*
+
+	# Create new SSH daemon keys
+	dpkg-reconfigure openssh-server
+
+	# Restart SSH daemon
+	service ssh restart
+	
+	# Delete RRD munin files
+	rm -v /var/lib/munin/localhost/*
+	
+	# Delete 'first_boot' file
+	rm -v /home/prospector/first_boot
+	
+fi
