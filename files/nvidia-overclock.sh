@@ -1,17 +1,17 @@
 #!/usr/bin/env bash
 
-
+#
+# nvidia-overclock.sh
+# Author: Nils Knieling - https://github.com/Cyclenerd/ethereum_nvidia_miner
+#
 # Overclocking with nvidia-settings
-# Increase or decrease in small increments (+/- 25)
+#
 
-
-# GPUGraphicsClockOffset
-MY_CLOCK="150"
-# GPUMemoryTransferRateOffset
-MY_MEM="600"
-
-# GPUTargetFanSpeed (%)
-MY_FAN="75"
+# Load global settings settings.conf
+if ! source ~/settings.conf; then
+	echo "FAILURE: Can not load global settings 'settings.conf'"
+	exit 9
+fi
 
 export DISPLAY=:0
 
