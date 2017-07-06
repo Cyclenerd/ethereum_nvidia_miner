@@ -57,9 +57,9 @@ if [ -n "$force_color_prompt" ]; then
 fi
 
 if [ "$color_prompt" = yes ]; then
-    PS1='${debian_chroot:+($debian_chroot)}\[\033[01;32m\]\u@\h\[\033[00m\]:\[\033[01;34m\]\w\[\033[00m\]\$ '
+    PS1='${debian_chroot:+($debian_chroot)}\[\033[01;32m\]\u@\h\[\033[00m\]:\[\033[01;34m\]\w\[\033[00m\] \$ '
 else
-    PS1='${debian_chroot:+($debian_chroot)}\u@\h:\w\$ '
+    PS1='${debian_chroot:+($debian_chroot)}\u@\h:\w \$ '
 fi
 unset color_prompt force_color_prompt
 
@@ -88,7 +88,7 @@ fi
 #export GCC_COLORS='error=01;31:warning=01;35:note=01;36:caret=01;32:locus=01:quote=01'
 
 # some more ls aliases
-alias ll='ls -alF'
+alias ll='ls -lah --color'
 alias la='ls -A'
 alias l='ls -CF'
 
@@ -116,34 +116,6 @@ if ! shopt -oq posix; then
   fi
 fi
 
-#
-# Added by dotfile.sh script
-#   https://github.com/Cyclenerd/dotfiles
-#
-
-if [ "$(id -u)" -eq 0 ]; then
-	# Set RED prompt for root
-	PS1='\[\033[01;31m\]\u@\h \[\033[01;34m\]\W # \[\033[00m\]'
-	export PS1
-else
-	PS1='\[\033[01;32m\]\u@\h \[\033[01;34m\]\W \$ \[\033[00m\]'
-	export PS1
-fi
-
-alias reboot='sudo reboot'
-alias shutdown='sudo shutdown -h now'
-
-# Define nano as our default EDITOR
 export EDITOR='nano'
-
 export LC_CTYPE='en_US.UTF-8'
 export LC_ALL='en_US.UTF-8'
-alias ll='ls -lah --color'
-
-# ethminer-genoil GitHub build
-alias ethminer='/home/prospector/cpp-ethereum/build/ethminer/ethminer'
-
-# screen
-alias screen='echo "Disabled! screen starts automatically in the background after every reboot (1 minute uptime). Type ´mine´ to connect to the screen."'
-alias mine='uptime; echo "==> Please wait 1 minute!"; /usr/bin/screen -dr'
-alias newmine='/usr/bin/screen'
