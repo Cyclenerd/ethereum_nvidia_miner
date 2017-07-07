@@ -123,7 +123,7 @@ function my_update(){
 	clear
 	echo_title "Get Latest Updates"
 	curl -f "https://raw.githubusercontent.com/Cyclenerd/ethereum_nvidia_miner/master/files/update.sh" -o ~/update.sh
-	~/update.sh
+	bash ~/update.sh
 	rm ~/update.sh
 	my_any_key
 	dialog --backtitle "$MY_UPDATE_TITLE" --msgbox "$MY_UPDATE_OK_TEXT" 7 60
