@@ -49,7 +49,7 @@ Press the 👁️ "Watch" button to get updates. Do not forget the  🌟 "Star" 
 	* [Fail2ban](#fail2ban)
 	* [VNC](#vnc)
 * [Help](#help-)
-* [Known Issues](#known-issues-)
+* [Known Issues](#known-issues)
 
 
 ## Leave a Tip 🙏
@@ -75,10 +75,10 @@ If you want to get started quickly, simply use the pre-configured ISO image
 
 ### Download
 
-Download the ISO image via BitTorrent (`ethereum-ubuntu-nvidia-miner_v2.torrent`).
+Download the ISO image via BitTorrent (`ethereum-ubuntu-nvidia-miner_v2.img.7z.torrent`).
 Compressed 1.3GB, unzipped 7.5GB.
 
-[![Download](https://www.nkn-it.de/img/download_button_200px.png)](https://github.com/Cyclenerd/ethereum_nvidia_miner/raw/master/ethereum-ubuntu-nvidia-miner_v2.torrent)
+[![Download](https://www.nkn-it.de/img/download_button_200px.png)](https://github.com/Cyclenerd/ethereum_nvidia_miner/raw/master/ethereum-ubuntu-nvidia-miner_v2.img.7z.torrent)
 
 #### MD5
 
@@ -147,6 +147,8 @@ There is an extra program which helps you with the initial setup. Type `setup` t
 
     prospector@mine ~ $ setup
 
+![setup](https://www.nkn-it.de/img/ethereum_nvidia_miner/mine-setup.jpg)
+
 Go through each step. If you have everything set you should do a `reboot`.
 
 ### Mine
@@ -202,6 +204,10 @@ If you are sure that everything works, you can add it to the autostart.
 For security, it will start after 10 minutes.
 
     prospector@mine ~ $ crontab -e
+    
+    # After 10 minutes uptime, 'nvidia-overclock.sh' starts automatically
+    # Only remove the comment if you are sure that everything works!!!
+    #@reboot sleep 600 && bash ~/nvidia-overclock.sh >/dev/null 2>&1
 
 You should experiment with the values and adjust the values in the script.
 I wish you success 🤓
@@ -274,7 +280,7 @@ Enter the IP address and display in VNC Viewer to establish a direct connection.
 
     minerIP:0
 
-![x11vnc](https://www.nkn-it.de/img/ethereum_nvidia_miner/mine-vnc.jpg)
+![x11vnc](https://www.nkn-it.de/img/ethereum_nvidia_miner/mine-x11vnc.jpg)
 
 
 
