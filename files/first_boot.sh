@@ -8,18 +8,22 @@
 # This script will reset a few settings. It runs after the first start.
 #
 
+
 if [ -f /home/prospector/first_boot ]; then
 	
-	# Delete SSH daemon keys
+	echo "Delete SSH daemon keys"
 	rm -v /etc/ssh/ssh_host_*
-
-	# Create new SSH daemon keys
-	dpkg-reconfigure openssh-server
-
-	# Restart SSH daemon
+	
+	echo
+	echo "Create new SSH daemon keys"
+	/usr/sbin/dpkg-reconfigure openssh-server
+	
+	echo
+	echo "Restart SSH daemon"
 	service ssh restart
 	
-	# Delete RRD munin files
+	echo
+	echo "Delete RRD munin files"
 	rm -v /var/lib/munin/localhost/*
 	
 	# Send a nice welcome mail
