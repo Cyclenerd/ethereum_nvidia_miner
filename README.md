@@ -62,7 +62,7 @@ I would be happy about a small donation. Thank you very much.
 |   | Currency | Address                                      |
 |---|----------|----------------------------------------------|
 | Ξ | Ethereum | `0xfbbc9f870bccadf8847eba29b0ed3755e30c9f0d` |
-| Ƀ | Bitcoin  |`13fQA3mCQPmnXBDSmfautP4VMq6Sj2GVSA`          |
+| Ƀ | Bitcoin  | `13fQA3mCQPmnXBDSmfautP4VMq6Sj2GVSA`         |
 
 ## Installation
 
@@ -87,8 +87,8 @@ The MD5 calculation gives a checksum, which must equal the MD5 value of a correc
 
 | Filename                               | MD5sum                             |
 | -------------------------------------- |:----------------------------------:|
-| ethereum-ubuntu-nvidia-miner_v2.img.7z | `0a4750edf8f9585c7cfd7bcab56ce0f3` |
-| ethereum-ubuntu-nvidia-miner_v2.img    | `fac13f65700abdb82450a21dbb0409eb` |
+| ethereum-ubuntu-nvidia-miner_v2.img.7z | `236204df132665c68ed3eb9a2729e26c` |
+| ethereum-ubuntu-nvidia-miner_v2.img    | `3a78efe07014e3b665e899a490eaa33b` |
 
 More help is available here:
 https://en.wikipedia.org/wiki/Md5sum
@@ -96,7 +96,7 @@ https://en.wikipedia.org/wiki/Md5sum
 ### Copy
 
 1. Unzip the [7zip](http://www.7-zip.org/download.html) file `ethereum-ubuntu-nvidia-miner_v2.img.7z`.
-2. Copy the image `ethereum-ubuntu-nvidia-miner_v2.img` to a 8GB USB flash drive.
+2. Copy the image `ethereum-ubuntu-nvidia-miner_v2.img` to a at least 8GB USB flash drive.
 
 Larger USB flash drive should also work.
 I use the "Sandisk 32GB Ultra Fit USB 3.0 Flash Drive".
