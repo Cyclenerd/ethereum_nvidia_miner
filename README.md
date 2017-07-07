@@ -13,20 +13,56 @@ Press the 👁️ "Watch" button to get updates. Do not forget the  🌟 "Star" 
 **Do not make me responsible for broken hardware.**
 🚨
 
-
 ## Introduction
 
 * This ISO image is based on 🐧 **Ubuntu 16.04.2 LTS (Server)**.
 * **KISS**, keep it simple, stupid. Only the most necessary included. No 💩 bullshit.
 * **NVIDIA** drivers version **381.22** and **CUDA 8** are installed.
-* [Genoil's CUDA miner](https://github.com/Genoil/cpp-ethereum) `ethminer` (ethminer-genoil) already compiled and executable.
-* Update script for compiling [ethereum-mining/ethminer](https://github.com/ethereum-mining/ethminer/pull/18) with the optimized code by [David Li](https://github.com/davilizh) (from NVIDIA). The code is optimized for NVIDIA GTX 1060, can improve NVIDIA GTX 1060 with 2 GPC performance by 15%, and NVIDIA GTX 1060 with 1 GPC performance by more than 30%. Meanwhile, it also increases performance on NVIDIA GTX 1070.
+* [ethminer](https://github.com/ethereum-mining/ethminer) with the optimized code by [David Li](https://github.com/davilizh) (from NVIDIA) already compiled and ready for use.
+	* The code is optimized for NVIDIA GTX 1060, can improve NVIDIA GTX 1060 with 2 GPC performance by 15%, and NVIDIA GTX 1060 with 1 GPC performance by more than 30%. Meanwhile, it also increases performance on NVIDIA GTX 1070.
 * Claymore's CUDA miner `ethdcrminer64` is also included.
 * Already configured to participate in the [ethermine](https://ethermine.org/) ethereum mining pool.
 * The installation is optimized for operation **without monitor** (headless).
 * No hard disk drive (HDD/SSD) required. Installation on USB flash drive.
 * Created and **tested** with two NVIDIA GTX 1060 and six NVIDIA GTX 1070.
 
+
+## Navigation
+
+* [Leave a Tip](#leave-a-tip-)
+* [Installation](#installation)
+	* [Download](#download)
+		* [MD5](#md5)
+	* [Copy](#copy)
+	* [Mainboard](#mainboard)
+	* [Login](#login)
+	* [Setup](#setup)
+	* [Mine](#mine)
+		* [miner.sh](#minersh)
+	* [Overclocking](#overclocking)
+		 * [With nvidia-overclock.sh (nvidia-settings)](#with--nvidia-overclocksh-nvidia-settings)
+		 * [Why not use nvidia-smi?](#why-not-use-nvidia-smi)
+ * [Other things you should do](#other-things-you-should-do)
+	* [Update ethminer](#update-ethminer)
+* [Monitoring](#monitoring)
+	* [Munin](#munin)
+	* [Fail2ban](#fail2ban)
+	* [VNC](#vnc)
+* [Help](#help-)
+* [Known Issues](#known-issues-)
+
+
+## Leave a Tip 🙏
+
+With this ISO image, you can immediately mine Ethereum (ETH).
+Do not spend long time searching and researching.
+
+I would be happy about a small donation. Thank you very much.
+
+|   | Currency | Address                                      |
+|---|----------|----------------------------------------------|
+| Ξ | Ethereum | `0xfbbc9f870bccadf8847eba29b0ed3755e30c9f0d` |
+| Ƀ | Bitcoin  |`13fQA3mCQPmnXBDSmfautP4VMq6Sj2GVSA`          |
 
 ## Installation
 
@@ -39,28 +75,28 @@ If you want to get started quickly, simply use the pre-configured ISO image
 
 ### Download
 
-Download the ISO image via BitTorrent (`ethereum-ubuntu-nvidia-miner.torrent`).
-Compressed 4.7GB, unzipped 30.7GB.
+Download the ISO image via BitTorrent (`ethereum-ubuntu-nvidia-miner_v2.torrent`).
+Compressed 1.3GB, unzipped 7.5GB.
 
-[![Download](https://www.nkn-it.de/img/download_button_200px.png)](https://github.com/Cyclenerd/ethereum_nvidia_miner/raw/master/ethereum-ubuntu-nvidia-miner.torrent)
+[![Download](https://www.nkn-it.de/img/download_button_200px.png)](https://github.com/Cyclenerd/ethereum_nvidia_miner/raw/master/ethereum-ubuntu-nvidia-miner_v2.torrent)
 
 #### MD5
 
 It is recommended to test that the image is correct and safe to use.
 The MD5 calculation gives a checksum, which must equal the MD5 value of a correct ISO image.
 
-| Filename                            | MD5sum                             |
-| ----------------------------------- |:----------------------------------:|
-| ethereum-ubuntu-nvidia-miner.img.7z | `8b95c462d4d385367489bd2adca0924f` |
-| ethereum-ubuntu-nvidia-miner.img    | `bd2f716b4777f49676579ee0917b9a16` |
+| Filename                               | MD5sum                             |
+| -------------------------------------- |:----------------------------------:|
+| ethereum-ubuntu-nvidia-miner_v2.img.7z | `0a4750edf8f9585c7cfd7bcab56ce0f3` |
+| ethereum-ubuntu-nvidia-miner_v2.img    | `fac13f65700abdb82450a21dbb0409eb` |
 
 More help is available here:
 https://en.wikipedia.org/wiki/Md5sum
 
 ### Copy
 
-1. Unzip the [7zip](http://www.7-zip.org/download.html) file `ethereum-ubuntu-nvidia-miner.img.7z`.
-2. Copy the image `ethereum-ubuntu-nvidia-miner.img` to a 32GB USB flash drive.
+1. Unzip the [7zip](http://www.7-zip.org/download.html) file `ethereum-ubuntu-nvidia-miner_v2.img.7z`.
+2. Copy the image `ethereum-ubuntu-nvidia-miner_v2.img` to a 8GB USB flash drive.
 
 Larger USB flash drive should also work.
 I use the "Sandisk 32GB Ultra Fit USB 3.0 Flash Drive".
@@ -82,24 +118,10 @@ Unmount your USB flash drive:
 
 Copy the image to your USB flash drive:
 
-    nils@macbookpro ~ $ sudo dd bs=1m if=Downloads/ethereum-ubuntu-nvidia-miner.img of=/dev/rdisk3
+    nils@macbookpro ~ $ sudo dd bs=1m if=Downloads/ethereum-ubuntu-nvidia-miner_v2.img of=/dev/rdisk3
 
 Btw. `rdisk3` (with r) not `disk3` is not a write error.
 
-## Leave a Tip 🙏
-
-With this ISO image, you can immediately mine Ethereum (ETH).
-Do not spend long time searching and researching.
-
-I would be happy about a small donation. Thank you very much.
-
-|   | Currency | Address                                      |
-|---|----------|----------------------------------------------|
-| Ξ | Ethereum | `0xfbbc9f870bccadf8847eba29b0ed3755e30c9f0d` |
-| Ƀ | Bitcoin  |`13fQA3mCQPmnXBDSmfautP4VMq6Sj2GVSA`          |
-
-
-## Set Up
 
 ### Mainboard
 
@@ -119,18 +141,13 @@ Credentials. Password should be changed (`passwd`):
 * 👤 Username: `prospector`
 * 🔑 Password: `m1n1ng`
 
-### Update
+### Setup
 
-Mistakes happen.
-The errors and improvements are posted in this GitHub repository.
-Get the latest scripts:
+There is an extra program which helps you with the initial setup. Type `setup` to start it.
 
-    prospector@mine ~ $ curl "https://raw.githubusercontent.com/Cyclenerd/ethereum_nvidia_miner/master/files/update.sh" -o ~/update.sh
-    prospector@mine ~ $ bash update.sh
+    prospector@mine ~ $ setup
 
-For security delete my public SSH keys (also performed by the `update.sh` script):
-
-    prospector@mine ~ $ rm .ssh/authorized_keys
+Go through each step. If you have everything set you should do a `reboot`.
 
 ### Mine
 
@@ -159,48 +176,35 @@ Use key combination <kbd>Ctrl</kbd> + <kbd>a</kbd>, and subsequently pressing a 
 More help is available here:
 https://help.ubuntu.com/community/Screen
 
-### miner.sh
+#### miner.sh
 
 The `miner.sh` script starts automatically (`mine` console).
-In this script you have to make adjustments:
+If you want to make settings that go beyond the `setup` program, you need to adjust it.
 
     prospector@mine ~ $ nano -w miner.sh
 
-* Enter your public Ethereum address: `MY_ADDRESS`
-* Enter your mining rig name: `MY_RIG`
-* Specifies maximum power limit in watts: `MY_WATT`
-
-
-### X11 Configuration with Fake Monitors.
-
-First of all you should run the `nvidia-config.sh` script and reboot.
-This script generates an `xorg.conf` (`/etc/X11/xorg.conf`) with faked monitors (for each of your cards).
-You need to run this everytime you add or remove cards.
-
-    prospector@mine ~ $ bash nvidia-config.sh
-    prospector@mine ~ $ reboot
-
-
-## Fine Tuning
-
-To pull the last MH/s out of your cards, you should overclock.
 
 ### Overclocking
+
+To pull the last MH/s out of your cards, you should overclock.
 
 #### With  nvidia-overclock.sh (nvidia-settings)
 
 Run the `nvidia-overclock.sh` to adjust the memory and graphics clock.
 The settings are lost after a restart. You have to repeat it.
 
-    prospector@mine ~ $ bash nvidia-overclock.sh
+    prospector@mine ~ $ nvidia-overclock
 
-For safety I did not add it in the autostart (`miner.sh`).
+For safety I did not add it in the autostart.
 Sometimes you exaggerate when overclocking, and you'll be glad if a simple reboot helps.
+
+If you are sure that everything works, you can add it to the autostart.
+For security, it will start after 10 minutes.
+
+    prospector@mine ~ $ crontab -e
 
 You should experiment with the values and adjust the values in the script.
 I wish you success 🤓
-
-    prospector@mine ~ $ nano -w nvidia-overclock.sh
 
 #### Why not use nvidia-smi?
 
@@ -223,29 +227,10 @@ You can try it with your cards. Here the text from the help:
 
 ### Other things you should do
 
-#### Set timezone
-
-    prospector@mine ~ $ sudo dpkg-reconfigure tzdata
-
-#### Sensors
-
-Run `sensors-detect` to search for sensors and to generate the necessary kernel modules:
-
-    prospector@mine ~ $ sudo sensors-detect
-
-#### Generating new SSH daemon keys
-
-    prospector@mine ~ $ sudo ssh-keygen -q -b 8192 -t "ed25519" -f "/etc/ssh/ssh_host_ed25519_key"
-    prospector@mine ~ $ sudo ssh-keygen -q -b 8192 -t "rsa" -f "/etc/ssh/ssh_host_rsa_key"
-
 #### Update ethminer
 
-If you run the latest `update.sh script, this is already done.
-But you can always update the version and recompile it.
+Update and recompile `ethminer`:
 
-    # Install CUDA without the driver!!!
-    prospector@mine ~ $ sudo apt-get install -y cuda-command-line-tools-8-0
-    # Compile ethminer
     prospector@mine ~ $ cd ~/ethereum-mining/ethminer
     prospector@mine ethminer $ git pull
     prospector@mine ethminer $ cd build/
@@ -256,13 +241,28 @@ But you can always update the version and recompile it.
 ## Monitoring
 
 Of course, with SSH.
-But `munin` and the `lighttpd` web server are also installed. You can use it to access statistics pages.
+
+### Munin
+
+`munin` and the `lighttpd` web server are also installed. You can use it to access statistics pages.
 
     http://minerIP/munin
 
 Here you can find diagrams of the sensors, etc.
 
 ![munin](https://www.nkn-it.de/img/ethereum_nvidia_miner/munin-sensors.jpg)
+
+### Fail2ban
+
+Fail2ban is installed.
+The program monitors logins via SSH. Too many false logins from an IP and the IP is blocked.
+At each start (reboot) and block you will receive an e-mail.
+You should check your e-mails from time to time.
+
+    prospector@mine ~ $ mutt
+
+More help is available here:
+https://help.ubuntu.com/community/Fail2ban
 
 ### VNC
 
@@ -276,17 +276,6 @@ Enter the IP address and display in VNC Viewer to establish a direct connection.
 
 ![x11vnc](https://www.nkn-it.de/img/ethereum_nvidia_miner/mine-vnc.jpg)
 
-### Fail2ban
-
-Fail2ban is installed.
-The program monitors logins via SSH. Too many false logins from an IP and the IP is blocked.
-At each start (reboot) and block you will receive an e-mail.
-You should check your e-mails from time to time.
-
-    prospector@mine ~ $ mutt
-
-More help is available here:
-https://help.ubuntu.com/community/Fail2ban
 
 
 ## Help 👍
