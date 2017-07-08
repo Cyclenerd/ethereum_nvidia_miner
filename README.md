@@ -24,7 +24,7 @@ Press the 👁️ "Watch" button to get updates. Do not forget the  🌟 "Star" 
 * Already configured to participate in the [ethermine](https://ethermine.org/) ethereum mining pool.
 * The installation is optimized for operation **without monitor** (headless).
 * No hard disk drive (HDD/SSD) required. Installation on USB flash drive.
-* Created and **tested** with two NVIDIA GTX 1060 and six NVIDIA GTX 1070.
+* Created and **tested** with NVIDIA GeForce GTX 1060 and NVIDIA GeForce GTX 1070.
 
 
 ## Navigation
@@ -214,7 +214,7 @@ I wish you success 🤓
 
 #### Why not use nvidia-smi?
 
-nvidia-smi does not work with my cards.
+nvidia-smi does not work with my cards (NVIDIA GeForce GTX 1060 and 1070).
 
     prospector@mine ~ $ nvidia-smi -i 0 -ac 4004,1987
     Setting applications clocks is not supported for GPU 0000:01:00.0.
@@ -224,7 +224,7 @@ nvidia-smi does not work with my cards.
 No idea if this is a 🐛 bug. Have tried several drivers. Forums are full of bug reports.
 With `nvidia-settings` I have no problems.
 
-You can try it with your cards. Here the text from the help:
+You can try it with your cards. It should work with Ti models. Here the text from the help:
 
     -ac, --applications-clocks=MEM_CLOCK,GRAPHICS_CLOCK
 
@@ -293,4 +293,5 @@ If you have found a bug (English is not my mother tongue) or have any improvemen
 NVIDIA tools (especially `nvidia-smi`) seems to be lagging on 7 GPU rigs, 
 crashing the system and/or causing some system instabilities.
 Issue reproduced on two differents 7 GPUs rigs (different motherboard & GPU brands).
+Six graphics cards work without problems.
 
