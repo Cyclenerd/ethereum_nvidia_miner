@@ -34,6 +34,8 @@ Press the 👁️ "Watch" button to get updates. Do not forget the  🌟 "Star" 
 	* [Download](#download)
 		* [MD5](#md5)
 	* [Copy](#copy)
+		* [Windows](#windows)
+		* [macOS](#-macos)
 	* [Mainboard](#mainboard)
 	* [Login](#login)
 	* [Setup](#setup)
@@ -106,7 +108,14 @@ The copy can be done with `dd`.  ⚠️ The copy lasts long. Be patient.
 How this works exactly is explained to you here:
 https://wiki.archlinux.org/index.php/USB_flash_installation_media#Using_dd
 
-#### Under 🍎 macOS it works like this:
+#### Windows
+
+Use the free and open source software [Rufus](https://rufus.akeo.ie/).
+Simply select the ISO `ethereum-ubuntu-nvidia-miner_v2.img`, the USB drive you want to create the bootable Linux onto and click start.
+
+Be sure to select DD mode or the image will be transferred incorrectly.
+
+#### 🍎 macOS
 
 Identify the disk (not partition) of your USB flash drive e.g. disk3:
 
