@@ -21,13 +21,6 @@ But I do not take away all your work.
 
 No. Only NVIDIA with CUDA.
 
-## Can I copy the ISO image to a 16GB USB flash drive?
-
-No. But... You can shrink the partition.
-Theoretically it fits on an 8GB flash drive.
-If you do not know how to do that.
-Take a 32GB. Search and explain takes longer.
-
 ## Does the ISO image work in the GTX 1080?
 
 Yes. NVIDIA driver 381.22 is installed.
@@ -35,7 +28,7 @@ Yes. NVIDIA driver 381.22 is installed.
 ## Can I mix cards?
 
 Yes. You can combine any NVIDIA cards to a mining rig.
-You have to adjust the scripts, of course.
+You have to adjust the `nvidia-overclock.sh` script.
 But you should do that anyway.
 
 ## Do I need an HDMI dongle?
@@ -49,25 +42,46 @@ Then you're doing something wrong. Many users reported similar or better MH/s va
 ## My connected monitor stays black. Why?
 
 The ISO image is optimized for operation with no monitor (headless).
-The script `nvidia-config.sh` creates fake monitors.
+The `setup` script creates fake monitors.
 As soon as the X server is started, there is no longer any real output.
+If you want to work with the monitor and keyboard after restarting, you can get a console with the key combination
+<kbd>Crtl</kbd> + <kbd>Alt</kbd> + <kbd>F1</kbd>.
 
 ## Overclocking does not work. Why?
 
 It is extremely important that the X server is running on each of your NVIDIA cards.
+
+The output of `nvidia-smi` must look something like this:
+
+```
+prospector@mine ~ $ nvidia-smi
+Sat Jul  8 20:24:29 2017
++-----------------------------------------------------------------------------+
+| NVIDIA-SMI 381.22                 Driver Version: 381.22                    |
+|-------------------------------+----------------------+----------------------+
+| GPU  Name        Persistence-M| Bus-Id        Disp.A | Volatile Uncorr. ECC |
+| Fan  Temp  Perf  Pwr:Usage/Cap|         Memory-Usage | GPU-Util  Compute M. |
+|===============================+======================+======================|
+|   0  GeForce GTX 106...  On   | 0000:01:00.0      On |                  N/A |
+| 70%   64C    P2    70W /  70W |   2207MiB /  6072MiB |    100%      Default |
++-------------------------------+----------------------+----------------------+
+|   1  GeForce GTX 106...  On   | 0000:07:00.0      On |                  N/A |
+| 70%   56C    P2    70W /  70W |   2206MiB /  6072MiB |    100%      Default |
++-------------------------------+----------------------+----------------------+
+```
+
 Display 0 must be an NVIDIA card!
 Set this in your mainboard settings.
 Disable to be safe all other graphics cards.
-
-## How do I get information about my cards?
-
-Check which cards have been detected:
+The output of `lspci` should look like this. Only NVIDIA cards:
 
 ```
 prospector@mine ~ $ lspci | grep VGA
 01:00.0 VGA compatible controller: NVIDIA Corporation Device 1c03 (rev a1)
 07:00.0 VGA compatible controller: NVIDIA Corporation Device 1c03 (rev a1)
 ```
+
+## How do I get information about my cards?
 
 Check the settings:
 
@@ -76,6 +90,14 @@ prospector@mine ~ $ nvidia-smi --format=csv --query-gpu=name,power.draw,fan.spee
 name, power.draw [W], fan.speed [%], temperature.gpu, clocks.current.video [MHz], clocks.current.memory [MHz]
 GeForce GTX 1060 6GB, 68.54 W, 70 %, 62, 1202 MHz, 4404 MHz
 GeForce GTX 1060 6GB, 70.50 W, 70 %, 55, 1354 MHz, 4404 MHz
+```
+
+Check which cards have been detected:
+
+```
+prospector@mine ~ $ lspci | grep VGA
+01:00.0 VGA compatible controller: NVIDIA Corporation Device 1c03 (rev a1)
+07:00.0 VGA compatible controller: NVIDIA Corporation Device 1c03 (rev a1)
 ```
 
 ## Can I use the GitHub Issues for discussion?
