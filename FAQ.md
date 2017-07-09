@@ -55,19 +55,17 @@ The output of `nvidia-smi` must look something like this:
 
 ```
 prospector@mine ~ $ nvidia-smi
-Sat Jul  8 20:24:29 2017
+[...]
+
 +-----------------------------------------------------------------------------+
-| NVIDIA-SMI 381.22                 Driver Version: 381.22                    |
-|-------------------------------+----------------------+----------------------+
-| GPU  Name        Persistence-M| Bus-Id        Disp.A | Volatile Uncorr. ECC |
-| Fan  Temp  Perf  Pwr:Usage/Cap|         Memory-Usage | GPU-Util  Compute M. |
-|===============================+======================+======================|
-|   0  GeForce GTX 106...  On   | 0000:01:00.0      On |                  N/A |
-| 70%   64C    P2    70W /  70W |   2207MiB /  6072MiB |    100%      Default |
-+-------------------------------+----------------------+----------------------+
-|   1  GeForce GTX 106...  On   | 0000:07:00.0      On |                  N/A |
-| 70%   56C    P2    70W /  70W |   2206MiB /  6072MiB |    100%      Default |
-+-------------------------------+----------------------+----------------------+
+| Processes:                                                       GPU Memory |
+|  GPU       PID  Type  Process name                               Usage      |
+|=============================================================================|
+|    0      1284    G   /usr/lib/xorg/Xorg                               8MiB |
+|    0      1765    C   ...m-mining/ethminer/build/ethminer/ethminer  2187MiB |
+|    1      1284    G   /usr/lib/xorg/Xorg                               7MiB |
+|    1      1765    C   ...m-mining/ethminer/build/ethminer/ethminer  2187MiB |
++-----------------------------------------------------------------------------+
 ```
 
 Display 0 must be an NVIDIA card!
