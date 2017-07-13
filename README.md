@@ -20,7 +20,7 @@ Press the 👁️ "Watch" button to get updates. Do not forget the  🌟 "Star" 
 * **NVIDIA** drivers version **381.22** and **CUDA 8** are installed.
 * [ethminer](https://github.com/ethereum-mining/ethminer) with the optimized code by [David Li](https://github.com/davilizh) (from NVIDIA) already compiled and ready for use.
 	* The code is optimized for NVIDIA GTX 1060, can improve NVIDIA GTX 1060 with 2 GPC performance by 15%, and NVIDIA GTX 1060 with 1 GPC performance by more than 30%. Meanwhile, it also increases performance on NVIDIA GTX 1070.
-* Claymore's CUDA miner `ethdcrminer64` is also included.
+* Claymore's dual ethereum miner `ethdcrminer64` is also included.
 * Already configured to participate in the [ethermine](https://ethermine.org/) ethereum mining pool.
 * The installation is optimized for operation **without monitor** (headless).
 * No hard disk drive (HDD/SSD) required. Installation on USB flash drive.
@@ -46,6 +46,7 @@ Press the 👁️ "Watch" button to get updates. Do not forget the  🌟 "Star" 
 		 * [Why not use nvidia-smi?](#why-not-use-nvidia-smi)
  * [Other things you should do](#other-things-you-should-do)
 	* [Update ethminer](#update-ethminer)
+	* [Update Claymore's Dual Ethereum Miner](#update-claymores-dual-ethereum-miner)
 * [Monitoring](#monitoring)
 	* [Munin](#munin)
 	* [Fail2ban](#fail2ban)
@@ -251,6 +252,25 @@ Update and recompile `ethminer`:
     prospector@mine ethminer $ cd build/
     prospector@mine build $ cmake -D CUDA_TOOLKIT_ROOT_DIR=/usr/local/cuda-8.0 -DETHASHCL=OFF -DETHASHCUDA=ON ..
     prospector@mine build $ cmake --build .
+
+
+#### Update Claymore's Dual Ethereum Miner 
+
+Download the [latest version](https://bitcointalk.org/index.php?topic=1433925.0) for Linux and copy it to your USB flash driver.
+The copy can be done via SCP.
+
+On Windows, you can use [FileZilla](https://filezilla-project.org/) or [WinSCP](https://winscp.net/).
+On Linux and macOS it works like this:
+
+```
+nils@macbookpro ~ $ scp "Claymore's Dual GPU Miner - LINUX.tar.gz" prospector@minerIP:/home/prospector/
+```
+
+Unpack the tar.gz file into the `claymore-dual-miner` folder:
+
+```
+prospector@mine ~ $ tar xvfz "Claymore's Dual GPU Miner - LINUX.tar.gz" -C ~/claymore-dual-miner --strip-components=1
+```
 
 
 ## Monitoring
