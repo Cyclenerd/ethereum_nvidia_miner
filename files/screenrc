@@ -19,7 +19,8 @@ bindkey -m "^k" stuff k               # move up one line
 
 screen -t top   htop
 screen -t cpu   watch -n 5 "sensors"
-screen -t gpu   watch -n 5 "nvidia-smi; echo; nvidia-smi --format=csv --query-gpu=name,power.draw,fan.speed,temperature.gpu,clocks.video,clocks.mem"
+screen -t smi   watch -n 5 "nvidia-smi"
+screen -t gpu   watch -n 5 "nvidia-smi --format=csv --query-gpu=name,power.draw,fan.speed,temperature.gpu,clocks.video,clocks.mem"
 screen -t miner bash "/home/prospector/miner.sh"
 screen          bash
 
