@@ -324,3 +324,5 @@ crashing the system and/or causing some system instabilities.
 Issue reproduced on two differents 7 GPUs rigs (different motherboard & GPU brands).
 Six graphics cards work without problems.
 
+NVIDIA GeForce GTX 1050 Ti does not have Performance Level 3 (only Level 2) thus `nvidia-overclock.sh` has to be changed (change [3] with [2]).
+
