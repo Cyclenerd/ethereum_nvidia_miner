@@ -28,6 +28,9 @@ do
 		nvidia-settings -a "[gpu:$MY_DEVICE]/GPUGraphicsClockOffset[3]=$MY_CLOCK"
 		# Memory clock
 		nvidia-settings -a "[gpu:$MY_DEVICE]/GPUMemoryTransferRateOffset[3]=$MY_MEM"
+                # Set watt/powerlimit
+                sudo nvidia-smi -i "$MY_DEVICE" -pl "$MY_WATT"
+
 	fi
 done
 
