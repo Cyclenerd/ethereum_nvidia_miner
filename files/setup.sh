@@ -8,55 +8,177 @@
 # Bash Script to automate the configuration for ethereum mining. Intense use of 'dialog' :-)
 #
 
+#Had nothing to do. Passed by (Trying to understand the art of mining...) and saw your code. I decided to clean it up a bit, and maybe, keep contributing to it later...
+#Sincerily, @guekho64 - https://github.com/guekho64
+#PD: Long Life To Open Source!
+
+#####################################################################
+# gkho64: Let's make translation a bit easier!
+#####################################################################
+
+#Default Symbols
+
+defaultSymbols () {
+	separatorSymbol=": "
+	equalSymbol="="
+}
+
+#American English
+
+en_US () {
+
+	#Statuses
+	
+	fallbackLanguageStatus=1
+	languageStatus=1
+    
+    #Words
+    
+    wordsNetworkInterfaces="Network Interfaces"
+    wordsIPRoutingTable="IP Routing Table"
+    wordsDNSServer="DNS Server"
+
+	#Messages
+	
+	messageFailure="FAILURE"
+	messagePressAnyKey="Press any key to continue..."
+    messageInternetConnection="There's No Internet Connection..."
+    messageCouldNotConnectToTheInternet="Could not connect to the Internet."
+    messagePleaseCheckThis="Please check this."
+    messageLetsStart="OK, lets start!"
+    messageCouldNotConnectToTheInternet2="Could not connect to the Internet ("$MY_HTTP_PING_URL")."
+    messageLeaveATip="Leave a Tip"
+    messageGetLatestUpdates="Get Latest Updates (Recommended)"
+    messageRestartSetup="Done! Please restart 'setup'"
+    messageGetLatestUpdates1="Get Latest Updates"
+    messageManualEdit="Manual Edit 'settings.conf' (For Experts)"
+    messageManualOverclock="Manual Edit 'nvidia-overclock.sh' (For Experts)"
+    messageManualMining="Manual Edit 'miner.sh' (For Experts)"
+    messageDetectTitle="Detect and Generate Monitoring Sensors"
+    messageSensorsOk="Done! After a reboot, you can use the command 'sensors' to monitor the sensors."
+    
+    #Large Messages
+    
+    lmessage1MineETH="With this ISO image, you can immediately mine Ethereum (ETH). Do not spend long time searching and researching."
+    lmessage1Happy="I would be happy about a small donation. Thank you very much."
+    lmessage1ETH="Ξ - Ethereum: 0xfbbc9f870bccadf8847eba29b0ed3755e30c9f0d"
+    lmessage1BTC="Ƀ - Bitcoin:  13fQA3mCQPmnXBDSmfautP4VMq6Sj2GVSA"
+    
+    lmessage2SensorsTxt="Detect and generate a list of kernel modules for monitoring temperatures, voltage, and fans."
+    lmessage2SensorsSafe="The programm 'sensors-detect' will ask to probe for various hardware. The safe answers are the defaults, so just hitting [Enter] to all the questions will generally not cause any problems."
+}
+	
+#Mexican Spanish
+
+es_MX () {
+	#Estado
+	
+	languageStatus=1
+
+	#Mensajes
+	
+	messageFailure="FALLO"
+	messagePressAnyKey="Presione cualquier tecla para continuar..."
+}
+
+#####################################################################
+# Aliases
+#####################################################################
+
+#gkho64: Clear is great for quick screen cleanups, BUT, if you have ever seen above, it DOES NOT clear the screen at all, because if you scroll up your terminal (In case of being running the script in a terminal managed by a WM), you'll see all the evidence (Except if "Dialog" takes care of all that trash...).
+#gkho64: Another native alternative would be to use "reset", but it's kinda slow clearing the screen, but at least, it gets the job correctly done.
+#gkho64: As a third option, we have "tput reset", which does the same, but this one is faster cleaning up the screen, leaving no trace of any previous text. The only counterpart of it, is that, actually, it isn't part of Ubuntu itself nor "coreutils" package, so Ubuntu Server (Or any other distro) may not come preinstalled with it. To workaround that, just make sure to install "ncurses" package. I'll leave that decision to you...
+
+selectScreenCleaner () {
+	if [ "$1" -eq 0 ]; then
+		alias clearScreen="clear"
+	elif [ "$1" -eq 1 ]; then
+		alias clearScreen="reset"
+	elif [ "$1" -eq 2]; then
+		alias clearScreen="tput reset"
+	else
+		exit 46
+	fi
+}
+
+#####################################################################
+# Startup Functions
+#####################################################################
+
+#gkho64: First, let's load stablish a "Screen Cleaner" and load "Default Symbols"
+
+selectScreenCleaner 0
+defaultSymbols
+
+#gkho64: Then, let's load a "Language Pack" (For sake of clarity, let's call it like that)
+	#gkho64: By default, en_US will be loaded
+	
+	en_US
+	
+	#gkho64: Let's make sure that it was properly loaded...
+	
+	if [ "$fallbackLanguageStatus" -ne 1 ]; then
+		exit 640
+	fi
+	
+	#gkho64: Then, the choosen "Language Pack" will "overwrite" the variables set by the default one, effectively creating a "Main" language, and a "Fallback" language, in case of emergency.
+	#gkho64: Or even creating a cascade of languages, overwriting its fallback or parent, avoiding double-translations of something that might not need it.
+	#gkho64: For example, when translationg from American English to Australian English or British English, being en_US the "parent" of all of them, and voluteers only translationg what REALLY needs to be translated, overwrting only a few strings and not all of them...
+	#gkho64: Let the user choose the "Language Pack" to use. Implement it as you want, just make sure that it'll be the first argument when script gets loaded, or let user choose it via "Dialog" (I've never used it, so I'll let you that)
+	
+	${hereGoesMainLanguagePackName} #gkho64: Or your implemenation of a selection dialog . Just remember that, if users chooses "en_US", just do NOTHING (Except if you're planning to do something else, like showing a "Welcome" screen or something...)
+	
+	#gkho64: Let's make sure that the selected "Language Pack" was properly loaded...
+	
+	if [ "$languageStatus" -ne 1 ]; then
+		exit 640
+	fi
 
 #####################################################################
 # Helpers
 #####################################################################
 
-function exit_with_failure() {
-	echo
-	echo "FAILURE: $1"
-	echo
-	exit 9
+# gkho64: I am no expert, but, as far as I know, the "function" keyword and the addition at the end of "()" to a word, both create a function, so writing them both it's not necessary. If you ONLY write "()" instead of "function" (Or vice-versa), code should remain the same and would result in a more readable & portable script...
+# gkho64: Also, (In my personal opinion), "echo" isn't a trustworthy program to output text to the user, because many shells (And Linux distros) may "overwrite" or replace the original "echo" program with a version of their own, changing behavior in different environments. I prefer to use "printf" as an alternative, for many other reasons... 
+
+exit_with_failure () {
+	reason="$1"
+	 printf "\n%s\n\n" "${messageFailure}${separatorSymbol}${reason}"
+	 exit 9
 }
 
-function command_exists() {
+command_exists () {
 	command -v "$1" >/dev/null 2>&1
 }
 
-function my_any_key() {
-	read -n1 -r -p "Press any key to continue..."
+my_any_key () {
+	read -n1 -r -p "$messagePressAnyKey"
 }
 
 # check_internet()
 
-MY_CHECK_INTERNET_TITLE="No Internet Connection"
+MY_CHECK_INTERNET_TITLE="$messageInternetConnection"
 
-MY_CHECK_INTERNET_MSG_TEXT="
-Could not connect to the Internet.
+MY_CHECK_INTERNET_MSG_TEXT="$(printf "\n%s\n\n%s\n\n" "$messageCouldNotConnectToTheInternet" "$messagePleaseCheckThis")"
 
-Please check this.
-"
-
-function check_internet() {
+check_internet () {
 	MY_HTTP_PING_URL="https://raw.githubusercontent.com/Cyclenerd/ethereum_nvidia_miner/master/README.md"
-	if curl -f -s "$MY_HTTP_PING_URL" >/dev/null 2>&1; then
-		echo "OK, lets start!" > /dev/null
+	if [ "$(curl -f -s "$MY_HTTP_PING_URL")" ]; then
+		printf "\n%s\n" "$messageLetsStart" > "/dev/null"
 	else
 		# ERROR
-		clear
+		
+		clearScreen
 		dialog --backtitle "$MY_CHECK_INTERNET_TITLE" --msgbox "$MY_CHECK_INTERNET_MSG_TEXT" 7 60
-		clear
+		clearScreen
 		echo_title "$MY_CHECK_INTERNET_TITLE"
-		echo "Network Interfaces"
+		printf "\n%s\n" "$wordsNetworkInterfaces"
 		ifconfig
-		echo
-		echo "IP Routing Table"
+		printf "\n\n%s\n" "$wordsIPRoutingTable"
 		route
-		echo
-		echo "DNS Server"
-		cat /etc/resolv.conf
-		exit_with_failure "Could not connect to the Internet ('$MY_HTTP_PING_URL')."
+		printf "\n\n%s\n" "$wordsDNSServer"
+		cat "/etc/resolv.conf"
+		exit_with_failure "$messageCouldNotConnectToTheInternet2"
 	fi
 
 }
@@ -67,16 +189,16 @@ function check_internet() {
 ################################################################################
 
 # echo_equals() outputs a line with =
-function echo_equals() {
+echo_equals () {
 	COUNTER=0
 	while [  $COUNTER -lt "$1" ]; do
-		printf '='
-		let COUNTER=COUNTER+1 
+		printf "$equalSymbol"
+		let COUNTER=COUNTER+1
 	done
 }
 
 # echo_title() outputs a title padded by =, in yellow.
-function echo_title() {
+echo_title () {
 	TITLE=$1
 	NCOLS=$(tput cols)
 	NEQUALS=$(((NCOLS-${#TITLE})/2-1))
@@ -85,7 +207,7 @@ function echo_title() {
 	printf " %s " "$TITLE"
 	echo_equals "$NEQUALS"
 	tput sgr0  # reset terminal
-	echo
+	printf "\n\n"
 }
 
 
@@ -96,107 +218,93 @@ function echo_title() {
 
 # my_thank_you()
 
-MY_THANK_YOU_TITLE="Leave a Tip"
+MY_THANK_YOU_TITLE="$messageLeaveATip"
 
-MY_THANK_YOU_MSG_TEXT="
-With this ISO image, you can immediately mine Ethereum (ETH). Do not spend long time searching and researching.
+MY_THANK_YOU_MSG_TEXT="$(printf "\n%s\n\n%s\n\n%s\n%s\n" "$lmessage1MineETH" "$lmessage1Happy" "$lmessage1ETH" "$lmessage1BTC")"
 
-I would be happy about a small donation. Thank you very much.
-
-Ξ - Ethereum: 0xfbbc9f870bccadf8847eba29b0ed3755e30c9f0d
-Ƀ - Bitcoin:  13fQA3mCQPmnXBDSmfautP4VMq6Sj2GVSA
-"
-
-function my_thank_you(){
+my_thank_you () {
 	dialog --backtitle "$MY_THANK_YOU_TITLE" --msgbox "$MY_THANK_YOU_MSG_TEXT" 14 65
 }
 
 
 # my_update()
 
-MY_UPDATE_TITLE="Get Latest Updates (Recommended)"
+MY_UPDATE_TITLE="$messageGetLatestUpdates"
 
-MY_UPDATE_OK_TEXT="
-Done! Please restart 'setup'.
-"
-function my_update(){
-	clear
-	echo_title "Get Latest Updates"
+MY_UPDATE_OK_TEXT="$(printf "\n\n%s\n\n" "$messageRestartSetup")"
+
+my_update () {
+	clearScreen
+	echo_title "$messageGetLatestUpdates1"
 	curl -f "https://raw.githubusercontent.com/Cyclenerd/ethereum_nvidia_miner/master/files/update.sh" -o ~/update.sh
 	bash ~/update.sh
 	rm ~/update.sh
 	my_any_key
 	dialog --backtitle "$MY_UPDATE_TITLE" --msgbox "$MY_UPDATE_OK_TEXT" 7 60
-	clear
-	echo "$MY_UPDATE_OK_TEXT"
+	clearScreen
+	printf "\n%s\n" "$MY_UPDATE_OK_TEXT"
 	exit 0
 }
 
 
 # my_settings_edit()
 
-MY_SETTINGS_EDIT_TITLE="Manuell Edit 'settings.conf' (For Experts)"
+MY_SETTINGS_EDIT_TITLE="$messageManualEdit"
 
-function my_settings_edit(){
-	clear
+my_settings_edit () {
+	clearScreen
 	echo_title "$MY_SETTINGS_EDIT_TITLE"
 	nano -w ~/settings.conf
-	clear
+	clearScreen
 }
 
 
 # my_overclock_edit()
 
-MY_OVERCLOCK_EDIT_TITLE="Manuell Edit 'nvidia-overclock.sh' (For Experts)"
+MY_OVERCLOCK_EDIT_TITLE="$messageManualOverclock"
 
-function my_overclock_edit(){
-	clear
+my_overclock_edit () {
+	clearScreen
 	echo_title "$MY_OVERCLOCK_EDIT_TITLE"
 	nano -w ~/nvidia-overclock.sh
-	clear
+	clearScreen
 }
 
 
 # my_miner_edit()
 
-MY_MINER_EDIT_TITLE="Manuell Edit 'miner.sh' (For Experts)"
+MY_MINER_EDIT_TITLE="$messageManualMining"
 
-function my_miner_edit(){
-	clear
+my_miner_edit () {
+	clearScreen
 	echo_title "$MY_MINER_EDIT_TITLE"
 	nano -w ~/miner.sh
-	clear
+	clearScreen
 }
 
 
 # my_sensors_detect()
 
-MY_SENSORS_DETECT_TITLE="Detect and Generate Monitoring Sensors"
+MY_SENSORS_DETECT_TITLE="$messageDetectTitle"
 
-MY_SENSORS_DETECT_MSG_TEXT="
-Detect and generate a list of kernel modules for monitoring temperatures, voltage, and fans.
+MY_SENSORS_DETECT_MSG_TEXT="$(printf "\n%s\n\n%s\n" "$lmessage2SensorsTxt" "$lmessage2SensorsSafe")"
 
-The programm 'sensors-detect' will ask to probe for various hardware. The safe answers are the defaults, so just hitting [Enter] to all the questions will generally not cause any problems.
-"
+MY_SENSORS_DETECT_OK_TEXT="$(printf "\n%s\n" "$messageSensorsOk")"
 
-MY_SENSORS_DETECT_OK_TEXT="
-Done! After a reboot, you can use the command 'sensors' to monitor the sensors.
-"
-
-function my_sensors_detect(){
+my_sensors_detect () {
 	dialog --backtitle "$MY_SENSORS_DETECT_TITLE" --msgbox "$MY_SENSORS_DETECT_MSG_TEXT" 14 60
-	clear
+	clearScreen
 	echo_title "$MY_SENSORS_DETECT_TITLE"
 	sudo sensors-detect
 	my_any_key
 	dialog --backtitle "$MY_SENSORS_DETECT_TITLE" --msgbox "$MY_SENSORS_DETECT_OK_TEXT" 7 60
-	clear
+	clearScreen
 }
 
 
 # my_nvidia_config()
 
-MY_NVIDIA_CONFIG_TITLE="Generate Fake Monitors"
+MY_NVIDIA_CONFIG_TITLE="$messageGenerateFakeMonitors"
 
 MY_NVIDIA_CONFIG_MSG_TEXT="
 Generate an xorg.conf with faked monitors (for each of your cards).
@@ -215,7 +323,7 @@ If you want to work with the monitor and keyboard after restarting, you can get 
 
 function my_nvidia_config(){
 	dialog --backtitle "$MY_NVIDIA_CONFIG_TITLE" --msgbox "$MY_NVIDIA_CONFIG_MSG_TEXT" 10 60
-	clear
+	clearScreen
 	echo_title "$MY_NVIDIA_CONFIG_TITLE"
 	sudo nvidia-xconfig -a --allow-empty-initial-configuration --cool-bits=31 --use-display-device="DFP-0" --connected-monitor="DFP-0"
 	my_any_key
@@ -425,11 +533,11 @@ function my_miner(){
 MY_PASSWD_TITLE="Change Password"
 
 function my_passwd() {
-	clear
+	clearScreen
 	echo_title "$MY_PASSWD_TITLE"
 	passwd
 	my_any_key
-	clear
+	clearScreen
 }
 
 
@@ -438,9 +546,9 @@ function my_passwd() {
 MY_TIMEZONE_TITLE="Configure Timezone"
 
 function my_timezone() {
-	clear
+	clearScreen
 	sudo dpkg-reconfigure tzdata
-	clear
+	clearScreen
 }
 
 
@@ -449,9 +557,9 @@ function my_timezone() {
 MY_KEYBOARD_TITLE="Configure Keyboard"
 
 function my_keyboard() {
-	clear
+	clearScreen
 	sudo dpkg-reconfigure keyboard-configuration
-	clear
+	clearScreen
 }
 
 
@@ -460,9 +568,9 @@ function my_keyboard() {
 MY_CONSOLE_TITLE="Console Setup"
 
 function my_console() {
-	clear
+	clearScreen
 	sudo dpkg-reconfigure console-setup
-	clear
+	clearScreen
 }
 
 
@@ -504,7 +612,7 @@ function my_reboot(){
 	dialog --backtitle "$MY_REBOOT_TITLE" --yesno "$MY_REBOOT_YESNO_TEXT" 7 60
 	case $? in
 		0)
-			clear
+			clearScreen
 			echo_title "$MY_REBOOT_TITLE"
 			sudo reboot
 			;;
@@ -524,7 +632,7 @@ function my_shutdown(){
 	dialog --backtitle "$MY_SHUTDOWN_TITLE" --yesno "$MY_SHUTDOWN_YESNO_TEXT" 7 60
 	case $? in
 		0)
-			clear
+			clearScreen
 			echo_title "$MY_SHUTDOWN_TITLE"
 			sudo shutdown -h now
 			;;
@@ -631,4 +739,4 @@ while true; do
 	fi
 done
 
-clear
+clearScreen
