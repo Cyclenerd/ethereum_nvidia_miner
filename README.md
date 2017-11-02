@@ -250,7 +250,7 @@ Update and recompile `ethminer`:
     prospector@mine ~ $ cd ~/ethereum-mining/ethminer
     prospector@mine ethminer $ git pull
     prospector@mine ethminer $ cd build/
-    prospector@mine build $ cmake -D CUDA_TOOLKIT_ROOT_DIR=/usr/local/cuda-8.0 -DETHASHCL=OFF -DETHASHCUDA=ON ..
+    prospector@mine build $ cmake -D CUDA_TOOLKIT_ROOT_DIR=/usr/local/cuda-8.0 ..
     prospector@mine build $ cmake --build .
 
 
