@@ -22,7 +22,7 @@ Press the 👁️ "Watch" button to get updates. Do not forget the  🌟 "Star" 
 * **CUDA 8** (`/usr/local/cuda-8.0`) and **CUDA 9.1** (`/usr/local/cuda-9.1`) ready to be used.
 * [ethminer](https://github.com/ethereum-mining/ethminer) with the optimized code by [David Li](https://github.com/davilizh) (from NVIDIA) already compiled and ready for use.
 	* The code is optimized for NVIDIA GTX 1060, can improve NVIDIA GTX 1060 with 2 GPC performance by 15%, and NVIDIA GTX 1060 with 1 GPC performance by more than 30%. Meanwhile, it also increases performance on NVIDIA GTX 1070.
-* Claymore's dual ethereum miner `ethdcrminer64` is also included.
+* Claymore's dual ethereum miner version 10.6 `ethdcrminer64` is also included.
 * Already configured to participate in the [ethermine](https://ethermine.org/) ethereum mining pool.
 * The installation is optimized for operation **without monitor** (headless).
 * No hard disk drive (HDD/SSD) required. Installation on USB flash drive.
