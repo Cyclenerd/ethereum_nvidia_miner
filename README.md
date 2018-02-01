@@ -1,6 +1,7 @@
 # Ethereum Mining with NVIDIA Graphics Cards and Ubuntu
 
 **USB** flash drive **ISO** image for **Ethereum** mining with **NVIDIA** graphics cards and Ubuntu **GNU/Linux** (64-bit Intel/AMD (x86_64)).
+Other cryptocurrencies, such as **Monero** or **Zcash**, can also be mined.
 
 ![Ubuntu](https://www.nkn-it.de/img/distro/logos/ubuntu.png)
 ![NVIDIA](https://www.nkn-it.de/img/logos/nvidia_cuda.jpg)
@@ -17,14 +18,15 @@ Press the 👁️ "Watch" button to get updates. Do not forget the  🌟 "Star" 
 
 * This ISO image is based on 🐧 **Ubuntu 16.04.2 LTS (Server)**.
 * **KISS**, keep it simple, stupid. Only the most necessary included. No 💩 bullshit.
-* **NVIDIA** drivers version **381.22** and **CUDA 8** are installed.
+* **NVIDIA** drivers version **390.25** installed.
+* **CUDA 8** (`/usr/local/cuda-8.0`) and **CUDA 9.1** (`/usr/local/cuda-9.1`) ready to be used.
 * [ethminer](https://github.com/ethereum-mining/ethminer) with the optimized code by [David Li](https://github.com/davilizh) (from NVIDIA) already compiled and ready for use.
 	* The code is optimized for NVIDIA GTX 1060, can improve NVIDIA GTX 1060 with 2 GPC performance by 15%, and NVIDIA GTX 1060 with 1 GPC performance by more than 30%. Meanwhile, it also increases performance on NVIDIA GTX 1070.
 * Claymore's dual ethereum miner `ethdcrminer64` is also included.
 * Already configured to participate in the [ethermine](https://ethermine.org/) ethereum mining pool.
 * The installation is optimized for operation **without monitor** (headless).
 * No hard disk drive (HDD/SSD) required. Installation on USB flash drive.
-* Created and **tested** with NVIDIA GeForce GTX 1060 and NVIDIA GeForce GTX 1070.
+* Created and **tested** with NVIDIA GeForce GTX 1060, NVIDIA GeForce GTX 1070 and NVIDIA GTX 1080.
 
 
 ## Navigation
@@ -47,6 +49,7 @@ Press the 👁️ "Watch" button to get updates. Do not forget the  🌟 "Star" 
  * [Other things you should do](#other-things-you-should-do)
 	* [Update ethminer](#update-ethminer)
 	* [Update Claymore's Dual Ethereum Miner](#update-claymores-dual-ethereum-miner)
+ * [Wi-Fi WLAN](#wi-fi-wlan)
 * [Monitoring](#monitoring)
 	* [Munin](#munin)
 	* [Fail2ban](#fail2ban)
@@ -62,10 +65,10 @@ Do not spend long time searching and researching.
 
 I would be happy about a small donation. Thank you very much.
 
-|   | Currency | Address                                      |
-|---|----------|----------------------------------------------|
-| Ξ | Ethereum | `0xfbbc9f870bccadf8847eba29b0ed3755e30c9f0d` |
-| Ƀ | Bitcoin  | `13fQA3mCQPmnXBDSmfautP4VMq6Sj2GVSA`         |
+|     | Currency | Address                                      |
+|-----|----------|----------------------------------------------|
+| ETH | Ethereum | `0xfbbc9f870bccadf8847eba29b0ed3755e30c9f0d` |
+| XBT | Bitcoin  | `13fQA3mCQPmnXBDSmfautP4VMq6Sj2GVSA`         |
 
 ## Installation
 
@@ -78,10 +81,10 @@ If you want to get started quickly, simply use the pre-configured ISO image
 
 ### Download
 
-Download the ISO image via BitTorrent (`ethereum-ubuntu-nvidia-miner_v2.img.7z.torrent`).
-Compressed 1.3GB, unzipped 7.5GB.
+Download the ISO image via BitTorrent (`ethereum-ubuntu-nvidia-miner_v3.img.7z.torrent`).
+Compressed ?.??GB, unzipped 7.5GB.
 
-[![Download](https://www.nkn-it.de/img/download_button_200px.png)](https://github.com/Cyclenerd/ethereum_nvidia_miner/raw/master/ethereum-ubuntu-nvidia-miner_v2.img.7z.torrent)
+[![Download](https://www.nkn-it.de/img/download_button_200px.png)](https://github.com/Cyclenerd/ethereum_nvidia_miner/raw/master/ethereum-ubuntu-nvidia-miner_v3.img.7z.torrent)
 
 #### MD5
 
@@ -90,16 +93,16 @@ The MD5 calculation gives a checksum, which must equal the MD5 value of a correc
 
 | Filename                               | MD5sum                             |
 | -------------------------------------- |:----------------------------------:|
-| ethereum-ubuntu-nvidia-miner_v2.img.7z | `236204df132665c68ed3eb9a2729e26c` |
-| ethereum-ubuntu-nvidia-miner_v2.img    | `3a78efe07014e3b665e899a490eaa33b` |
+| ethereum-ubuntu-nvidia-miner_v3.img.7z | `TODO` |
+| ethereum-ubuntu-nvidia-miner_v3.img    | `TODO` |
 
 More help is available here:
 https://en.wikipedia.org/wiki/Md5sum
 
 ### Copy
 
-1. Unzip the [7zip](http://www.7-zip.org/download.html) file `ethereum-ubuntu-nvidia-miner_v2.img.7z`.
-2. Copy the image `ethereum-ubuntu-nvidia-miner_v2.img` to a at least 8GB USB flash drive.
+1. Unzip the [7zip](http://www.7-zip.org/download.html) file `ethereum-ubuntu-nvidia-miner_v3.img.7z`.
+2. Copy the image `ethereum-ubuntu-nvidia-miner_v3.img` to a at least 8GB USB flash drive.
 
 Larger USB flash drive should also work.
 I use the "Sandisk 32GB Ultra Fit USB 3.0 Flash Drive".
@@ -112,7 +115,7 @@ https://wiki.archlinux.org/index.php/USB_flash_installation_media#Using_dd
 #### Windows
 
 Use the free and open source software [Rufus](https://rufus.akeo.ie/).
-Simply select the ISO `ethereum-ubuntu-nvidia-miner_v2.img`, the USB drive you want to create the bootable Linux onto and click start.
+Simply select the ISO `ethereum-ubuntu-nvidia-miner_v3.img`, the USB drive you want to create the bootable Linux onto and click start.
 
 Be sure to select DD mode or the image will be transferred incorrectly.
 
@@ -128,7 +131,7 @@ Unmount your USB flash drive:
 
 Copy the image to your USB flash drive:
 
-    nils@macbookpro ~ $ sudo dd bs=1m if=Downloads/ethereum-ubuntu-nvidia-miner_v2.img of=/dev/rdisk3
+    nils@macbookpro ~ $ sudo dd bs=1m if=Downloads/ethereum-ubuntu-nvidia-miner_v3.img of=/dev/rdisk3
 
 Btw. `rdisk3` (with r) not `disk3` is not a write error.
 
@@ -250,7 +253,7 @@ Update and recompile `ethminer`:
     prospector@mine ~ $ cd ~/ethereum-mining/ethminer
     prospector@mine ethminer $ git pull
     prospector@mine ethminer $ cd build/
-    prospector@mine build $ cmake -D CUDA_TOOLKIT_ROOT_DIR=/usr/local/cuda-8.0 ..
+    prospector@mine build $ cmake -D CUDA_TOOLKIT_ROOT_DIR=/usr/local/cuda-9.1 ..
     prospector@mine build $ cmake --build .
 
 
