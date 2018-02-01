@@ -47,8 +47,9 @@ Press the 👁️ "Watch" button to get updates. Do not forget the  🌟 "Star" 
 		 * [With nvidia-overclock.sh (nvidia-settings)](#with--nvidia-overclocksh-nvidia-settings)
 		 * [Why not use nvidia-smi?](#why-not-use-nvidia-smi)
  * [Other things you should do](#other-things-you-should-do)
-	* [Update ethminer](#update-ethminer)
+	* [Update ethminer Ethereum Miner](#update-ethminer-ethereum-miner)
 	* [Update Claymore's Dual Ethereum Miner](#update-claymores-dual-ethereum-miner)
+	* [Update XMR-Stak Monero Miner](#update-xmr-stak-monero-miner)
  * [Wi-Fi WLAN](#wi-fi-wlan)
 * [Monitoring](#monitoring)
 	* [Munin](#munin)
@@ -246,9 +247,9 @@ You can try it with your cards. It should work with Ti models. Here the text fro
 
 ### Other things you should do
 
-#### Update ethminer
+#### Update ethminer Ethereum Miner 
 
-Update and recompile `ethminer`:
+Update and recompile [ethminer](https://github.com/ethereum-mining/ethminer):
 
     prospector@mine ~ $ cd ~/ethereum-mining/ethminer
     prospector@mine ethminer $ git pull
@@ -273,6 +274,19 @@ Unpack the tar.gz file into the `claymore-dual-miner` folder:
 
 ```
 prospector@mine ~ $ tar xvfz "Claymore's Dual GPU Miner - LINUX.tar.gz" -C ~/claymore-dual-miner --strip-components=1
+```
+
+
+#### Update XMR-Stak Monero Miner
+
+Update and recompile [XMR-Stak](https://github.com/fireice-uk/xmr-stak):
+
+```
+prospector@mine:~ $ cd ~/monero-mining/xmr-stak/
+prospector@mine:~/monero-mining/xmr-stak $ git pul
+prospector@mine:~/monero-mining/xmr-stak $ cd build/
+prospector@mine:~/monero-mining/xmr-stak/build $ cmake -D CUDA_TOOLKIT_ROOT_DIR=/usr/local/cuda-9.1 -DOpenCL_ENABLE=OFF ..
+prospector@mine:~/monero-mining/xmr-stak/build $ make install
 ```
 
 

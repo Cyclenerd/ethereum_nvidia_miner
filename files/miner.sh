@@ -24,6 +24,10 @@ export GPU_USE_SYNC_OBJECTS=1
 export GPU_MAX_ALLOC_PERCENT=100
 export GPU_SINGLE_ALLOC_PERCENT=100
 
+#
+# Ethereum Mining
+#
+
 # ethminer
 # https://github.com/ethereum-mining/ethminer
 # Use -G (opencl) or -U (cuda) flag to select GPU platform.
@@ -32,3 +36,16 @@ export GPU_SINGLE_ALLOC_PERCENT=100
 # Claymore's Dual Ethereum+Decred AMD+NVIDIA GPU Miner
 # https://github.com/nanopool/Claymore-Dual-Miner
 #~/claymore-dual-miner/ethdcrminer64 -epool "eu1.ethermine.org:4444" -ewal "$MY_ADDRESS.$MY_RIG" -epsw x -mode 1 -ftime 10 -mport 0
+
+
+#
+# Monero Mining
+#
+
+# XMR-Stak - Monero/Aeon All-in-One Mining Software
+# https://github.com/fireice-uk/xmr-stak
+#cd ~/monero-mining
+# CUDA (GPU) only mining. Disable the CPU miner backend.
+#~/monero-mining/xmr-stak/build/bin/xmr-stak --noCPU
+# CPU only mining. Disable the NVIDIA miner backend.
+#~/monero-mining/xmr-stak/build/bin/xmr-stak --noNVIDIA
