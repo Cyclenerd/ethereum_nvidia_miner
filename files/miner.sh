@@ -49,3 +49,13 @@ export GPU_SINGLE_ALLOC_PERCENT=100
 #~/monero-mining/xmr-stak/build/bin/xmr-stak --noCPU
 # CPU only mining. Disable the NVIDIA miner backend.
 #~/monero-mining/xmr-stak/build/bin/xmr-stak --noNVIDIA
+
+
+#
+# Zcash Mining
+#
+
+# EWBF's CUDA Zcash Miner
+# https://bitcointalk.org/index.php?topic=1707546.0
+#cd ~/zcash-mining
+#~/zcash-mining/ewbf/miner --fee 0 --server eu1-zcash.flypool.org:3333 --user YOUR-ZCASH-T-ADDRESS --pass x --port 3333

@@ -260,7 +260,7 @@ Update and recompile [ethminer](https://github.com/ethereum-mining/ethminer):
 
 #### Update Claymore's Dual Ethereum Miner 
 
-Download the [latest version](https://bitcointalk.org/index.php?topic=1433925.0) for Linux and copy it to your USB flash driver.
+Download the [latest version](https://bitcointalk.org/index.php?topic=1433925.0) Claymore's Dual Ethereum miner for Linux and copy it to your USB flash driver.
 The copy can be done via SCP.
 
 On Windows, you can use [FileZilla](https://filezilla-project.org/) or [WinSCP](https://winscp.net/).
@@ -270,7 +270,7 @@ On Linux and macOS it works like this:
 nils@macbookpro ~ $ scp "Claymore's Dual GPU Miner - LINUX.tar.gz" prospector@minerIP:/home/prospector/
 ```
 
-Unpack the tar.gz file into the `claymore-dual-miner` folder:
+Unpack the tar.gz file into the `~/claymore-dual-miner` folder:
 
 ```
 prospector@mine ~ $ tar xvfz "Claymore's Dual GPU Miner - LINUX.tar.gz" -C ~/claymore-dual-miner --strip-components=1
@@ -283,10 +283,30 @@ Update and recompile [XMR-Stak](https://github.com/fireice-uk/xmr-stak):
 
 ```
 prospector@mine:~ $ cd ~/monero-mining/xmr-stak/
-prospector@mine:~/monero-mining/xmr-stak $ git pul
+prospector@mine:~/monero-mining/xmr-stak $ git pull
+prospector@mine:~/monero-mining/xmr-stak $ nano -w xmrstak/donate-level.hpp # Edit donation fee 
 prospector@mine:~/monero-mining/xmr-stak $ cd build/
 prospector@mine:~/monero-mining/xmr-stak/build $ cmake -D CUDA_TOOLKIT_ROOT_DIR=/usr/local/cuda-9.1 -DOpenCL_ENABLE=OFF ..
 prospector@mine:~/monero-mining/xmr-stak/build $ make install
+```
+
+
+#### Update EWBF's CUDA Zcash Miner
+
+Download the [latest version](https://bitcointalk.org/index.php?topic=1707546.0) EWBF's CUDA Zcash miner for Linux and copy it to your USB flash driver.
+The copy can be done via SCP.
+
+On Windows, you can use [FileZilla](https://filezilla-project.org/) or [WinSCP](https://winscp.net/).
+On Linux and macOS it works like this:
+
+```
+nils@macbookpro ~ $ scp "Zec Miner Linux Bin.tar.gz" prospector@minerIP:/home/prospector/
+```
+
+Unpack the tar.gz file into the `~/zcash-mining/ewbf/` folder:
+
+```
+prospector@mine ~ $ tar xvfz "Zec Miner Linux Bin.tar.gz" -C ~/zcash-mining/ewbf/ --strip-components=1
 ```
 
 
