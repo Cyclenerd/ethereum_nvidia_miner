@@ -276,6 +276,27 @@ prospector@mine ~ $ tar xvfz "Claymore's Dual GPU Miner - LINUX.tar.gz" -C ~/cla
 ```
 
 
+### Wi-Fi WLAN
+
+The `wpa_supplicant` package, which includes the main program `wpa_supplicant` and the passphrase tool `wpa_passphrase` are already installed.
+
+This method allows quickly connecting to a wireless network whose SSID is already known, making use of `wpa_passphrase`, a command line tool which generates the minimal configuration needed: 
+
+    prospector@mine ~ $ sudo wpa_passphrase "SSID" "WPA2-KEY" > /etc/wpa_supplicant/wpa_supplicant.conf
+
+Test configuration:
+
+    prospector@mine ~ $ sudo wpa_supplicant -i wlan0 -D wext -c /etc/wpa_supplicant/wpa_supplicant.conf -d
+
+To enable Wi-Fi on the next reboot, remove the comments in the file `/etc/network/interfaces`:
+
+    prospector@mine ~ $ nano -w /etc/network/interfaces
+    prospector@mine ~ $ reboot
+
+More help is available here:
+https://wiki.archlinux.org/index.php/WPA_supplicant
+
+
 ## Monitoring
 
 Of course, with SSH.
