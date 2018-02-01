@@ -50,6 +50,7 @@ Press the 👁️ "Watch" button to get updates. Do not forget the  🌟 "Star" 
 	* [Update ethminer Ethereum Miner](#update-ethminer-ethereum-miner)
 	* [Update Claymore's Dual Ethereum Miner](#update-claymores-dual-ethereum-miner)
 	* [Update XMR-Stak Monero Miner](#update-xmr-stak-monero-miner)
+	* [Update EWBF's CUDA Zcash Miner](#update-ewbfs-cuda-zcash-miner)
  * [Wi-Fi WLAN](#wi-fi-wlan)
 * [Monitoring](#monitoring)
 	* [Munin](#munin)
@@ -196,6 +197,7 @@ https://help.ubuntu.com/community/Screen
 
 The `miner.sh` script starts automatically (`mine` console).
 If you want to make settings that go beyond the `setup` program, you need to adjust it.
+If you want to mine other cryptocurrencies, like Monero or Zcash, you also need to adjust this file.
 
     prospector@mine ~ $ nano -w miner.sh
 
