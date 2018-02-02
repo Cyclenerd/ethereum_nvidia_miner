@@ -72,6 +72,8 @@ I would be happy about a small donation. Thank you very much.
 | ETH | Ethereum | `0xfbbc9f870bccadf8847eba29b0ed3755e30c9f0d` |
 | XBT | Bitcoin  | `13fQA3mCQPmnXBDSmfautP4VMq6Sj2GVSA`         |
 
+
+
 ## Installation
 
 If you do not trust me and do not want to use the image,
@@ -80,6 +82,7 @@ You only have to install an Ubuntu Linux with all the drivers and tools yourself
 
 If you want to get started quickly, simply use the pre-configured ISO image
 (contains the shell scripts, tools, and all necessary drivers).
+
 
 ### Download
 
@@ -100,6 +103,7 @@ The MD5 calculation gives a checksum, which must equal the MD5 value of a correc
 
 More help is available here:
 https://en.wikipedia.org/wiki/Md5sum
+
 
 ### Copy
 
@@ -143,6 +147,7 @@ Btw. `rdisk3` (with r) not `disk3` is not a write error.
 Set the primary graphics output to one of your NVIDIA cards.
 Disable Secure Boot (UEFI) and boot from the USB flash drive.
 
+
 ### Login
 
 The network configuration is done by DHCP. Look in your router which IP your miner has.
@@ -156,6 +161,7 @@ Credentials. Password should be changed (`passwd`):
 * 👤 Username: `prospector`
 * 🔑 Password: `m1n1ng`
 
+
 ### Setup
 
 There is an extra program which helps you with the initial setup. Type `setup` to start it.
@@ -164,7 +170,8 @@ There is an extra program which helps you with the initial setup. Type `setup` t
 
 ![setup](https://www.nkn-it.de/img/ethereum_nvidia_miner/mine-setup.jpg)
 
-Go through each step. If you have everything set you should do a `reboot`.
+Go through __each__ step. If you have everything set you should do a `reboot`.
+
 
 ### Mine
 
@@ -247,7 +254,9 @@ You can try it with your cards. It should work with Ti models. Here the text fro
 > Specifies maximum <memory,graphics> clocks as a pair (e.g. 2000,800) that defines GPU's speed while running applications on a GPU.
 
 
+
 ### Other things you should do
+
 
 #### Update ethminer Ethereum Miner 
 
@@ -288,9 +297,13 @@ prospector@mine:~ $ cd ~/monero-mining/xmr-stak/
 prospector@mine:~/monero-mining/xmr-stak $ git pull
 prospector@mine:~/monero-mining/xmr-stak $ nano -w xmrstak/donate-level.hpp # Edit donation fee 
 prospector@mine:~/monero-mining/xmr-stak $ cd build/
-prospector@mine:~/monero-mining/xmr-stak/build $ cmake -D CUDA_TOOLKIT_ROOT_DIR=/usr/local/cuda-9.1 -DOpenCL_ENABLE=OFF ..
+prospector@mine:~/monero-mining/xmr-stak/build $ cmake -DXMR-STAK_COMPILE=generic -D CUDA_TOOLKIT_ROOT_DIR=/usr/local/cuda-9.1 -DOpenCL_ENABLE=OFF ..
 prospector@mine:~/monero-mining/xmr-stak/build $ make install
 ```
+Select the CPU compute architecture:
+
+* `-DXMR-STAK_COMPILE=generic` = the miner can be used on all CPU's with sse2
+* `-DXMR-STAK_COMPILE=native`  = the miner can be used only on the system where it is compiled but will archive the highest hash rate
 
 
 #### Update EWBF's CUDA Zcash Miner
@@ -326,16 +339,18 @@ Test configuration:
 
 To enable Wi-Fi on the next reboot, remove the comments in the file `/etc/network/interfaces`:
 
-    prospector@mine ~ $ nano -w /etc/network/interfaces
+    prospector@mine ~ $ sudo nano -w /etc/network/interfaces
     prospector@mine ~ $ reboot
 
 More help is available here:
 https://wiki.archlinux.org/index.php/WPA_supplicant
 
 
+
 ## Monitoring
 
 Of course, with SSH.
+
 
 ### Munin
 
@@ -346,6 +361,7 @@ Of course, with SSH.
 Here you can find diagrams of the sensors, etc.
 
 ![munin](https://www.nkn-it.de/img/ethereum_nvidia_miner/munin-sensors.jpg)
+
 
 ### Fail2ban
 
@@ -358,6 +374,7 @@ You should check your e-mails from time to time.
 
 More help is available here:
 https://help.ubuntu.com/community/Fail2ban
+
 
 ### VNC
 
@@ -376,6 +393,8 @@ Enter the IP address and display in VNC Viewer to establish a direct connection.
 ## Help 👍
 
 If you have found a bug (English is not my mother tongue) or have any improvements, send me a pull request.
+
+
 
 ## Known Issues
 
