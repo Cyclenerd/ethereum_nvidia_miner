@@ -196,10 +196,11 @@ function my_sensors_detect(){
 
 # my_nvidia_config()
 
-MY_NVIDIA_CONFIG_TITLE="Generate Fake Monitors"
+MY_NVIDIA_CONFIG_TITLE="Generate Fake Monitors (IMPORTANT!!)"
 
 MY_NVIDIA_CONFIG_MSG_TEXT="
 Generate an xorg.conf with faked monitors (for each of your cards).
+Absolutely necessary to later overclock the graphics cards!!!11
 
 You need to run this everytime you add or remove cards.
 "
@@ -230,6 +231,7 @@ MY_NVIDIA_POWER_LIMIT_TITLE="Set Power Limit"
 
 MY_NVIDIA_POWER_LIMIT_MSG_TEXT="
 Set power limit for all NVIDIA grafic cards. Input in watts (W). Allowed characters 0-9.
+Good value for GTX 1060 6GB: 70
 "
 function my_nvidia_power_limit() {
 	# shellcheck source=settings.conf
@@ -251,6 +253,7 @@ MY_NVIDIA_CLOCK_TITLE="Set GPU Graphics Clock Offset"
 
 MY_NVIDIA_CLOCK_MSG_TEXT="
 Set GPU graphics clock offset (GPUGraphicsClockOffset) for all NVIDIA grafic cards. Allowed characters 0-9 and -.
+Good value for GTX 1060 6GB: 150
 "
 function my_nvidia_clock() {
 	# shellcheck source=settings.conf
@@ -272,6 +275,7 @@ MY_NVIDIA_MEM_TITLE="Set GPU Memory Transfer Rate Offset"
 
 MY_NVIDIA_MEM_MSG_TEXT="
 Set GPU memory transfer rate offset (GPUMemoryTransferRateOffset) for all NVIDIA grafic cards. Allowed characters 0-9.
+Good value for GTX 1060 6GB: 600
 "
 function my_nvidia_mem() {
 	# shellcheck source=settings.conf
