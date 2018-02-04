@@ -87,7 +87,7 @@ If you want to get started quickly, simply use the pre-configured ISO image
 ### Download
 
 Download the ISO image via BitTorrent (`ethereum-ubuntu-nvidia-miner_v3.img.7z.torrent`).
-Compressed ?.??GB, unzipped 7.5GB.
+Compressed 1.8GB, unzipped 7.5GB.
 
 [![Download](https://www.nkn-it.de/img/download_button_200px.png)](https://github.com/Cyclenerd/ethereum_nvidia_miner/raw/master/ethereum-ubuntu-nvidia-miner_v3.img.7z.torrent)
 
@@ -98,8 +98,8 @@ The MD5 calculation gives a checksum, which must equal the MD5 value of a correc
 
 | Filename                               | MD5sum                             |
 | -------------------------------------- |:----------------------------------:|
-| ethereum-ubuntu-nvidia-miner_v3.img.7z | `TODO` |
-| ethereum-ubuntu-nvidia-miner_v3.img    | `TODO` |
+| ethereum-ubuntu-nvidia-miner_v3.img.7z | `af0b46286047534035e8834b65692334` |
+| ethereum-ubuntu-nvidia-miner_v3.img    | `2ec9e5f871e6a89355006b1cac534859` |
 
 More help is available here:
 https://en.wikipedia.org/wiki/Md5sum
