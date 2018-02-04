@@ -21,9 +21,9 @@ But I do not take away all your work.
 
 No. Only NVIDIA with CUDA.
 
-## Does the ISO image work in the GTX 1080?
+## Does the ISO image work in the GTX 1060 5GB?
 
-Yes. NVIDIA driver 381.22 is installed.
+Yes. NVIDIA driver 390.25 is installed.
 
 ## Can I mix cards?
 

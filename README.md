@@ -1,6 +1,7 @@
 # Ethereum Mining with NVIDIA Graphics Cards and Ubuntu
 
 **USB** flash drive **ISO** image for **Ethereum** mining with **NVIDIA** graphics cards and Ubuntu **GNU/Linux** (64-bit Intel/AMD (x86_64)).
+Other cryptocurrencies, such as **Monero** or **Zcash**, can also be mined.
 
 ![Ubuntu](https://www.nkn-it.de/img/distro/logos/ubuntu.png)
 ![NVIDIA](https://www.nkn-it.de/img/logos/nvidia_cuda.jpg)
@@ -15,16 +16,17 @@ Press the 👁️ "Watch" button to get updates. Do not forget the  🌟 "Star" 
 
 ## Introduction
 
-* This ISO image is based on 🐧 **Ubuntu 16.04.2 LTS (Server)**.
+* This ISO image is based on 🐧 **Ubuntu 16.04.3 LTS (Server)**.
 * **KISS**, keep it simple, stupid. Only the most necessary included. No 💩 bullshit.
-* **NVIDIA** drivers version **381.22** and **CUDA 8** are installed.
+* **NVIDIA** drivers version **390.25** installed.
+* **CUDA 8** (`/usr/local/cuda-8.0`) and **CUDA 9.1** (`/usr/local/cuda-9.1`) ready to be used.
 * [ethminer](https://github.com/ethereum-mining/ethminer) with the optimized code by [David Li](https://github.com/davilizh) (from NVIDIA) already compiled and ready for use.
 	* The code is optimized for NVIDIA GTX 1060, can improve NVIDIA GTX 1060 with 2 GPC performance by 15%, and NVIDIA GTX 1060 with 1 GPC performance by more than 30%. Meanwhile, it also increases performance on NVIDIA GTX 1070.
-* Claymore's dual ethereum miner `ethdcrminer64` is also included.
+* Claymore's dual miner version 10.6, XMR-Stak Monero miner and EWBF's Zcash miner are also included.
 * Already configured to participate in the [ethermine](https://ethermine.org/) ethereum mining pool.
 * The installation is optimized for operation **without monitor** (headless).
 * No hard disk drive (HDD/SSD) required. Installation on USB flash drive.
-* Created and **tested** with NVIDIA GeForce GTX 1060 and NVIDIA GeForce GTX 1070.
+* Created and **tested** with NVIDIA GeForce GTX 1060, NVIDIA GeForce GTX 1070 and NVIDIA GTX 1080.
 
 
 ## Navigation
@@ -45,8 +47,11 @@ Press the 👁️ "Watch" button to get updates. Do not forget the  🌟 "Star" 
 		 * [With nvidia-overclock.sh (nvidia-settings)](#with--nvidia-overclocksh-nvidia-settings)
 		 * [Why not use nvidia-smi?](#why-not-use-nvidia-smi)
  * [Other things you should do](#other-things-you-should-do)
-	* [Update ethminer](#update-ethminer)
+	* [Update ethminer Ethereum Miner](#update-ethminer-ethereum-miner)
 	* [Update Claymore's Dual Ethereum Miner](#update-claymores-dual-ethereum-miner)
+	* [Update XMR-Stak Monero Miner](#update-xmr-stak-monero-miner)
+	* [Update EWBF's CUDA Zcash Miner](#update-ewbfs-cuda-zcash-miner)
+ * [Wi-Fi WLAN](#wi-fi-wlan)
 * [Monitoring](#monitoring)
 	* [Munin](#munin)
 	* [Fail2ban](#fail2ban)
@@ -62,10 +67,12 @@ Do not spend long time searching and researching.
 
 I would be happy about a small donation. Thank you very much.
 
-|   | Currency | Address                                      |
-|---|----------|----------------------------------------------|
-| Ξ | Ethereum | `0xfbbc9f870bccadf8847eba29b0ed3755e30c9f0d` |
-| Ƀ | Bitcoin  | `13fQA3mCQPmnXBDSmfautP4VMq6Sj2GVSA`         |
+|     | Currency | Address                                      |
+|-----|----------|----------------------------------------------|
+| ETH | Ethereum | `0xfbbc9f870bccadf8847eba29b0ed3755e30c9f0d` |
+| XBT | Bitcoin  | `13fQA3mCQPmnXBDSmfautP4VMq6Sj2GVSA`         |
+
+
 
 ## Installation
 
@@ -76,12 +83,13 @@ You only have to install an Ubuntu Linux with all the drivers and tools yourself
 If you want to get started quickly, simply use the pre-configured ISO image
 (contains the shell scripts, tools, and all necessary drivers).
 
+
 ### Download
 
-Download the ISO image via BitTorrent (`ethereum-ubuntu-nvidia-miner_v2.img.7z.torrent`).
-Compressed 1.3GB, unzipped 7.5GB.
+Download the ISO image via BitTorrent (`ethereum-ubuntu-nvidia-miner_v3.img.7z.torrent`).
+Compressed 1.8GB, unzipped 7.5GB.
 
-[![Download](https://www.nkn-it.de/img/download_button_200px.png)](https://github.com/Cyclenerd/ethereum_nvidia_miner/raw/master/ethereum-ubuntu-nvidia-miner_v2.img.7z.torrent)
+[![Download](https://www.nkn-it.de/img/download_button_200px.png)](https://github.com/Cyclenerd/ethereum_nvidia_miner/raw/master/ethereum-ubuntu-nvidia-miner_v3.img.7z.torrent)
 
 #### MD5
 
@@ -90,16 +98,17 @@ The MD5 calculation gives a checksum, which must equal the MD5 value of a correc
 
 | Filename                               | MD5sum                             |
 | -------------------------------------- |:----------------------------------:|
-| ethereum-ubuntu-nvidia-miner_v2.img.7z | `236204df132665c68ed3eb9a2729e26c` |
-| ethereum-ubuntu-nvidia-miner_v2.img    | `3a78efe07014e3b665e899a490eaa33b` |
+| ethereum-ubuntu-nvidia-miner_v3.img.7z | `af0b46286047534035e8834b65692334` |
+| ethereum-ubuntu-nvidia-miner_v3.img    | `2ec9e5f871e6a89355006b1cac534859` |
 
 More help is available here:
 https://en.wikipedia.org/wiki/Md5sum
 
+
 ### Copy
 
-1. Unzip the [7zip](http://www.7-zip.org/download.html) file `ethereum-ubuntu-nvidia-miner_v2.img.7z`.
-2. Copy the image `ethereum-ubuntu-nvidia-miner_v2.img` to a at least 8GB USB flash drive.
+1. Unzip the [7zip](http://www.7-zip.org/download.html) file `ethereum-ubuntu-nvidia-miner_v3.img.7z`.
+2. Copy the image `ethereum-ubuntu-nvidia-miner_v3.img` to a at least 8GB USB flash drive.
 
 Larger USB flash drive should also work.
 I use the "Sandisk 32GB Ultra Fit USB 3.0 Flash Drive".
@@ -112,7 +121,7 @@ https://wiki.archlinux.org/index.php/USB_flash_installation_media#Using_dd
 #### Windows
 
 Use the free and open source software [Rufus](https://rufus.akeo.ie/).
-Simply select the ISO `ethereum-ubuntu-nvidia-miner_v2.img`, the USB drive you want to create the bootable Linux onto and click start.
+Simply select the ISO `ethereum-ubuntu-nvidia-miner_v3.img`, the USB drive you want to create the bootable Linux onto and click start.
 
 Be sure to select DD mode or the image will be transferred incorrectly.
 
@@ -128,7 +137,7 @@ Unmount your USB flash drive:
 
 Copy the image to your USB flash drive:
 
-    nils@macbookpro ~ $ sudo dd bs=1m if=Downloads/ethereum-ubuntu-nvidia-miner_v2.img of=/dev/rdisk3
+    nils@macbookpro ~ $ sudo dd bs=1m if=Downloads/ethereum-ubuntu-nvidia-miner_v3.img of=/dev/rdisk3
 
 Btw. `rdisk3` (with r) not `disk3` is not a write error.
 
@@ -137,6 +146,7 @@ Btw. `rdisk3` (with r) not `disk3` is not a write error.
 
 Set the primary graphics output to one of your NVIDIA cards.
 Disable Secure Boot (UEFI) and boot from the USB flash drive.
+
 
 ### Login
 
@@ -151,6 +161,7 @@ Credentials. Password should be changed (`passwd`):
 * 👤 Username: `prospector`
 * 🔑 Password: `m1n1ng`
 
+
 ### Setup
 
 There is an extra program which helps you with the initial setup. Type `setup` to start it.
@@ -159,7 +170,8 @@ There is an extra program which helps you with the initial setup. Type `setup` t
 
 ![setup](https://www.nkn-it.de/img/ethereum_nvidia_miner/mine-setup.jpg)
 
-Go through each step. If you have everything set you should do a `reboot`.
+Go through __each__ step. If you have everything set you should do a `reboot`.
+
 
 ### Mine
 
@@ -192,6 +204,7 @@ https://help.ubuntu.com/community/Screen
 
 The `miner.sh` script starts automatically (`mine` console).
 If you want to make settings that go beyond the `setup` program, you need to adjust it.
+If you want to mine other cryptocurrencies, like Monero or Zcash, you also need to adjust this file.
 
     prospector@mine ~ $ nano -w miner.sh
 
@@ -241,22 +254,24 @@ You can try it with your cards. It should work with Ti models. Here the text fro
 > Specifies maximum <memory,graphics> clocks as a pair (e.g. 2000,800) that defines GPU's speed while running applications on a GPU.
 
 
+
 ### Other things you should do
 
-#### Update ethminer
 
-Update and recompile `ethminer`:
+#### Update ethminer Ethereum Miner 
+
+Update and recompile [ethminer](https://github.com/ethereum-mining/ethminer):
 
     prospector@mine ~ $ cd ~/ethereum-mining/ethminer
     prospector@mine ethminer $ git pull
     prospector@mine ethminer $ cd build/
-    prospector@mine build $ cmake -D CUDA_TOOLKIT_ROOT_DIR=/usr/local/cuda-8.0 ..
+    prospector@mine build $ cmake -D CUDA_TOOLKIT_ROOT_DIR=/usr/local/cuda-9.1 ..
     prospector@mine build $ cmake --build .
 
 
 #### Update Claymore's Dual Ethereum Miner 
 
-Download the [latest version](https://bitcointalk.org/index.php?topic=1433925.0) for Linux and copy it to your USB flash driver.
+Download the [latest version](https://bitcointalk.org/index.php?topic=1433925.0) Claymore's Dual Ethereum miner for Linux and copy it to your USB flash driver.
 The copy can be done via SCP.
 
 On Windows, you can use [FileZilla](https://filezilla-project.org/) or [WinSCP](https://winscp.net/).
@@ -266,16 +281,76 @@ On Linux and macOS it works like this:
 nils@macbookpro ~ $ scp "Claymore's Dual GPU Miner - LINUX.tar.gz" prospector@minerIP:/home/prospector/
 ```
 
-Unpack the tar.gz file into the `claymore-dual-miner` folder:
+Unpack the tar.gz file into the `~/claymore-dual-miner` folder:
 
 ```
 prospector@mine ~ $ tar xvfz "Claymore's Dual GPU Miner - LINUX.tar.gz" -C ~/claymore-dual-miner --strip-components=1
 ```
 
 
+#### Update XMR-Stak Monero Miner
+
+Update and recompile [XMR-Stak](https://github.com/fireice-uk/xmr-stak):
+
+```
+prospector@mine:~ $ cd ~/monero-mining/xmr-stak/
+prospector@mine:~/monero-mining/xmr-stak $ git pull
+prospector@mine:~/monero-mining/xmr-stak $ nano -w xmrstak/donate-level.hpp # Edit donation fee 
+prospector@mine:~/monero-mining/xmr-stak $ cd build/
+prospector@mine:~/monero-mining/xmr-stak/build $ cmake -DXMR-STAK_COMPILE=generic -D CUDA_TOOLKIT_ROOT_DIR=/usr/local/cuda-9.1 -DOpenCL_ENABLE=OFF ..
+prospector@mine:~/monero-mining/xmr-stak/build $ make install
+```
+Select the CPU compute architecture:
+
+* `-DXMR-STAK_COMPILE=generic` = the miner can be used on all CPU's with sse2
+* `-DXMR-STAK_COMPILE=native`  = the miner can be used only on the system where it is compiled but will archive the highest hash rate
+
+
+#### Update EWBF's CUDA Zcash Miner
+
+Download the [latest version](https://bitcointalk.org/index.php?topic=1707546.0) EWBF's CUDA Zcash miner for Linux and copy it to your USB flash driver.
+The copy can be done via SCP.
+
+On Windows, you can use [FileZilla](https://filezilla-project.org/) or [WinSCP](https://winscp.net/).
+On Linux and macOS it works like this:
+
+```
+nils@macbookpro ~ $ scp "Zec Miner Linux Bin.tar.gz" prospector@minerIP:/home/prospector/
+```
+
+Unpack the tar.gz file into the `~/zcash-mining/ewbf/` folder:
+
+```
+prospector@mine ~ $ tar xvfz "Zec Miner Linux Bin.tar.gz" -C ~/zcash-mining/ewbf/ --strip-components=1
+```
+
+
+### Wi-Fi WLAN
+
+The `wpa_supplicant` package, which includes the main program `wpa_supplicant` and the passphrase tool `wpa_passphrase` are already installed.
+
+This method allows quickly connecting to a wireless network whose SSID is already known, making use of `wpa_passphrase`, a command line tool which generates the minimal configuration needed: 
+
+    prospector@mine ~ $ sudo wpa_passphrase "SSID" "WPA2-KEY" > /etc/wpa_supplicant/wpa_supplicant.conf
+
+Test configuration:
+
+    prospector@mine ~ $ sudo wpa_supplicant -i wlan0 -D wext -c /etc/wpa_supplicant/wpa_supplicant.conf -d
+
+To enable Wi-Fi on the next reboot, remove the comments in the file `/etc/network/interfaces`:
+
+    prospector@mine ~ $ sudo nano -w /etc/network/interfaces
+    prospector@mine ~ $ reboot
+
+More help is available here:
+https://wiki.archlinux.org/index.php/WPA_supplicant
+
+
+
 ## Monitoring
 
 Of course, with SSH.
+
 
 ### Munin
 
@@ -286,6 +361,7 @@ Of course, with SSH.
 Here you can find diagrams of the sensors, etc.
 
 ![munin](https://www.nkn-it.de/img/ethereum_nvidia_miner/munin-sensors.jpg)
+
 
 ### Fail2ban
 
@@ -298,6 +374,7 @@ You should check your e-mails from time to time.
 
 More help is available here:
 https://help.ubuntu.com/community/Fail2ban
+
 
 ### VNC
 
@@ -316,6 +393,8 @@ Enter the IP address and display in VNC Viewer to establish a direct connection.
 ## Help 👍
 
 If you have found a bug (English is not my mother tongue) or have any improvements, send me a pull request.
+
+
 
 ## Known Issues
 
