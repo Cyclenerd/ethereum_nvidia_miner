@@ -1,0 +1,3 @@
+plugins:
+  shellcheck:
+    enabled: true
