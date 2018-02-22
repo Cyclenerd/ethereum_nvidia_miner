@@ -71,7 +71,7 @@ function echo_equals() {
 	COUNTER=0
 	while [  $COUNTER -lt "$1" ]; do
 		printf '='
-		let COUNTER=COUNTER+1 
+		(( COUNTER=COUNTER+1 ))
 	done
 }
 
