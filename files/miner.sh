@@ -8,6 +8,8 @@
 #
 
 # Load global settings settings.conf
+# shellcheck source=settings.conf
+# shellcheck disable=SC1091
 if ! source ~/settings.conf; then
 	echo "FAILURE: Can not load global settings 'settings.conf'"
 	exit 9

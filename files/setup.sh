@@ -235,6 +235,7 @@ Good value for GTX 1060 6GB: 70
 "
 function my_nvidia_power_limit() {
 	# shellcheck source=settings.conf
+	# shellcheck disable=SC1091
 	source ~/settings.conf
 	cmd=(dialog --backtitle "$MY_NVIDIA_POWER_LIMIT_TITLE" --inputbox "$MY_NVIDIA_POWER_LIMIT_MSG_TEXT" 14 60 "$MY_WATT")
 	choices=$("${cmd[@]}" 2>&1 >/dev/tty)
@@ -257,6 +258,7 @@ Good value for GTX 1060 6GB: 150
 "
 function my_nvidia_clock() {
 	# shellcheck source=settings.conf
+	# shellcheck disable=SC1091
 	source ~/settings.conf
 	cmd=(dialog --backtitle "$MY_NVIDIA_CLOCK_TITLE" --inputbox "$MY_NVIDIA_CLOCK_MSG_TEXT" 14 65 "$MY_CLOCK")
 	choices=$("${cmd[@]}" 2>&1 >/dev/tty)
@@ -279,6 +281,7 @@ Good value for GTX 1060 6GB: 600
 "
 function my_nvidia_mem() {
 	# shellcheck source=settings.conf
+	# shellcheck disable=SC1091
 	source ~/settings.conf
 	cmd=(dialog --backtitle "$MY_NVIDIA_MEM_TITLE" --inputbox "$MY_NVIDIA_MEM_MSG_TEXT" 14 60 "$MY_MEM")
 	choices=$("${cmd[@]}" 2>&1 >/dev/tty)
@@ -300,6 +303,7 @@ Set GPU target fan speed (GPUTargetFanSpeed) for all NVIDIA grafic cards. Input 
 "
 function my_nvidia_fan() {
 	# shellcheck source=settings.conf
+	# shellcheck disable=SC1091
 	source ~/settings.conf
 	cmd=(dialog --backtitle "$MY_NVIDIA_FAN_TITLE" --inputbox "$MY_NVIDIA_FAN_MSG_TEXT" 14 60 "$MY_FAN")
 	choices=$("${cmd[@]}" 2>&1 >/dev/tty)
@@ -359,6 +363,7 @@ Set your public ethereum address. Allowed characters A-Z and 0-9.
 "
 function my_address() {
 	# shellcheck source=settings.conf
+	# shellcheck disable=SC1091
 	source ~/settings.conf
 	cmd=(dialog --backtitle "$MY_ADDRESS_TITLE" --inputbox "$MY_ADDRESS_MSG_TEXT" 14 60 "$MY_ADDRESS")
 	choices=$("${cmd[@]}" 2>&1 >/dev/tty)
@@ -380,6 +385,7 @@ Name your rig. Allowed characters A-Z and 0-9.
 "
 function my_rig() {
 	# shellcheck source=settings.conf
+	# shellcheck disable=SC1091
 	source ~/settings.conf
 	cmd=(dialog --backtitle "$MY_RIG_TITLE" --inputbox "$MY_RIG_MSG_TEXT" 14 60 "$MY_RIG")
 	choices=$("${cmd[@]}" 2>&1 >/dev/tty)
