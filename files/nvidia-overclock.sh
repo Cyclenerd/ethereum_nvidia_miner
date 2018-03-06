@@ -22,14 +22,8 @@ for MY_DEVICE in {0..18}
 do
 	# Check if card exists
 	if nvidia-smi -i $MY_DEVICE >> /dev/null 2>&1; then
-		nvidia-settings -a "[gpu:$MY_DEVICE]/GPUPowerMizerMode=1"
-		# Fan speed
-		nvidia-settings -a "[gpu:$MY_DEVICE]/GPUFanControlState=1"
-		nvidia-settings -a "[fan:$MY_DEVICE]/GPUTargetFanSpeed=$MY_FAN"
-		# Graphics clock
-		nvidia-settings -a "[gpu:$MY_DEVICE]/GPUGraphicsClockOffset[3]=$MY_CLOCK"
-		# Memory clock
-		nvidia-settings -a "[gpu:$MY_DEVICE]/GPUMemoryTransferRateOffset[3]=$MY_MEM"
+	        # Set Fan speed , Graphics clock, Memory Clock
+		nvidia-settings -a "[gpu:$MY_DEVICE]/GPUPowerMizerMode=1" -a "[gpu:$MY_DEVICE]/GPUFanControlState=1" -a "[fan:$MY_DEVICE]/GPUTargetFanSpeed=$MY_FAN" -a "[gpu:$MY_DEVICE]/GPUGraphicsClockOffset[3]=$MY_CLOCK" -a "[gpu:$MY_DEVICE]/GPUMemoryTransferRateOffset[3]=$MY_MEM"
 		# Set watt/powerlimit. This is also set in miner.sh at autostart.
 		sudo nvidia-smi -i "$MY_DEVICE" -pl "$MY_WATT"
 	fi
