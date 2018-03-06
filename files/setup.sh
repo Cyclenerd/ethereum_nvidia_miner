@@ -5,7 +5,7 @@
 # setup.sh
 # Author: Nils Knieling - https://github.com/Cyclenerd/ethereum_nvidia_miner
 #
-# Bash Script to automate the configuration for ethereum mining. Intense use of 'dialog' :-)
+# Bash Script to automate the configuration for Ethereum mining. Intense use of 'dialog' :-)
 #
 
 
@@ -135,7 +135,7 @@ function my_update(){
 
 # my_settings_edit()
 
-MY_SETTINGS_EDIT_TITLE="Manuell Edit 'settings.conf' (For Experts)"
+MY_SETTINGS_EDIT_TITLE="Manual Edit 'settings.conf' (For Experts)"
 
 function my_settings_edit(){
 	clear
@@ -147,7 +147,7 @@ function my_settings_edit(){
 
 # my_overclock_edit()
 
-MY_OVERCLOCK_EDIT_TITLE="Manuell Edit 'nvidia-overclock.sh' (For Experts)"
+MY_OVERCLOCK_EDIT_TITLE="Manual Edit 'nvidia-overclock.sh' (For Experts)"
 
 function my_overclock_edit(){
 	clear
@@ -159,7 +159,7 @@ function my_overclock_edit(){
 
 # my_miner_edit()
 
-MY_MINER_EDIT_TITLE="Manuell Edit 'miner.sh' (For Experts)"
+MY_MINER_EDIT_TITLE="Manual Edit 'miner.sh' (For Experts)"
 
 function my_miner_edit(){
 	clear
@@ -176,7 +176,7 @@ MY_SENSORS_DETECT_TITLE="Detect and Generate Monitoring Sensors"
 MY_SENSORS_DETECT_MSG_TEXT="
 Detect and generate a list of kernel modules for monitoring temperatures, voltage, and fans.
 
-The programm 'sensors-detect' will ask to probe for various hardware. The safe answers are the defaults, so just hitting [Enter] to all the questions will generally not cause any problems.
+The program 'sensors-detect' will ask to probe for various hardware. The safe answers are the defaults, so just hitting [Enter] to all the questions will generally not cause any problems.
 "
 
 MY_SENSORS_DETECT_OK_TEXT="
@@ -202,7 +202,7 @@ MY_NVIDIA_CONFIG_MSG_TEXT="
 Generate an xorg.conf with faked monitors (for each of your cards).
 Absolutely necessary to later overclock the graphics cards!!!11
 
-You need to run this everytime you add or remove cards.
+You need to run this every time you add or remove cards.
 "
 
 MY_NVIDIA_CONFIG_OK_TEXT="
@@ -230,7 +230,7 @@ function my_nvidia_config(){
 MY_NVIDIA_POWER_LIMIT_TITLE="Set Power Limit"
 
 MY_NVIDIA_POWER_LIMIT_MSG_TEXT="
-Set power limit for all NVIDIA grafic cards. Input in watts (W). Allowed characters 0-9.
+Set power limit for all NVIDIA graphic cards. Input in watts (W). Allowed characters 0-9.
 Good value for GTX 1060 6GB: 70
 "
 function my_nvidia_power_limit() {
@@ -253,7 +253,7 @@ function my_nvidia_power_limit() {
 MY_NVIDIA_CLOCK_TITLE="Set GPU Graphics Clock Offset"
 
 MY_NVIDIA_CLOCK_MSG_TEXT="
-Set GPU graphics clock offset (GPUGraphicsClockOffset) for all NVIDIA grafic cards. Allowed characters 0-9 and -.
+Set GPU graphics clock offset (GPUGraphicsClockOffset) for all NVIDIA graphic cards. Allowed characters 0-9 and -.
 Good value for GTX 1060 6GB: 150
 "
 function my_nvidia_clock() {
@@ -276,7 +276,7 @@ function my_nvidia_clock() {
 MY_NVIDIA_MEM_TITLE="Set GPU Memory Transfer Rate Offset"
 
 MY_NVIDIA_MEM_MSG_TEXT="
-Set GPU memory transfer rate offset (GPUMemoryTransferRateOffset) for all NVIDIA grafic cards. Allowed characters 0-9.
+Set GPU memory transfer rate offset (GPUMemoryTransferRateOffset) for all NVIDIA graphic cards. Allowed characters 0-9.
 Good value for GTX 1060 6GB: 600
 "
 function my_nvidia_mem() {
@@ -299,7 +299,7 @@ function my_nvidia_mem() {
 MY_NVIDIA_FAN_TITLE="Set GPU Target Fan Speed"
 
 MY_NVIDIA_FAN_MSG_TEXT="
-Set GPU target fan speed (GPUTargetFanSpeed) for all NVIDIA grafic cards. Input in percent (%). Allowed characters 0-9.
+Set GPU target fan speed (GPUTargetFanSpeed) for all NVIDIA graphic cards. Input in percent (%). Allowed characters 0-9.
 "
 function my_nvidia_fan() {
 	# shellcheck source=settings.conf
@@ -359,7 +359,7 @@ function my_nvidia_overclock(){
 MY_ADDRESS_TITLE="Set Your Public Ethereum Address"
 
 MY_ADDRESS_MSG_TEXT="
-Set your public ethereum address. Allowed characters A-Z and 0-9.
+Set your public Ethereum address. Allowed characters A-Z and 0-9.
 "
 function my_address() {
 	# shellcheck source=settings.conf
