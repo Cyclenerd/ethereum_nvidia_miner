@@ -16,9 +16,14 @@ if ! source ~/settings.conf; then
 fi
 
 export DISPLAY=:0
+# Set persistence mode
+nvidia-smi -pm ENABLED
+# Get total number of grafics cards
+NUMGPU="$(nvidia-smi -L | wc -l)"
+NUMGPU=$(( $NUMGPU - 1))
 
-# Graphics card 1 to 19
-for MY_DEVICE in {0..18}
+# Graphics card 1 to max
+for (( MY_DEVICE=0 ; MY_DEVICE <= NUMGPU ; 1 ))
 do
 	# Check if card exists
 	if nvidia-smi -i $MY_DEVICE >> /dev/null 2>&1; then
@@ -27,6 +32,7 @@ do
 		# Set watt/powerlimit. This is also set in miner.sh at autostart.
 		sudo nvidia-smi -i "$MY_DEVICE" -pl "$MY_WATT"
 	fi
+	MY_DEVICE=$(( $MY_DEVICE + 1))
 done
 
 echo
