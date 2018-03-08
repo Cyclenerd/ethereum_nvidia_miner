@@ -20,7 +20,7 @@ bindkey -m "^k" stuff k               # move up one line
 screen -t top   htop
 screen -t cpu   watch -n 5 "sensors"
 screen -t smi   watch -n 5 "nvidia-smi"
-screen -t gpu   watch -n 5 "(echo "Time, Id, Name, St, P.Lim, P.Draw, Temp, Fan, Gpu, Mem";nvidia-smi --format=csv,noheader --query-gpu=timestamp,index,name,pstate,power.limit,power.draw,temperature.gpu,fan.speed,clocks.gr,clocks.mem | sed -r 's/mhz//gi;s/ W//gi;s/geforce //gi;s/([0-9]{4}\/[0-9]{2}\/[0-9]{2}\ )//gi') | column -s, -t"
+screen -t gpu   watch -n 5 "(echo "Time, Id, Name, St, P.Lim, P.Draw, Temp, Fan, Gpu, Mem";nvidia-smi --format=csv,noheader,nounits --query-gpu=timestamp,index,name,pstate,power.limit,power.draw,temperature.gpu,fan.speed,clocks.gr,clocks.mem | sed -r 's/geforce //gi;s/([0-9]{4}\/[0-9]{2}\/[0-9]{2}\ )//gi') | column -s, -t"
 screen -t miner bash "/home/prospector/miner.sh"
 screen          bash
 
