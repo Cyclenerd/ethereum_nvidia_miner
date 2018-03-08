@@ -33,7 +33,7 @@ export GPU_SINGLE_ALLOC_PERCENT=100
 # ethminer
 # https://github.com/ethereum-mining/ethminer
 # Use -G (opencl) or -U (cuda) flag to select GPU platform.
-~/ethereum-mining/ethminer/build/ethminer/ethminer --farm-recheck 200 -U -S "eu1.ethermine.org:4444" -FS "us1.ethermine.org:4444" -O "$MY_ADDRESS.$MY_RIG"
+~/ethereum-mining/ethminer/build/ethminer/ethminer --farm-recheck 200 -RH -U -S "eu1.ethermine.org:4444" -FS "us1.ethermine.org:4444" -O "$MY_ADDRESS.$MY_RIG"
 
 # Claymore's Dual Ethereum+Decred AMD+NVIDIA GPU Miner
 # https://github.com/nanopool/Claymore-Dual-Miner
