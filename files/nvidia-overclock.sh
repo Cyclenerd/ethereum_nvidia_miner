@@ -16,6 +16,9 @@
 # Load global settings settings.conf
 # shellcheck source=settings.conf
 # shellcheck disable=SC1091
+# shellcheck disable=SC2086
+# shellcheck disable=SC2154
+
 if ! source ~/settings.conf; then
 	printf "FAILURE: Can not load global settings 'settings.conf'\n\n"
 	exit 9
@@ -36,7 +39,7 @@ fi;
 # For each graphics card
 nvidia-smi --format=csv,noheader --query-gpu=index | while read -r MY_DEVICE; do
 
-	printf "\n  Processing GPU $MY_DEVICE \n  ------------------------------------------------------------------------------\n" 
+	printf "\n  Processing GPU %s \n  ------------------------------------------------------------------------------\n" "$MY_DEVICE"
 
 	# Init arguments
 	# PowerMizer always se

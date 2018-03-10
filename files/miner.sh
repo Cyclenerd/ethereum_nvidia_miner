@@ -25,7 +25,7 @@ sudo nvidia-smi -pm ENABLED
 
 # Check if Power Limit is global or per GPU
 unset MY_WATT_X
-if set -o posix; set | egrep -q "^MY\_WATT\_[0-9]{1,2}" ; then MY_WATT_X="1"; fi;
+if set -o posix; set | grep -q -E "^MY\_WATT\_[0-9]{1,2}" ; then MY_WATT_X="1"; fi;
 if [ -z ${MY_WATT_X+x} ]; 
 then
     printf "\nApplying Power Limit for ALL GPUs \n--------------------------------------------------------------------------------\n" 
