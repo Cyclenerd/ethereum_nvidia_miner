@@ -19,8 +19,8 @@
 # shellcheck disable=SC2154
 
 if ! source ~/settings.conf; then
-	printf "FAILURE: Can not load global settings 'settings.conf'\n\n"
-	exit 9
+    printf "FAILURE: Can not load global settings 'settings.conf'\n\n"
+    exit 9
 fi
 
 # Set power limit
@@ -31,30 +31,30 @@ unset MY_WATT_X
 if set -o posix; set | grep -q -E "^MY\_WATT\_[0-9]{1,2}" ; then MY_WATT_X="1"; fi;
 if [ -z ${MY_WATT_X+x} ]; 
 then
-	MY_VAR="MY_WATT"
-	unset MY_VAL
-	if [ ! -z ${!MY_VAR} ] ; then MY_VAL=${!MY_VAR}; fi;
-	if [ ! -z ${MY_VAL+x} ] ; 
-	then
+    MY_VAR="MY_WATT"
+    unset MY_VAL
+    if [ ! -z ${!MY_VAR} ] ; then MY_VAL=${!MY_VAR}; fi;
+    if [ ! -z ${MY_VAL+x} ] ; 
+    then
         printf "\nApplying Power Limit for ALL GPUs \n--------------------------------------------------------------------------------\n" 
-	    sudo nvidia-smi -pl "$MY_VAL"
-	fi;
+        sudo nvidia-smi -pl "$MY_VAL"
+    fi;
 else
 
-	nvidia-smi --format=csv,noheader --query-gpu=index | while read -r MY_DEVICE; do
-	
-	    MY_VAR="MY_WATT_$MY_DEVICE"
-	    unset MY_VAL
-	    if [ ! -z ${!MY_VAR} ];
-		then 
-			MY_VAL=${!MY_VAR} 
+    nvidia-smi --format=csv,noheader --query-gpu=index | while read -r MY_DEVICE; do
+    
+        MY_VAR="MY_WATT_$MY_DEVICE"
+        unset MY_VAL
+        if [ ! -z ${!MY_VAR} ];
+        then 
+            MY_VAL=${!MY_VAR} 
         else 
-			MY_VAR="MY_WATT"
-			if [ ! -z ${!MY_VAR} ] ; then MY_VAL=${!MY_VAR}; fi;
-		fi;
-	    if [ ! -z ${MY_VAL+x} ] ; then sudo nvidia-smi -i "$MY_DEVICE" -pl "$MY_VAL" | sed "s/^/  /gi" ; fi;
+            MY_VAR="MY_WATT"
+            if [ ! -z ${!MY_VAR} ] ; then MY_VAL=${!MY_VAR}; fi;
+        fi;
+        if [ ! -z ${MY_VAL+x} ] ; then sudo nvidia-smi -i "$MY_DEVICE" -pl "$MY_VAL" | sed "s/^/  /gi" ; fi;
 
-	done;
+    done;
 fi;
 
 echo
