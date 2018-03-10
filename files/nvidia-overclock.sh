@@ -26,7 +26,7 @@ export DISPLAY=:0
 # Check if we can set power-limit globally (i.e. with only one call to nvidia-smi) 
 # or we have to invoke it per GPU
 unset MY_WATT_X
-if set -o posix; set | egrep -q "^MY\_WATT\_[0-9]{1,2}" ; then MY_WATT_X="1"; fi;
+if set -o posix; set | grep -q -E "^MY\_WATT\_[0-9]{1,2}" ; then MY_WATT_X="1"; fi;
 if [ -z ${MY_WATT_X+x} ]; 
 then
     printf "\nApplying Power Limit for ALL GPUs \n--------------------------------------------------------------------------------\n" 
@@ -62,7 +62,7 @@ nvidia-smi --format=csv,noheader --query-gpu=index | while read -r MY_DEVICE; do
 	
 	# Apply nvidia-settings
 	MY_CMD="nvidia-settings $MY_ARG"
-	eval $MY_CMD | egrep "^  Attr"
+	eval $MY_CMD | grep -E "^  Attr"
 
 	# Eventually apply power limiting per GPU
     if [ ! -z ${MY_WATT_X+x} ]; 
