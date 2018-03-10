@@ -15,6 +15,9 @@
 # Load global settings settings.conf
 # shellcheck source=settings.conf
 # shellcheck disable=SC1091
+# shellcheck disable=SC2154
+# shellcheck disable=SC2086
+
 if ! source ~/settings.conf; then
 	printf "FAILURE: Can not load global settings 'settings.conf'\n\n"
 	exit 9
