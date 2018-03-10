@@ -266,7 +266,7 @@ Update and recompile [ethminer](https://github.com/ethereum-mining/ethminer):
     prospector@mine ethminer $ git pull
     prospector@mine ethminer $ cd build/
     prospector@mine build $ cmake -D CUDA_TOOLKIT_ROOT_DIR=/usr/local/cuda-9.1 ..
-    prospector@mine build $ cmake --build .
+    prospector@mine build $ cmake --build . --config release
 
 
 #### Update Claymore's Dual Ethereum Miner 
