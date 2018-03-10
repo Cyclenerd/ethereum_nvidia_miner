@@ -15,8 +15,8 @@
 # Load global settings settings.conf
 # shellcheck source=settings.conf
 # shellcheck disable=SC1091
-# shellcheck disable=SC2154
 # shellcheck disable=SC2086
+# shellcheck disable=SC2154
 
 if ! source ~/settings.conf; then
 	printf "FAILURE: Can not load global settings 'settings.conf'\n\n"
@@ -40,7 +40,7 @@ else
 	    MY_VAR="MY_WATT_$MY_DEVICE"
 	    unset MY_VAL
 	    if [ ! -z ${!MY_VAR} ] ; then MY_VAL=${!MY_VAR}; else MY_VAL=$MY_WATT; fi
-	    sudo nvidia-smi -i "$MY_DEVICE" -pl "$MY_VAL" | sed "s/^/  /gi" 
+	    if [ ! -z ${!MY_VAL} ] ; then sudo nvidia-smi -i "$MY_DEVICE" -pl "$MY_VAL" | sed "s/^/  /gi" ; fi;
 
 	done;
 fi;

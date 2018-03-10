@@ -74,7 +74,7 @@ nvidia-smi --format=csv,noheader --query-gpu=index | while read -r MY_DEVICE; do
 	    MY_VAR="MY_WATT_$MY_DEVICE"
 	    unset MY_VAL
 	    if [ ! -z ${!MY_VAR} ] ; then MY_VAL=${!MY_VAR}; else MY_VAL=$MY_WATT; fi
-	    sudo nvidia-smi -i "$MY_DEVICE" -pl "$MY_VAL" | sed "s/^/  /gi" 
+		if [ ! -z ${!MY_VAL} ] ; then sudo nvidia-smi -i "$MY_DEVICE" -pl "$MY_VAL" | sed "s/^/  /gi" ; fi;
 
     fi;
 	
