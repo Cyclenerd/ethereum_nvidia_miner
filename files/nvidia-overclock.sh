@@ -32,10 +32,13 @@ unset MY_WATT_X
 if set -o posix; set | grep -q -E "^MY\_WATT\_[0-9]{1,2}" ; then MY_WATT_X="1"; fi;
 if [ -z ${MY_WATT_X+x} ]; 
 then
-	if [ ! -z ${MY_WATT+x} ] ; 
+	MY_VAR="MY_WATT"
+	unset MY_VAL
+	if [ ! -z ${!MY_VAR} ] ; then MY_VAL=${!MY_VAR}; fi;
+	if [ ! -z ${MY_VAL+x} ] ; 
 	then
         printf "\nApplying Power Limit for ALL GPUs \n--------------------------------------------------------------------------------\n" 
-	    sudo nvidia-smi -pl "$MY_WATT"
+	    sudo nvidia-smi -pl "$MY_VAL"
 	fi;
 fi;
 
