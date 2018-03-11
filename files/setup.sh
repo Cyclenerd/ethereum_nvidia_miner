@@ -39,7 +39,8 @@ function pause() {
 function check_internet() {
 
     # Test availability against Google Public DNS
-    if ! ping -c 1 8.8.8.8 >/dev/null 2>&1 then 
+    if ! ping -c 1 8.8.8.8 >/dev/null 2>&1; 
+	then 
         clear
         echo_title "$MY_CHECK_INTERNET_TITLE"
         echo "Network Interfaces"
