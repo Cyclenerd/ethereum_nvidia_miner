@@ -102,7 +102,7 @@ nvidia-smi --format=csv,noheader --query-gpu=index | while read -r MY_DEVICE; do
     if [ -z "$MY_POWER_ONLY" ]; then
         # Init arguments
         # PowerMizer and FanControlState always set
-        MY_ARG=" -a \"[gpu:$MY_DEVICE]/GPUPowerMizerMode=1\" -a \"[gpu:$MY_DEVICE]/GPUFanControlState=1\""
+        MY_ARG=" -a \"[gpu:$MY_DEVICE]/GPUPowerMizerMode=1\""
         # Clock setting
         MY_VAR="MY_CLOCK_$MY_DEVICE"
         unset MY_VAL
@@ -117,7 +117,7 @@ nvidia-smi --format=csv,noheader --query-gpu=index | while read -r MY_DEVICE; do
         MY_VAR="MY_FAN_$MY_DEVICE"
         unset MY_VAL
         if [ ! -z "${!MY_VAR}" ] ; then MY_VAL="${!MY_VAR}"; else MY_VAL="$MY_FAN"; fi
-        if [ ! -z "${MY_VAL+x}" ] ; then MY_ARG+=" -a \"[fan:$MY_DEVICE]/GPUTargetFanSpeed=$MY_VAL\""; fi
+        if [ ! -z "${MY_VAL+x}" ] ; then MY_ARG+=" -a \"[gpu:$MY_DEVICE]/GPUFanControlState=1\" -a \"[fan:$MY_DEVICE]/GPUTargetFanSpeed=$MY_VAL\""; fi
         # Apply nvidia-settings
         MY_CMD="nvidia-settings $MY_ARG"
         eval "$MY_CMD" | grep -E "^  Attr"
