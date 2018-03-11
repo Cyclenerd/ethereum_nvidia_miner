@@ -308,7 +308,7 @@ If you want to refine per GPU then manually edit 'settings.conf'
             fi;
         fi;
         
-        read -n1 -r -p "  Press any key to continue ..." key
+        read -n1 -r -p "  Press any key to continue ..." 
         clear
     fi;
     
@@ -511,7 +511,7 @@ Even if you respond yes we will ask to confirm every single file.
         0)
             clear
             echo_title "Applying updates ..."
-            cd
+            cd ~
             cp -i updates/* .
             printf "\\n\\n  All updates processed. Setup needs to be restarted.\\n"
             pause
@@ -734,7 +734,7 @@ if [ ! "${#errors[@]}" == "0" ];
 then
     for e in "${errors[@]}"
     do
-        echo $e
+        echo "$e"
     done;
     exit 9
 fi;
