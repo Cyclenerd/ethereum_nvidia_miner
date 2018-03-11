@@ -101,8 +101,8 @@ nvidia-smi --format=csv,noheader --query-gpu=index | while read -r MY_DEVICE; do
     # Overclocking
     if [ -z "$MY_POWER_ONLY" ]; then
         # Init arguments
-        # PowerMizer always set
-        MY_ARG=" -a \"[gpu:$MY_DEVICE]/GPUPowerMizerMode=1\""
+        # PowerMizer and FanControlState always set
+        MY_ARG=" -a \"[gpu:$MY_DEVICE]/GPUPowerMizerMode=1\" -a \"[gpu:$MY_DEVICE]/GPUFanControlState=1\""
         # Clock setting
         MY_VAR="MY_CLOCK_$MY_DEVICE"
         unset MY_VAL
