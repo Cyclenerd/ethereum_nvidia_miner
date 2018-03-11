@@ -132,7 +132,7 @@ Ethereum addresses begin with 0x and are 42 characters long.
             fi;
         fi;
         
-        read -n1 -r -p "  Press any key to continue ..." key
+        pause
         clear
     fi;
     
@@ -176,7 +176,7 @@ If you want to refine per GPU then manually edit 'settings.conf'
             fi;
         fi;
         
-        read -n1 -r -p "  Press any key to continue ..." key
+        pause
         clear
     fi;
     
@@ -220,7 +220,7 @@ If you want to refine per GPU then manually edit 'settings.conf'
             fi;
         fi;
         
-        read -n1 -r -p "  Press any key to continue ..." key
+        pause
         clear
     fi;
     
@@ -264,7 +264,7 @@ If you want to refine per GPU then manually edit 'settings.conf'
             fi;
         fi;
         
-        read -n1 -r -p "  Press any key to continue ..." key
+        pause
         clear
     fi;
     
@@ -308,7 +308,7 @@ If you want to refine per GPU then manually edit 'settings.conf'
             fi;
         fi;
         
-        read -n1 -r -p "  Press any key to continue ..." 
+        pause
         clear
     fi;
     
@@ -352,7 +352,7 @@ No spaces or punctuations.
             fi;
         fi;
         
-        read -n1 -r -p "  Press any key to continue ..."
+        pause
         clear
     fi;
     
@@ -511,8 +511,8 @@ Even if you respond yes we will ask to confirm every single file.
         0)
             clear
             echo_title "Applying updates ..."
-            cd ~
-            cp -i updates/* .
+            cd ~/updates/ || die 9
+            cp -i * ..
             printf "\\n\\n  All updates processed. Setup needs to be restarted.\\n"
             pause
             exit 0
