@@ -4,20 +4,59 @@
 # miner.sh
 # Author: Nils Knieling - https://github.com/Cyclenerd/ethereum_nvidia_miner
 #
-# Start etherminer and set power limit
+# Set power limit and start ethminer
+#
+# Changelog
+# 2018/03/10 Andrea Lanfranchi - https://github.com/AndreaLanfranchi/ethereum_nvidia_miner
+# - Implemented optional per GPU fine tuning
+# - Added NO_COLOR env var for recent releases of ethminer
 #
 
 # Load global settings settings.conf
 # shellcheck source=settings.conf
 # shellcheck disable=SC1091
+# shellcheck disable=SC2086
+# shellcheck disable=SC2154
+
 if ! source ~/settings.conf; then
-	echo "FAILURE: Can not load global settings 'settings.conf'"
-	exit 9
+    printf "FAILURE: Can not load global settings 'settings.conf'\n\n"
+    exit 9
 fi
 
 # Set power limit
 sudo nvidia-smi -pm ENABLED
-sudo nvidia-smi -pl "$MY_WATT"
+
+# Check if Power Limit is global or per GPU
+unset MY_WATT_X
+if set -o posix; set | grep -q -E "^MY\_WATT\_[0-9]{1,2}" ; then MY_WATT_X="1"; fi;
+if [ -z ${MY_WATT_X+x} ]; 
+then
+    MY_VAR="MY_WATT"
+    unset MY_VAL
+    if [ ! -z ${!MY_VAR} ] ; then MY_VAL=${!MY_VAR}; fi;
+    if [ ! -z ${MY_VAL+x} ] ; 
+    then
+        printf "\nApplying Power Limit for ALL GPUs \n--------------------------------------------------------------------------------\n" 
+        sudo nvidia-smi -pl "$MY_VAL"
+    fi;
+else
+
+    nvidia-smi --format=csv,noheader --query-gpu=index | while read -r MY_DEVICE; do
+    
+        MY_VAR="MY_WATT_$MY_DEVICE"
+        unset MY_VAL
+        if [ ! -z ${!MY_VAR} ];
+        then 
+            MY_VAL=${!MY_VAR} 
+        else 
+            MY_VAR="MY_WATT"
+            if [ ! -z ${!MY_VAR} ] ; then MY_VAL=${!MY_VAR}; fi;
+        fi;
+        if [ ! -z ${MY_VAL+x} ] ; then sudo nvidia-smi -i "$MY_DEVICE" -pl "$MY_VAL" | sed "s/^/  /gi" ; fi;
+
+    done;
+fi;
+
 echo
 
 export GPU_FORCE_64BIT_PTR=0
@@ -26,6 +65,12 @@ export GPU_USE_SYNC_OBJECTS=1
 export GPU_MAX_ALLOC_PERCENT=100
 export GPU_SINGLE_ALLOC_PERCENT=100
 export CUDA_DEVICE_ORDER=PCI_BUS_ID
+
+# The following setting is available in ethminer since ver 0.13x
+# Set it to any value to prevent colored output (useful for log collecting)
+# Uncomment the following line if you want to disable colors.
+
+#export NO_COLOR=true
 
 #
 # Ethereum Mining

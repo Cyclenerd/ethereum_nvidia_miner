@@ -1,64 +1,59 @@
 #!/usr/bin/env bash
 
-
 #
 # setup.sh
-# Author: Nils Knieling - https://github.com/Cyclenerd/ethereum_nvidia_miner
+#
+# Author  : Nils Knieling, Andrea Lanfranchi and Contributors 
+# Project : https://github.com/Cyclenerd/ethereum_nvidia_miner
 #
 # Bash Script to automate the configuration for Ethereum mining. Intense use of 'dialog' :-)
 #
+# Changelog
+# 2018/03/11 Andrea Lanfranchi - https://github.com/AndreaLanfranchi/ethereum_nvidia_miner
+# - Corrected expensive use of not needed local variables
+# - Reorganized menus and actions
+# - Inline replacement of settings values (instead of append)
+# - Overwrite confirmations on download of updates
+# - Sanity checks over input values for overclocking
+#
 
 
-#####################################################################
-# Helpers
-#####################################################################
-
+# Common functions
+# -------------------------------------------------------------------
 function exit_with_failure() {
-	echo
-	echo "FAILURE: $1"
-	echo
-	exit 9
+    echo
+    echo "FAILURE: $1"
+    echo
+    exit 9
 }
 
 function command_exists() {
-	command -v "$1" >/dev/null 2>&1
+    command -v "$1" >/dev/null 2>&1
 }
 
-function my_any_key() {
-	read -n1 -r -p "Press any key to continue..."
+function pause() {
+    read -n1 -r -p "  Press any key to continue..."
 }
 
 # check_internet()
-
-MY_CHECK_INTERNET_TITLE="No Internet Connection"
-
-MY_CHECK_INTERNET_MSG_TEXT="
-Could not connect to the Internet.
-
-Please check this.
-"
-
 function check_internet() {
-	MY_HTTP_PING_URL="https://raw.githubusercontent.com/Cyclenerd/ethereum_nvidia_miner/master/README.md"
-	if curl -f -s "$MY_HTTP_PING_URL" >/dev/null 2>&1; then
-		echo "OK, lets start!" > /dev/null
-	else
-		# ERROR
-		clear
-		dialog --backtitle "$MY_CHECK_INTERNET_TITLE" --msgbox "$MY_CHECK_INTERNET_MSG_TEXT" 7 60
-		clear
-		echo_title "$MY_CHECK_INTERNET_TITLE"
-		echo "Network Interfaces"
-		ifconfig
-		echo
-		echo "IP Routing Table"
-		route
-		echo
-		echo "DNS Server"
-		cat /etc/resolv.conf
-		exit_with_failure "Could not connect to the Internet ('$MY_HTTP_PING_URL')."
-	fi
 
+    # Test availability against Google Public DNS
+    if ! ping -c 1 8.8.8.8 >/dev/null 2>&1; 
+	then 
+        clear
+        echo_title "$MY_CHECK_INTERNET_TITLE"
+        echo "Network Interfaces"
+        ifconfig
+        echo
+        echo "IP Routing Table"
+        route
+        echo
+        echo "DNS Server"
+        cat /etc/resolv.conf
+        exit_with_failure "Could not connect to the Internet ('$MY_HTTP_PING_URL')."        
+    fi;
+    
 }
 
 
@@ -68,144 +63,485 @@ function check_internet() {
 
 # echo_equals() outputs a line with =
 function echo_equals() {
-	COUNTER=0
-	while [  $COUNTER -lt "$1" ]; do
-		printf '='
-		(( COUNTER=COUNTER+1 ))
-	done
+    COUNTER=0
+    while [  $COUNTER -lt "$1" ]; do
+        printf '='
+        (( COUNTER=COUNTER+1 ))
+    done
 }
 
 # echo_title() outputs a title padded by =, in yellow.
 function echo_title() {
-	TITLE=$1
-	NCOLS=$(tput cols)
-	NEQUALS=$(((NCOLS-${#TITLE})/2-1))
-	tput setaf 3 0 0 # 3 = yellow
-	echo_equals "$NEQUALS"
-	printf " %s " "$TITLE"
-	echo_equals "$NEQUALS"
-	tput sgr0  # reset terminal
-	echo
+    TITLE=$1
+    NCOLS=$(tput cols)
+    NEQUALS=$(((NCOLS-${#TITLE})/2-1))
+    tput setaf 3 0 0 # 3 = yellow
+    echo_equals "$NEQUALS"
+    printf " %s " "$TITLE"
+    echo_equals "$NEQUALS"
+    tput sgr0  # reset terminal
+    echo
 }
 
+# Actions section
+# -------------------------------------------------------------------
 
-#####################################################################
-# Menu items
-#####################################################################
+# Sets password for prospector user
+function action_setpassword() {
+    clear
+    echo_title "Change prospector's password"
+    passwd
+    pause
+    clear
+}
 
+# Change Ethereum Address
+function action_ethaddress() {
 
-# my_thank_you()
+    # shellcheck disable=SC1091
 
-MY_THANK_YOU_TITLE="Leave a Tip"
+    # Set dialog 
+    MY_DLG_TITLE="Set your Public Ethereum Address"
+    MY_DLG_TEXT="
+Set your public Ethereum address. 
+Allowed characters a-z (upper/lower case) and 0-9.
+Ethereum addresses begin with 0x and are 42 characters long.
+    "
+    # Insensitive casing
+    shopt -s nocasematch
+    unset cur_value
+    unset new_value
+    
+    cur_value=$(grep -E "^MY_ADDRESS=(.*)$" ~/settings.conf | grep -i -E -o "(0x[a-f0-9]{40})")
+    cmd=(dialog --backtitle "$MY_DLG_TITLE" --inputbox "$MY_DLG_TEXT" 14 60 "$cur_value")
+    new_value=$("${cmd[@]}" 2>&1 >/dev/tty)
+    
+    if [ ! -z "$new_value" ]; 
+    then 
+        clear
+        if [[ ! $new_value =~ ^0x[a-f0-9]{40}$ ]]; 
+        then
+            printf "  Error !\\n\\n  You have entered an invalid Ethereum address.\\n  No changes will be performed.\\n  Please double check and retry.\\n\\n"
+        else
+            if [ "$cur_value" == "$new_value" ];
+            then
+                printf "  Warning !\\n\\n  New address is the same of old address.\\n  No changes will be made.\\n\\n"
+            else
+                sed -i.bak -e "s/MY_ADDRESS=\"\{0,1\}[[:alnum:]]\{0,256\}\"\{0,1\}/MY_ADDRESS=$new_value/gi" ~/settings.conf
+                printf "  Ok !\\n\\n  Changes to address have been recorded.\\n  You may want to restart your miner.\\n\\n"
+            fi;
+        fi;
+        
+        pause
+        clear
+    fi;
+    
+}
 
-MY_THANK_YOU_MSG_TEXT="
+# Change settings for NVIDIA graphics clock offset
+function action_nvidiaclock() {
+
+    # shellcheck disable=SC1091
+
+    # Set dialog 
+    MY_DLG_TITLE="Set NVIDIA GPU Graphics Clock Offset"
+    MY_DLG_TEXT="
+Set Graphics Clock Offset *ALL* NVIDIA graphic cards.
+Allowed characters 0-9 and minus sign (-) for negative values.
+Good value for GTX 1060 6GB: 150
+If you want to refine per GPU then manually edit 'settings.conf'
+    "
+    # Insensitive casing
+    shopt -s nocasematch
+    unset cur_value
+    unset new_value
+
+    cur_value=$(grep -E "^MY_CLOCK=(.*)$"  ~/settings.conf | grep -io -E "\=(.*)" | grep -io -E "[0-9\-]{1,}")
+    cmd=(dialog --backtitle "$MY_DLG_TITLE" --inputbox "$MY_DLG_TEXT" 14 60 "$cur_value")
+    new_value=$("${cmd[@]}" 2>&1 >/dev/tty)
+
+    if [ ! -z "$new_value" ]; 
+    then 
+        clear
+        if [[ ! $new_value =~ ^[0-9-]{1,}$ ]]; 
+        then
+            printf "  Error !\\n\\n  You have entered an invalid clock offset value.\\n  No changes will be performed.\\n  Please double check and retry.\\n\\n"
+        else
+            if [ "$cur_value" == "$new_value" ];
+            then
+                printf "  Warning !\\n\\n  New clock offset value is same as old one.\\n  No changes will be made.\\n\\n"
+            else
+                sed -i.bak -e "s/MY_CLOCK=\"\{0,1\}[[:alnum:]]\{0,256\}\"\{0,1\}/MY_CLOCK=$new_value/gi" ~/settings.conf
+                printf "  Ok !\\n\\n  Changes to clock offset have been recorded.\\n  You may want to run nvidia-overclock.\\n\\n"
+            fi;
+        fi;
+        
+        pause
+        clear
+    fi;
+    
+}
+
+# Change settings for NVIDIA memory transfer offset
+function action_nvidiamem() {
+
+    # shellcheck disable=SC1091
+    
+    # Set dialog 
+    MY_DLG_TITLE="Set NVIDIA Memory Transfer Rate Offset"
+    MY_DLG_TEXT="
+Set memory transfer rate offset for *ALL* NVIDIA graphic cards.
+Allowed characters 0-9 and decimal point.
+Good value for GTX 1060 6GB: 600
+If you want to refine per GPU then manually edit 'settings.conf'
+    "
+    # Insensitive casing
+    shopt -s nocasematch
+    unset cur_value
+    unset new_value
+    
+    cur_value=$(grep -E "^MY_MEM=(.*)$" ~/settings.conf | grep -io -E "\=(.*)" | grep -io -E "[0-9\-]{1,}")
+    cmd=(dialog --backtitle "$MY_DLG_TITLE" --inputbox "$MY_DLG_TEXT" 14 60 "$cur_value")
+    new_value=$("${cmd[@]}" 2>&1 >/dev/tty)
+    
+    if [ ! -z "$new_value" ]; 
+    then 
+        clear
+        if [[ ! $new_value =~ ^(\-)?[0-9]{1,}$ ]]; 
+        then
+            printf "  Error !\\n\\n  You have entered an invalid memory transfer offset value.\\n  No changes will be performed.\\n  Please double check and retry.\\n\\n"
+        else
+            if [ "$cur_value" == "$new_value" ];
+            then
+                printf "  Warning !\\n\\n  New memory transfer offset value is same as old one.\\n  No changes will be made.\\n\\n"
+            else
+                sed -i.bak -e "s/MY_MEM=\"\{0,1\}-\{0,1\}[[:alnum:]]\{0,256\}\"\{0,1\}/MY_MEM=$new_value/gi" ~/settings.conf
+                printf "  Ok !\\n\\n  Changes to memory transfer offset have been recorded.\\n  You may want to run nvidia-overclock.\\n\\n"
+            fi;
+        fi;
+        
+        pause
+        clear
+    fi;
+    
+}
+
+# Change settings for NVIDIA power limit
+function action_nvidiapl() {
+
+    # shellcheck disable=SC1091
+
+    # Set dialog 
+    MY_DLG_TITLE="Set NVIDIA Power Limit"
+    MY_DLG_TEXT="
+Set power limit for *ALL* NVIDIA graphic cards. Input in watts (W). 
+Allowed characters 0-9 and decimal point.
+Good value for GTX 1060 6GB: 70
+If you want to refine per GPU then manually edit 'settings.conf'
+    "
+    # Insensitive casing
+    shopt -s nocasematch
+    unset cur_value
+    unset new_value
+    
+    cur_value=$(grep -E "^MY_WATT=(.*)$" ~/settings.conf | grep -io -E "\=(.*)" | grep -io -E "[0-9\.]{1,}")
+    cmd=(dialog --backtitle "$MY_DLG_TITLE" --inputbox "$MY_DLG_TEXT" 14 60 "$cur_value")
+    new_value=$("${cmd[@]}" 2>&1 >/dev/tty)
+    
+    if [ ! -z "$new_value" ]; 
+    then 
+        clear
+        if [[ ! $new_value =~ ^(\-)?[0-9\.]{1,6}$ ]]; 
+        then
+            printf "  Error !\\n\\n  You have entered an invalid power value.\\n  No changes will be performed.\\n  Please double check and retry.\\n\\n"
+        else
+            if [ "$cur_value" == "$new_value" ];
+            then
+                printf "  Warning !\\n\\n  New power value is same as old one.\\n  No changes will be made.\\n\\n"
+            else
+                sed -i.bak -e "s/MY_WATT=\"\{0,1\}-\{0,1\}[[:alnum:]]\{0,256\}\"\{0,1\}/MY_WATT=$new_value/gi" ~/settings.conf
+                printf "  Ok !\\n\\n  Changes to power limit have been recorded.\\n  You may want to run nvidia-overclock.\\n\\n"
+            fi;
+        fi;
+        
+        pause
+        clear
+    fi;
+    
+}
+
+# Change settings for NVIDIA fan control
+function action_nvidiafan() {
+
+    # shellcheck disable=SC1091
+    # Set dialog 
+    MY_DLG_TITLE="Set NVIDIA GPUs Fan Speed %"
+    MY_DLG_TEXT="
+Set fan speed (in percent) for *ALL* NVIDIA graphic cards.
+Allowed characters 0-9. For security purpouses we accept only
+values ranging from 70 to 100 or 0 (zero) in which case the
+fan will adjust automatically.
+If you want to refine per GPU then manually edit 'settings.conf'
+    "
+    # Insensitive casing
+    shopt -s nocasematch
+    unset cur_value
+    unset new_value
+    
+    cur_value=$(grep -E "^MY_FAN=(.*)$" ~/settings.conf | grep -io -E "\=(.*)" | grep -io -E "[0-9]{1,}")
+    cmd=(dialog --backtitle "$MY_DLG_TITLE" --inputbox "$MY_DLG_TEXT" 14 60 "$cur_value")
+    new_value=$("${cmd[@]}" 2>&1 >/dev/tty)
+    
+    if [ ! -z "$new_value" ]; 
+    then 
+        clear
+        if [[ ! $new_value =~ ^(7|8|9)[0-9]{1}$|^0$|^100$ ]]; 
+        then
+            printf "  Error !\\n\\n  You have entered an fan percent value.\\n  No changes will be performed.\\n  Please double check and retry.\\n\\n"
+        else
+            if [ "$cur_value" == "$new_value" ];
+            then
+                printf "  Warning !\\n\\n  New fan percent value is same as old one.\\n  No changes will be made.\\n\\n"
+            else
+                sed -i.bak -e "s/MY_FAN=\"\{0,1\}[[:alnum:]]\{0,256\}\"\{0,1\}/MY_FAN=$new_value/gi" ~/settings.conf
+                printf "  Ok !\\n\\n  Changes to fan percent have been recorded.\\n  You may want to run nvidia-overclock.\\n\\n"
+            fi;
+        fi;
+        
+        pause
+        clear
+    fi;
+    
+    
+}
+
+# Change Rig's name
+function action_rigname() {
+
+    # shellcheck disable=SC1091
+
+    # Set dialog 
+    MY_DLG_TITLE="Set your rig name"
+    MY_DLG_TEXT="
+Enter a name for your machine.
+Allowed characters a-z (upper/lower case) and 0-9.
+No spaces or punctuations.
+    "
+    # Insensitive casing
+    shopt -s nocasematch
+    unset cur_value
+    unset new_value
+    
+    cur_value=$(grep -E "^MY_RIG=(.*)$" ~/settings.conf | grep -io -E "\=(.*)" | grep -io -E "[a-z0-9]{1,}")
+    cmd=(dialog --backtitle "$MY_DLG_TITLE" --inputbox "$MY_DLG_TEXT" 14 60 "$cur_value")
+    new_value=$("${cmd[@]}" 2>&1 >/dev/tty)
+
+    if [ ! -z "$new_value" ]; 
+    then 
+        clear
+        if [[ ! $new_value =~ ^[a-f0-9]{1,40}$ ]]; 
+        then
+            printf "  Error !\\n\\n  You have entered an invalid Rig name.\\n  No changes will be performed.\\n  Please double check and retry.\\n\\n"
+        else
+            if [ "$cur_value" == "$new_value" ];
+            then
+                printf "  Warning !\\n\\n  New name is the same of old name.\\n  No changes will be made.\\n\\n"
+            else
+                sed -i.bak -e "s/MY_RIG=\"\{0,1\}[[:alnum:]]\{0,256\}\"\{0,1\}/MY_RIG=$new_value/gi" ~/settings.conf
+                printf "  Ok !\\n\\n  Changes to rig name have been recorded.\\n  You may want to restart your miner.\\n\\n"
+            fi;
+        fi;
+        
+        pause
+        clear
+    fi;
+    
+    
+}
+
+# Instructions for tips
+function action_tipme() {
+
+    # Set dialog 
+    MY_DLG_TITLE="Would you like to leave a tip ?"
+    MY_DLG_TEXT="
 With this ISO image, you can immediately mine Ethereum (ETH). Do not spend long time searching and researching.
 
 I would be happy about a small donation. Thank you very much.
 
 Ξ - Ethereum: 0xfbbc9f870bccadf8847eba29b0ed3755e30c9f0d
 Ƀ - Bitcoin:  13fQA3mCQPmnXBDSmfautP4VMq6Sj2GVSA
-"
+    "
+    
+    dialog --backtitle "$MY_DLG_TITLE" --msgbox "$MY_DLG_TEXT" 14 65
 
-function my_thank_you(){
-	dialog --backtitle "$MY_THANK_YOU_TITLE" --msgbox "$MY_THANK_YOU_MSG_TEXT" 14 65
 }
 
-
-# my_update()
-
-MY_UPDATE_TITLE="Get Latest Updates (Recommended)"
-
-MY_UPDATE_OK_TEXT="
-Done! Please restart 'setup'.
-"
-function my_update(){
-	clear
-	echo_title "Get Latest Updates"
-	curl -f "https://raw.githubusercontent.com/Cyclenerd/ethereum_nvidia_miner/master/files/update.sh" -o ~/update.sh
-	bash ~/update.sh
-	rm ~/update.sh
-	my_any_key
-	dialog --backtitle "$MY_UPDATE_TITLE" --msgbox "$MY_UPDATE_OK_TEXT" 7 60
-	clear
-	echo "$MY_UPDATE_OK_TEXT"
-	exit 0
+# Manually edit files
+function action_nanoedit() {
+    clear
+    nano -w "$1"
+    clear
 }
 
+# Shutdown machine
+function action_shutdown() {
 
-# my_settings_edit()
+    # Set dialog 
+    MY_DLG_TITLE="Shutdown"
+    MY_DLG_TEXT="
+Do you really want to shutdown this machine ?
+If you're connected remotely machine wont restart !
+    "
+    
+    dialog --backtitle "$MY_DLG_TITLE" --yesno "$MY_DLG_TEXT" 9 60
+    case $? in
+        0)
+            clear
+            echo_title "$MY_SHUTDOWN_TITLE"
+            sudo shutdown -h now
+            exit 0
+            ;;
+        *)
+            ;;
+    esac
 
-MY_SETTINGS_EDIT_TITLE="Manual Edit 'settings.conf' (For Experts)"
-
-function my_settings_edit(){
-	clear
-	echo_title "$MY_SETTINGS_EDIT_TITLE"
-	nano -w ~/settings.conf
-	clear
 }
 
+# Shutdown machine
+function action_reboot() {
 
-# my_overclock_edit()
+    # Set dialog 
+    MY_DLG_TITLE="Reboot"
+    MY_DLG_TEXT="
+Do you really want to reboot this machine ?
+    "
+    
+    dialog --backtitle "$MY_DLG_TITLE" --yesno "$MY_DLG_TEXT" 9 60
+    case $? in
+        0)
+            clear
+            echo_title "$MY_SHUTDOWN_TITLE"
+            sudo shutdown -r now
+            exit 0
+            ;;
+        *)
+            ;;
+    esac
 
-MY_OVERCLOCK_EDIT_TITLE="Manual Edit 'nvidia-overclock.sh' (For Experts)"
-
-function my_overclock_edit(){
-	clear
-	echo_title "$MY_OVERCLOCK_EDIT_TITLE"
-	nano -w ~/nvidia-overclock.sh
-	clear
 }
 
+# Detects and enable sensors
+function action_sensors(){
 
-# my_miner_edit()
+    MY_SENSORS_DETECT_TITLE="Detect and Generate Monitoring Sensors"
 
-MY_MINER_EDIT_TITLE="Manual Edit 'miner.sh' (For Experts)"
-
-function my_miner_edit(){
-	clear
-	echo_title "$MY_MINER_EDIT_TITLE"
-	nano -w ~/miner.sh
-	clear
-}
-
-
-# my_sensors_detect()
-
-MY_SENSORS_DETECT_TITLE="Detect and Generate Monitoring Sensors"
-
-MY_SENSORS_DETECT_MSG_TEXT="
+    MY_SENSORS_DETECT_MSG_TEXT="
 Detect and generate a list of kernel modules for monitoring temperatures, voltage, and fans.
 
 The program 'sensors-detect' will ask to probe for various hardware. The safe answers are the defaults, so just hitting [Enter] to all the questions will generally not cause any problems.
 "
 
-MY_SENSORS_DETECT_OK_TEXT="
+    MY_SENSORS_DETECT_OK_TEXT="
 Done! After a reboot, you can use the command 'sensors' to monitor the sensors.
 "
 
-function my_sensors_detect(){
-	dialog --backtitle "$MY_SENSORS_DETECT_TITLE" --msgbox "$MY_SENSORS_DETECT_MSG_TEXT" 14 60
-	clear
-	echo_title "$MY_SENSORS_DETECT_TITLE"
-	sudo sensors-detect
-	my_any_key
-	dialog --backtitle "$MY_SENSORS_DETECT_TITLE" --msgbox "$MY_SENSORS_DETECT_OK_TEXT" 7 60
-	clear
+    dialog --backtitle "$MY_SENSORS_DETECT_TITLE" --msgbox "$MY_SENSORS_DETECT_MSG_TEXT" 14 60
+    clear
+    echo_title "$MY_SENSORS_DETECT_TITLE"
+    sudo sensors-detect
+    pause
+    dialog --backtitle "$MY_SENSORS_DETECT_TITLE" --msgbox "$MY_SENSORS_DETECT_OK_TEXT" 7 60
+    clear
 }
 
+# Sets locale timezone
+function action_timezone() {
+    clear
+    sudo dpkg-reconfigure tzdata
+    clear
+}
 
-# my_nvidia_config()
+# Sets keyboard locale layout
+function action_keyboard() {
+    clear
+    sudo dpkg-reconfigure keyboard-configuration
+    clear
+}
 
-MY_NVIDIA_CONFIG_TITLE="Generate Fake Monitors (IMPORTANT!!)"
+# Sets console charset
+function action_console() {
+    clear
+    sudo dpkg-reconfigure console-setup
+    clear
+}
 
-MY_NVIDIA_CONFIG_MSG_TEXT="
+# Updates relevant scripts
+function action_update() {
+
+    clear
+    echo_title "Get Latest Updates for relevant files"
+    curl -f "https://raw.githubusercontent.com/Cyclenerd/ethereum_nvidia_miner/master/files/update.sh" -o ~/update.sh
+    bash ~/update.sh
+    rm ~/update.sh
+    
+    # Set dialog 
+    MY_DLG_TITLE="Updates downloaded"
+    MY_DLG_TEXT="
+All newer version of relevant files has been downloaded.
+Do you really want to make them current ?
+
+WARNING ! IF YOU HAVE MADE ANY CHANGES TO ANY OF THESE FILES YOUR
+CHANGES WILL BE LOST FOREVER !!
+
+.bashrc 
+.screenrc 
+bash_aliases 
+miner.sh                            (check twice)
+nvidia-overclock.sh                 (check twice)
+setup.sh 
+myip.sh
+
+Even if you respond yes we will ask to confirm every single file.
+
+    "
+    
+    dialog --backtitle "$MY_DLG_TITLE" --yesno "$MY_DLG_TEXT" 30 70
+    case $? in
+        0)
+            clear
+            echo_title "Applying updates ..."
+            cd ~/updates/ || exit
+            cp -i ./* ..
+            printf "\\n\\n  All updates processed. Setup needs to be restarted.\\n"
+            pause
+            exit 0
+            ;;
+        *)
+            ;;
+    esac
+    
+    
+}
+
+# Populate xorg.conf file
+function action_xorg(){
+
+    # Set dialog 
+    MY_DLG_TITLE="Generate Fake Monitors (IMPORTANT!!)"
+    MY_DLG_TEXT="
 Generate an xorg.conf with faked monitors (for each of your cards).
 Absolutely necessary to later overclock the graphics cards!!!11
 
 You need to run this every time you add or remove cards.
 "
-
-MY_NVIDIA_CONFIG_OK_TEXT="
+    dialog --backtitle "$MY_DLG_TITLE" --msgbox "$MY_DLG_TEXT" 10 60
+    clear
+    echo_title "$MY_DLG_TITLE"
+    sudo nvidia-xconfig -a --allow-empty-initial-configuration --cool-bits=31 --use-display-device="DFP-0" --connected-monitor="DFP-0"
+    pause
+    
+    MY_DLG_TEXT="
 Done! The computer will now restart.
 
 After restart, connected monitors remain black.
@@ -213,114 +549,139 @@ After restart, connected monitors remain black.
 Tip:
 If you want to work with the monitor and keyboard after restarting, you can get a console with the key combination [Crtl] + [Alt] + [F1].
 "
-
-function my_nvidia_config(){
-	dialog --backtitle "$MY_NVIDIA_CONFIG_TITLE" --msgbox "$MY_NVIDIA_CONFIG_MSG_TEXT" 10 60
-	clear
-	echo_title "$MY_NVIDIA_CONFIG_TITLE"
-	sudo nvidia-xconfig -a --allow-empty-initial-configuration --cool-bits=31 --use-display-device="DFP-0" --connected-monitor="DFP-0"
-	my_any_key
-	dialog --backtitle "$MY_NVIDIA_CONFIG_TITLE" --msgbox "$MY_NVIDIA_CONFIG_OK_TEXT" 14 60
-	my_reboot
+    
+    dialog --backtitle "$MY_DLG_TITLE" --msgbox "$MY_DLG_TEXT" 14 60
+    shutdown -f -r now
+    exit 0
 }
 
 
-# my_nvidia_power_limit()
+# Menus section
+# -------------------------------------------------------------------
+function menu_main() {
 
-MY_NVIDIA_POWER_LIMIT_TITLE="Set Power Limit"
+while true; do
 
-MY_NVIDIA_POWER_LIMIT_MSG_TEXT="
-Set power limit for all NVIDIA graphic cards. Input in watts (W). Allowed characters 0-9.
-Good value for GTX 1060 6GB: 70
+        # Set dialog 
+        MY_DLG_TITLE="Main Menu"
+        MY_DLG_TEXT="
+If you need help, please visit:
+
+    https://github.com/Cyclenerd/ethereum_nvidia_miner
+
+If this is your first time here ensure you got through (at least)
+steps 6 and 7.
+    
+Choose a task:
 "
-function my_nvidia_power_limit() {
-	# shellcheck source=settings.conf
-	# shellcheck disable=SC1091
-	source ~/settings.conf
-	cmd=(dialog --backtitle "$MY_NVIDIA_POWER_LIMIT_TITLE" --inputbox "$MY_NVIDIA_POWER_LIMIT_MSG_TEXT" 14 60 "$MY_WATT")
-	choices=$("${cmd[@]}" 2>&1 >/dev/tty)
-	if [ "$choices" != "" ]; then
-		MY_WATT=$choices
-		sed -i.bak '/MY_WATT/d' ~/settings.conf
-		echo >> ~/settings.conf
-		echo "MY_WATT='$MY_WATT'" >> ~/settings.conf
-	fi
+
+    cmd=(dialog --backtitle "$MY_DLG_TITLE" --menu "$MY_DLG_TEXT" 28 86 16)
+    options=(1 "Leave a tip                        - Appreciated"
+             2 "Get latest updates                 - Recommended"
+             3 "Change default password            - Do it please"
+             4 "Change locale settings"
+             5 "Detect and generate monitoring sensors"
+             6 "Detect your Nvidia GPUs            - Important"
+             7 "Configure Miner (ethminer)"
+             8 "Configure overclocking and power limits"
+             9 "Reboot this machine"
+            10 "Shutdown this machine"
+            11 "Exit")
+            
+    choice=$("${cmd[@]}" "${options[@]}" 2>&1 >/dev/tty)
+    if [ "$choice" != "" ]; then
+        case $choice in
+            1)  action_tipme ;;
+            2)  action_update ;;
+            3)  action_setpassword ;;
+            4)  menu_localesettings ;;
+            5)  action_sensors ;;
+            6)  action_xorg ;;
+            7)  menu_minersettings ;;
+            8)  menu_overclock ;;
+            9)  action_reboot ;;
+            10) action_shutdown ;;
+            11) clear && exit 0;;
+        esac
+    else
+        break
+    fi
+
+done
+clear
+
 }
 
+function menu_localesettings() {
 
-# my_nvidia_clock()
+    while true; do
+    
+        # Set dialog 
+        MY_DLG_TITLE="Configure Locale"
+        MY_DLG_TEXT="
+Set your locale preferences
 
-MY_NVIDIA_CLOCK_TITLE="Set GPU Graphics Clock Offset"
+Choose a task:
+    "
 
-MY_NVIDIA_CLOCK_MSG_TEXT="
-Set GPU graphics clock offset (GPUGraphicsClockOffset) for all NVIDIA graphic cards. Allowed characters 0-9 and -.
-Good value for GTX 1060 6GB: 150
-"
-function my_nvidia_clock() {
-	# shellcheck source=settings.conf
-	# shellcheck disable=SC1091
-	source ~/settings.conf
-	cmd=(dialog --backtitle "$MY_NVIDIA_CLOCK_TITLE" --inputbox "$MY_NVIDIA_CLOCK_MSG_TEXT" 14 65 "$MY_CLOCK")
-	choices=$("${cmd[@]}" 2>&1 >/dev/tty)
-	if [ "$choices" != "" ]; then
-		MY_CLOCK=$choices
-		sed -i.bak '/MY_CLOCK/d' ~/settings.conf
-		echo >> ~/settings.conf
-		echo "MY_CLOCK='$MY_CLOCK'" >> ~/settings.conf
-	fi
+        cmd=(dialog --backtitle "$MY_DLG_TITLE" --menu "$MY_DLG_TEXT" 15 76 16)
+        options=(1 "Set your keyboard layout"
+                 2 "Set your timezone"
+                 3 "Set your console")
+        choice=$("${cmd[@]}" "${options[@]}" 2>&1 >/dev/tty)
+        if [ "$choice" != "" ]; then
+            case $choice in
+                1)  action_keyboard ;;
+                2)  action_timezone ;;
+                3)  action_console ;;
+            esac
+        else
+            break
+        fi
+    done
+
 }
 
+function menu_minersettings(){
 
-# my_nvidia_mem()
+    while true; do
+    
+        # Set dialog 
+        MY_DLG_TITLE="Configure Miner (ethminer)"
+        MY_DLG_TEXT="
+By default 'ethminer' mining program and the ethermine.org pool are used.
+Here you can set basic values to customize your mining with above mentioned tools.
+If you want to change miner program or switch to another pool you will have to
+manually edit the file 'miner.sh'
 
-MY_NVIDIA_MEM_TITLE="Set GPU Memory Transfer Rate Offset"
+Choose a task:
+    "
 
-MY_NVIDIA_MEM_MSG_TEXT="
-Set GPU memory transfer rate offset (GPUMemoryTransferRateOffset) for all NVIDIA graphic cards. Allowed characters 0-9.
-Good value for GTX 1060 6GB: 600
-"
-function my_nvidia_mem() {
-	# shellcheck source=settings.conf
-	# shellcheck disable=SC1091
-	source ~/settings.conf
-	cmd=(dialog --backtitle "$MY_NVIDIA_MEM_TITLE" --inputbox "$MY_NVIDIA_MEM_MSG_TEXT" 14 60 "$MY_MEM")
-	choices=$("${cmd[@]}" 2>&1 >/dev/tty)
-	if [ "$choices" != "" ]; then
-		MY_MEM=$choices
-		sed -i.bak '/MY_MEM/d' ~/settings.conf
-		echo >> ~/settings.conf
-		echo "MY_MEM='$MY_MEM'" >> ~/settings.conf
-	fi
+        cmd=(dialog --backtitle "$MY_DLG_TITLE" --menu "$MY_DLG_TEXT" 25 76 16)
+        options=(1 "Set your Ethereum address"
+                 2 "Set your rig name"
+                 4 "Manually edit 'settings.conf' (for experts)"
+                 5 "Manually edit 'miner.sh'      (for experts)" )
+        choice=$("${cmd[@]}" "${options[@]}" 2>&1 >/dev/tty)
+        if [ "$choice" != "" ]; then
+            case $choice in
+                1)  action_ethaddress ;;
+                2)  action_rigname ;;
+                4)  action_nanoedit ~/settings.conf ;;
+                5)  action_nanoedit ~/miner.sh ;;
+            esac
+        else
+            break
+        fi
+    done
+    
 }
 
+function menu_overclock() {
 
-# my_nvidia_fan()
-
-MY_NVIDIA_FAN_TITLE="Set GPU Target Fan Speed"
-
-MY_NVIDIA_FAN_MSG_TEXT="
-Set GPU target fan speed (GPUTargetFanSpeed) for all NVIDIA graphic cards. Input in percent (%). Allowed characters 0-9.
-"
-function my_nvidia_fan() {
-	# shellcheck source=settings.conf
-	# shellcheck disable=SC1091
-	source ~/settings.conf
-	cmd=(dialog --backtitle "$MY_NVIDIA_FAN_TITLE" --inputbox "$MY_NVIDIA_FAN_MSG_TEXT" 14 60 "$MY_FAN")
-	choices=$("${cmd[@]}" 2>&1 >/dev/tty)
-	if [ "$choices" != "" ]; then
-		MY_FAN=$choices
-		sed -i.bak '/MY_FAN/d' ~/settings.conf
-		echo >> ~/settings.conf
-		echo "MY_FAN='$MY_FAN'" >> ~/settings.conf
-	fi
-}
-
-
-# my_nvidia_overclock()
-
-MY_NVIDIA_OVERCLOCK_TITLE="Configure Graphics Cards (Power Limit, Clock Offset, FAN)"
-
-MY_NVIDIA_OVERCLOCK_MENU_TITLE="
+        # Set dialog 
+        MY_DLG_TITLE="Configure GPU Loads and speed"
+        MY_DLG_TEXT="
 Configure graphics cards (power limit, clock offset, memory transfer rate offset and fan). The settings apply to all NVIDIA cards! If you want to have different settings per card, you have to adjust the file 'nvidia-overclock.sh'.
 
 Increase or decrease in small increments (+/- 25).
@@ -328,317 +689,66 @@ Increase or decrease in small increments (+/- 25).
 Choose a task:
 "
 
-function my_nvidia_overclock(){
-	while true; do
-		cmd=(dialog --backtitle "$MY_NVIDIA_OVERCLOCK_MENU_TITLE" --menu "$MY_NVIDIA_OVERCLOCK_MENU_TITLE" 22 76 16)
-		options=(1 "$MY_NVIDIA_POWER_LIMIT_TITLE"
-		         2 "$MY_NVIDIA_CLOCK_TITLE"
-		         3 "$MY_NVIDIA_MEM_TITLE"
-		         4 "$MY_NVIDIA_FAN_TITLE"
-		         5 "$MY_SETTINGS_EDIT_TITLE"
-		         6 "$MY_OVERCLOCK_EDIT_TITLE" )
-		choice=$("${cmd[@]}" "${options[@]}" 2>&1 >/dev/tty)
-		if [ "$choice" != "" ]; then
-			case $choice in
-				1)  my_nvidia_power_limit ;;
-				2)  my_nvidia_clock ;;
-				3)  my_nvidia_mem ;;
-				4)  my_nvidia_fan ;;
-				5)  my_settings_edit ;;
-				6)  my_overclock_edit ;;
-			esac
-		else
-			break
-		fi
-	done
+    while true; do
+        cmd=(dialog --backtitle "$MY_DLG_TITLE" --menu "$MY_DLG_TEXT" 22 76 16)
+        options=(1 "Set or change Power Limit for GPUs"
+                 2 "Set or change Graphics Clocks Offset"
+                 3 "Set or change Memory Transfer Rate Offset"
+                 4 "Set or change Fan percent load"
+                 5 "Manually edit 'settings.conf'       (for experts)"
+                 6 "Manually edit 'nvidia-overclock.sh' (for experts)")
+        choice=$("${cmd[@]}" "${options[@]}" 2>&1 >/dev/tty)
+        if [ "$choice" != "" ]; then
+            case $choice in
+                1)  action_nvidiapl ;;
+                2)  action_nvidiaclock ;;
+                3)  action_nvidiamem ;;
+                4)  action_nvidiafan ;;
+                5)  action_nanoedit ~/settings.conf ;;
+                6)  action_nanoedit ~/nvidia-overclock.sh ;;
+            esac
+        else
+            break
+        fi
+    done
+
 }
-
-
-# my_address()
-
-MY_ADDRESS_TITLE="Set Your Public Ethereum Address"
-
-MY_ADDRESS_MSG_TEXT="
-Set your public Ethereum address. Allowed characters A-Z and 0-9.
-"
-function my_address() {
-	# shellcheck source=settings.conf
-	# shellcheck disable=SC1091
-	source ~/settings.conf
-	cmd=(dialog --backtitle "$MY_ADDRESS_TITLE" --inputbox "$MY_ADDRESS_MSG_TEXT" 14 60 "$MY_ADDRESS")
-	choices=$("${cmd[@]}" 2>&1 >/dev/tty)
-	if [ "$choices" != "" ]; then
-		MY_ADDRESS=$choices
-		sed -i.bak '/MY_ADDRESS/d' ~/settings.conf
-		echo >> ~/settings.conf
-		echo "MY_ADDRESS='$MY_ADDRESS'" >> ~/settings.conf
-	fi
-}
-
-
-# my_rig()
-
-MY_RIG_TITLE="Name Your Rig"
-
-MY_RIG_MSG_TEXT="
-Name your rig. Allowed characters A-Z and 0-9.
-"
-function my_rig() {
-	# shellcheck source=settings.conf
-	# shellcheck disable=SC1091
-	source ~/settings.conf
-	cmd=(dialog --backtitle "$MY_RIG_TITLE" --inputbox "$MY_RIG_MSG_TEXT" 14 60 "$MY_RIG")
-	choices=$("${cmd[@]}" 2>&1 >/dev/tty)
-	if [ "$choices" != "" ]; then
-		MY_RIG=$choices
-		sed -i.bak '/MY_RIG/d' ~/settings.conf
-		echo >> ~/settings.conf
-		echo "MY_RIG='$MY_RIG'" >> ~/settings.conf
-	fi
-}
-
-
-# my_miner()
-
-MY_MINER_TITLE="Configure Miner (ethminer)"
-
-MY_MINER_MENU_TITLE="
-By default, 'ethminer' and the ethermine.org pool are used. If you want to use another program (like Claymore) or pool (like nanopool), you have to adjust the file 'miner.sh'.
-
-Choose a task:
-"
-
-function my_miner(){
-	while true; do
-		cmd=(dialog --backtitle "$MY_MINER_TITLE" --menu "$MY_MINER_MENU_TITLE" 22 76 16)
-		options=(1 "$MY_ADDRESS_TITLE"
-		         2 "$MY_RIG_TITLE"
-		         4 "$MY_SETTINGS_EDIT_TITLE"
-		         5 "$MY_MINER_EDIT_TITLE" )
-		choice=$("${cmd[@]}" "${options[@]}" 2>&1 >/dev/tty)
-		if [ "$choice" != "" ]; then
-			case $choice in
-				1)  my_address ;;
-				2)  my_rig ;;
-				4)  my_settings_edit ;;
-				5)  my_miner_edit ;;
-			esac
-		else
-			break
-		fi
-	done
-}
-
-
-# my_passwd()
-
-MY_PASSWD_TITLE="Change Password"
-
-function my_passwd() {
-	clear
-	echo_title "$MY_PASSWD_TITLE"
-	passwd
-	my_any_key
-	clear
-}
-
-
-# my_timezone()
-
-MY_TIMEZONE_TITLE="Configure Timezone"
-
-function my_timezone() {
-	clear
-	sudo dpkg-reconfigure tzdata
-	clear
-}
-
-
-# my_keyboard()
-
-MY_KEYBOARD_TITLE="Configure Keyboard"
-
-function my_keyboard() {
-	clear
-	sudo dpkg-reconfigure keyboard-configuration
-	clear
-}
-
-
-# my_console()
-
-MY_CONSOLE_TITLE="Console Setup"
-
-function my_console() {
-	clear
-	sudo dpkg-reconfigure console-setup
-	clear
-}
-
-
-# my_other()
-
-MY_OTHER_TITLE="Other Configuration (do not have to run)"
-
-MY_OTHER_MENU_TITLE="
-All steps are optional. All functions should also work without change.
-
-Choose a task:
-"
-
-function my_other(){
-	while true; do
-		cmd=(dialog --backtitle "$MY_OTHER_TITLE" --menu "$MY_OTHER_MENU_TITLE" 22 76 16)
-		options=(1 "$MY_KEYBOARD_TITLE"
-		         2 "$MY_CONSOLE_TITLE")
-		choice=$("${cmd[@]}" "${options[@]}" 2>&1 >/dev/tty)
-		if [ "$choice" != "" ]; then
-			case $choice in
-				1)  my_keyboard ;;
-				2)  my_console ;;
-			esac
-		else
-			break
-		fi
-	done
-}
-
-
-# my_reboot()
-
-MY_REBOOT_TITLE="Reboot"
-
-MY_REBOOT_YESNO_TEXT="Do you really want to 'reboot' the computer?"
-
-function my_reboot(){
-	dialog --backtitle "$MY_REBOOT_TITLE" --yesno "$MY_REBOOT_YESNO_TEXT" 7 60
-	case $? in
-		0)
-			clear
-			echo_title "$MY_REBOOT_TITLE"
-			sudo reboot
-			;;
-		*)
-			;;
-	esac
-}
-
-
-# my_shutdown()
-
-MY_SHUTDOWN_TITLE="Shutdown"
-
-MY_SHUTDOWN_YESNO_TEXT="Do you really want to 'shutdown' the computer?"
-
-function my_shutdown(){
-	dialog --backtitle "$MY_SHUTDOWN_TITLE" --yesno "$MY_SHUTDOWN_YESNO_TEXT" 7 60
-	case $? in
-		0)
-			clear
-			echo_title "$MY_SHUTDOWN_TITLE"
-			sudo shutdown -h now
-			;;
-		*)
-			;;
-	esac
-}
-
 
 
 #####################################################################
 # Check the required programs
 #####################################################################
 
-if ! command_exists curl; then
-	exit_with_failure "'curl' is needed. Please install 'curl'."
-fi
+declare -a errors
+errors=()
+if ! command_exists curl; then errors+=("'curl' is needed. Please install 'curl'."); fi;
+if ! command_exists dialog; then errors+=("'dialog' is needed. Please install 'dialog'."); fi;
+if ! command_exists nvidia-smi; then errors+=("'nvidia-smi' is needed. Please install 'nvidia-381'."); fi;
+if ! command_exists nvidia-xconfig; then errors+=("'nvidia-xconfig' is needed. Please install 'nvidia-381'."); fi;
+if ! command_exists nvidia-settings; then errors+=("'nvidia-settings' is needed. Please install 'nvidia-381'."); fi;
+if ! command_exists sensors-detect; then errors+=("'sensors-detect' is needed. Please install 'lm-sensors'."); fi;
+if ! command_exists sensors; then errors+=("'sensors' is needed. Please install 'lm-sensors'."); fi; 
+if ! command_exists git; then errors+=("'git' is needed. Please install 'git'."); fi;
+if ! command_exists cmake; then errors+=("'cmake' is needed. Please install 'cmake'."); fi;
+if [ ! "${#errors[@]}" == "0" ];
+then
+    for e in "${errors[@]}"
+    do
+        echo "$e"
+    done;
+    exit 9
+fi;
+unset errors
 
-if ! command_exists dialog; then
-	exit_with_failure "'dialog' is needed. Please install 'dialog'."
-fi
-
-if ! command_exists nvidia-smi; then
-	exit_with_failure "'nvidia-smi' is needed. Please install 'nvidia-381'."
-fi
-
-if ! command_exists nvidia-xconfig; then
-	exit_with_failure "'nvidia-xconfig' is needed. Please install 'nvidia-381'."
-fi
-
-if ! command_exists nvidia-settings; then
-	exit_with_failure "'nvidia-settings' is needed. Please install 'nvidia-381'."
-fi
-
-if ! command_exists sensors-detect; then
-	exit_with_failure "'sensors-detect' is needed. Please install 'lm-sensors'."
-fi
-
-if ! command_exists sensors; then
-	exit_with_failure "'sensors' is needed. Please install 'lm-sensors'."
-fi
-
-if ! command_exists git; then
-	exit_with_failure "'git' is needed. Please install 'git'."
-fi
-
-if ! command_exists cmake; then
-	exit_with_failure "'cmake' is needed. Please install 'cmake'."
-fi
-
+# Main entry point
 check_internet
 
-if [ -f ~/settings.conf ]; then
-	echo "'settings.conf' found, do not overwrite!"
-else
-	echo "Create 'settings.conf'."
-	curl -f "https://raw.githubusercontent.com/Cyclenerd/ethereum_nvidia_miner/master/files/settings.conf "-o ~/settings.conf
+# Evantually download a copy of settings.conf if it's missing
+if [ ! -f ~/settings.conf ]; then
+    echo "Create 'settings.conf'."
+    curl -f "https://raw.githubusercontent.com/Cyclenerd/ethereum_nvidia_miner/master/files/settings.conf" -o ~/settings.conf
 fi
 
-
-#####################################################################
-# Menu
-#####################################################################
-
-MY_MENU_TITLE="Setup"
-
-MY_MENU_TEXT="
-If you need help, please visit:
-    https://github.com/Cyclenerd/ethereum_nvidia_miner
-
-Choose a task:
-"
-
-while true; do
-	cmd=(dialog --backtitle "$MY_MENU_TITLE" --menu "$MY_MENU_TEXT" 22 76 16)
-	options=(1 "$MY_THANK_YOU_TITLE"
-	         2 "$MY_UPDATE_TITLE"
-	         3 "$MY_PASSWD_TITLE (DO IT!)"
-	         4 "$MY_TIMEZONE_TITLE"
-	         5 "$MY_SENSORS_DETECT_TITLE"
-	         6 "$MY_NVIDIA_CONFIG_TITLE"
-	         7 "$MY_MINER_TITLE"
-	         8 "$MY_NVIDIA_OVERCLOCK_TITLE"
-	         9 "$MY_OTHER_TITLE"
-	        10 "$MY_REBOOT_TITLE"
-	        11 "$MY_SHUTDOWN_TITLE")
-	choice=$("${cmd[@]}" "${options[@]}" 2>&1 >/dev/tty)
-	if [ "$choice" != "" ]; then
-		case $choice in
-			1)  my_thank_you ;;
-			2)  my_update ;;
-			3)  my_passwd ;;
-			4)  my_timezone ;;
-			5)  my_sensors_detect ;;
-			6)  my_nvidia_config ;;
-			7)  my_miner ;;
-			8)  my_nvidia_overclock ;;
-			9)  my_other ;;
-			10)  my_reboot ;;
-			11) my_shutdown ;;
-		esac
-	else
-		break
-	fi
-done
-
+# Call main menu
+menu_main
 clear
