@@ -1,11 +1,14 @@
 #!/usr/bin/env bash
 
-
 #
 # setup.sh
 # Author: Nils Knieling - https://github.com/Cyclenerd/ethereum_nvidia_miner
 #
 # Bash Script to automate the configuration for Ethereum mining. Intense use of 'dialog' :-)
+#
+# Changelog
+# 2018/03/11 Andrea Lanfranchi - https://github.com/AndreaLanfranchi/ethereum_nvidia_miner
+# - Corrected expensive use of not needed local variables
 #
 
 
@@ -353,48 +356,93 @@ function my_nvidia_overclock(){
 	done
 }
 
-
 # my_address()
-
-MY_ADDRESS_TITLE="Set Your Public Ethereum Address"
-
-MY_ADDRESS_MSG_TEXT="
-Set your public Ethereum address. Allowed characters A-Z and 0-9.
-"
 function my_address() {
+
 	# shellcheck source=settings.conf
 	# shellcheck disable=SC1091
-	source ~/settings.conf
-	cmd=(dialog --backtitle "$MY_ADDRESS_TITLE" --inputbox "$MY_ADDRESS_MSG_TEXT" 14 60 "$MY_ADDRESS")
-	choices=$("${cmd[@]}" 2>&1 >/dev/tty)
-	if [ "$choices" != "" ]; then
-		MY_ADDRESS=$choices
-		sed -i.bak '/MY_ADDRESS/d' ~/settings.conf
-		echo >> ~/settings.conf
-		echo "MY_ADDRESS='$MY_ADDRESS'" >> ~/settings.conf
-	fi
+
+	# Set dialog 
+	MY_DLG_TITLE="Set your Public Ethereum Address"
+	MY_DLG_TEXT="
+Set your public Ethereum address. 
+Allowed characters a-z (upper/lower case) and 0-9.
+Ethereum addresses begin with 0x and are 42 characters long.
+	"
+	# Insensitive casing
+	shopt -s nocasematch
+	unset cur_value
+	unset new_value
+	
+	cur_value=$(cat ~/settings.conf | grep -E "^MY_ADDRESS=(.*)$" | grep -i -E -o "(0x[a-f0-9]{40})")
+	cmd=(dialog --backtitle "$MY_DLG_TITLE" --inputbox "$MY_DLG_TEXT" 14 60 "$cur_value")
+	new_value=$("${cmd[@]}" 2>&1 >/dev/tty)
+	
+	if [ ! -z "$new_value" ]; 
+	then 
+		clear
+		if [[ ! $new_value =~ ^0x[a-f0-9]{40}$ ]]; 
+		then
+			printf "  Error !\\n\\n  You have entered an invalid Ethereum address.\\n  No changes will be performed.\\n  Please double check and retry.\\n\\n"
+		else
+			if [ "$cur_value" == "$new_value" ];
+			then
+				printf "  Warning !\\n\\n  New address is the same of old address.\\n  No changes will be made.\\n\\n"
+			else
+				sed -i.bak -e "s/MY_ADDRESS=\"\{0,1\}[[:alnum:]]\{0,256\}\"\{0,1\}/MY_ADDRESS=$new_value/gi" ~/settings.conf
+				printf "  Ok !\\n\\n  Changes to address have been recorded.\\n  You may want to restart your miner.\\n\\n"
+			fi;
+		fi;
+		
+		read -n1 -r -p "  Press any key to continue ..." key
+		clear
+	fi;
+	
 }
 
-
 # my_rig()
-
-MY_RIG_TITLE="Name Your Rig"
-
-MY_RIG_MSG_TEXT="
-Name your rig. Allowed characters A-Z and 0-9.
-"
 function my_rig() {
+
 	# shellcheck source=settings.conf
 	# shellcheck disable=SC1091
-	source ~/settings.conf
-	cmd=(dialog --backtitle "$MY_RIG_TITLE" --inputbox "$MY_RIG_MSG_TEXT" 14 60 "$MY_RIG")
-	choices=$("${cmd[@]}" 2>&1 >/dev/tty)
-	if [ "$choices" != "" ]; then
-		MY_RIG=$choices
-		sed -i.bak '/MY_RIG/d' ~/settings.conf
-		echo >> ~/settings.conf
-		echo "MY_RIG='$MY_RIG'" >> ~/settings.conf
-	fi
+
+	# Set dialog 
+	MY_DLG_TITLE="Set your rig name"
+	MY_DLG_TEXT="
+Enter a name for your machine.
+Allowed characters a-z (upper/lower case) and 0-9.
+No spaces or punctuations.
+	"
+	# Insensitive casing
+	shopt -s nocasematch
+	unset cur_value
+	unset new_value
+	
+	cur_value=$(cat ~/settings.conf | grep -E "^MY_RIG=(.*)$" | grep -io -E "\=(.*)" | grep -io -E "[a-z0-9]{1,}")
+	cmd=(dialog --backtitle "$MY_DLG_TITLE" --inputbox "$MY_DLG_TEXT" 14 60 "$cur_value")
+	new_value=$("${cmd[@]}" 2>&1 >/dev/tty)
+
+	if [ ! -z "$new_value" ]; 
+	then 
+		clear
+		if [[ ! $new_value =~ ^[a-f0-9]{1,40}$ ]]; 
+		then
+			printf "  Error !\\n\\n  You have entered an invalid Rig name.\\n  No changes will be performed.\\n  Please double check and retry.\\n\\n"
+		else
+			if [ "$cur_value" == "$new_value" ];
+			then
+				printf "  Warning !\\n\\n  New name is the same of old name.\\n  No changes will be made.\\n\\n"
+			else
+				sed -i.bak -e "s/MY_RIG=\"\{0,1\}[[:alnum:]]\{0,256\}\"\{0,1\}/MY_RIG=$new_value/gi" ~/settings.conf
+				printf "  Ok !\\n\\n  Changes to rig name have been recorded.\\n  You may want to restart your miner.\\n\\n"
+			fi;
+		fi;
+		
+		read -n1 -r -p "  Press any key to continue ..." key
+		clear
+	fi;
+	
+	
 }
 
 
@@ -410,11 +458,21 @@ Choose a task:
 
 function my_miner(){
 	while true; do
-		cmd=(dialog --backtitle "$MY_MINER_TITLE" --menu "$MY_MINER_MENU_TITLE" 22 76 16)
-		options=(1 "$MY_ADDRESS_TITLE"
-		         2 "$MY_RIG_TITLE"
-		         4 "$MY_SETTINGS_EDIT_TITLE"
-		         5 "$MY_MINER_EDIT_TITLE" )
+	
+		# Set dialog 
+		MY_DLG_TITLE="Configure Miner (ethminer)"
+		MY_DLG_TEXT="
+By default 'ethminer' mining program and the ethermine.org pool are used.
+Here you can set basic values to customize your mining with above mentioned tools.
+If you want to change miner program or switch to another pool you will have to manualy
+edit the file 'miner.sh'
+	"
+
+		cmd=(dialog --backtitle "$MY_DLG_TITLE" --menu "$MY_DLG_TEXT" 22 76 16)
+		options=(1 "Set your Ethereum address"
+		         2 "Set your rig name"
+		         4 "Manually edit 'settings.conf' (for experts)"
+		         5 "Manually edit 'miner.sh'      (for experts)" )
 		choice=$("${cmd[@]}" "${options[@]}" 2>&1 >/dev/tty)
 		if [ "$choice" != "" ]; then
 			case $choice in
