@@ -7,6 +7,9 @@
 # Start etherminer and set power limit
 #
 
+# Start mining loop
+while true ; do
+
 # Load global settings settings.conf
 # shellcheck source=settings.conf
 # shellcheck disable=SC1091
@@ -62,3 +65,4 @@ export CUDA_DEVICE_ORDER=PCI_BUS_ID
 # https://bitcointalk.org/index.php?topic=1707546.0
 #cd ~/zcash-mining
 #~/zcash-mining/ewbf/miner --fee 0 --server eu1-zcash.flypool.org --user YOUR-ZCASH-T-ADDRESS --pass x --port 3333
+done
