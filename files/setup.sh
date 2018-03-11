@@ -39,9 +39,7 @@ function pause() {
 function check_internet() {
 
     # Test availability against Google Public DNS
-    ping -c 1 8.8.8.8 >/dev/null 2>&1
-    if [ $? -ne 0 ] ; 
-    then 
+    if ! ping -c 1 8.8.8.8 >/dev/null 2>&1 then 
         clear
         echo_title "$MY_CHECK_INTERNET_TITLE"
         echo "Network Interfaces"
@@ -164,7 +162,7 @@ If you want to refine per GPU then manually edit 'settings.conf'
     if [ ! -z "$new_value" ]; 
     then 
         clear
-        if [[ ! $new_value =~ ^[0-9\-]{1,}$ ]]; 
+        if [[ ! $new_value =~ ^[0-9-]{1,}$ ]]; 
         then
             printf "  Error !\\n\\n  You have entered an invalid clock offset value.\\n  No changes will be performed.\\n  Please double check and retry.\\n\\n"
         else
@@ -353,7 +351,7 @@ No spaces or punctuations.
             fi;
         fi;
         
-        read -n1 -r -p "  Press any key to continue ..." key
+        read -n1 -r -p "  Press any key to continue ..."
         clear
     fi;
     
@@ -381,7 +379,7 @@ I would be happy about a small donation. Thank you very much.
 # Manually edit files
 function action_nanoedit() {
     clear
-    nano -w $1
+    nano -w "$1"
     clear
 }
 
@@ -512,7 +510,7 @@ Even if you respond yes we will ask to confirm every single file.
         0)
             clear
             echo_title "Applying updates ..."
-            cd ~
+            cd
             cp -i updates/* .
             printf "\\n\\n  All updates processed. Setup needs to be restarted.\\n"
             pause
@@ -731,7 +729,7 @@ if ! command_exists sensors-detect; then errors+=("'sensors-detect' is needed. P
 if ! command_exists sensors; then errors+=("'sensors' is needed. Please install 'lm-sensors'."); fi; 
 if ! command_exists git; then errors+=("'git' is needed. Please install 'git'."); fi;
 if ! command_exists cmake; then errors+=("'cmake' is needed. Please install 'cmake'."); fi;
-if [ ! "${#msg[@]}" == "0" ];
+if [ ! "${#errors[@]}" == "0" ];
 then
     for e in "${errors[@]}"
     do
