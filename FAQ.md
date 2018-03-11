@@ -28,8 +28,27 @@ Yes. NVIDIA driver 390.25 is installed.
 ## Can I mix cards?
 
 Yes. You can combine any NVIDIA cards to a mining rig.
-You have to adjust the `nvidia-overclock.sh` script.
-But you should do that anyway.
+
+NOTE: `setup` will change only global values. 
+Specific settings for single cards must be filled in manually directly editing the `settings.conf` file.
+For each depicted variable you can set an OPTIONAL suffix made of `_x` (underscore x) where x is the zero-based index of your GPU.
+When overclocking the procedure will firstly look for GPU's specific value and, if not set, will apply the "generic" value.
+
+### Example
+
+Get the zero-based index of your GPUs:
+
+```
+nvidia-smi --format=csv --query-gpu=index,name,pci.bus_id
+```
+
+Here we set specific values for clocks speed and memory speed on GPU 3 (zero based index 3-1 = 2).
+Fan speed and wattage are inherited by base values.
+
+```
+MY_CLOCK_2=155
+MY_MEM_2=750 
+```
 
 ## Do I need an HDMI dongle?
 
