@@ -16,9 +16,7 @@ if ! source ~/settings.conf; then
 fi
 
 # Set power limit
-sudo nvidia-smi -pm ENABLED
-sudo nvidia-smi -pl "$MY_WATT"
-echo
+~/nvidia-overclock.sh powerlimit
 
 export GPU_FORCE_64BIT_PTR=0
 export GPU_MAX_HEAP_SIZE=100
@@ -30,6 +28,11 @@ export CUDA_DEVICE_ORDER=PCI_BUS_ID
 #
 # Ethereum Mining
 #
+
+# The following setting is available in ethminer since ver 0.13x
+# Set it to any value to prevent colored output (useful for log collecting)
+# Uncomment the following line if you want to disable colors.
+#export NO_COLOR=true
 
 # ethminer
 # https://github.com/ethereum-mining/ethminer
