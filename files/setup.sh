@@ -511,8 +511,8 @@ Even if you respond yes we will ask to confirm every single file.
         0)
             clear
             echo_title "Applying updates ..."
-            cd ~/updates/ || die 9
-            cp -i * ..
+            cd ~/updates/ || exit
+            cp -i ./* ..
             printf "\\n\\n  All updates processed. Setup needs to be restarted.\\n"
             pause
             exit 0
