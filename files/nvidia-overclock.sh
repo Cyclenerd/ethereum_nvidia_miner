@@ -63,10 +63,10 @@ case "$1" in
 esac
 
 # Set the  persistence mode for all GPUs
-echo_title "Set Persistence Mode for ALL GPUs" 
+echo_title "Set Persistence Mode for ALL GPUs"
 sudo nvidia-smi -pm ENABLED | sed "s/^/  /gi"
 
-# Check if we can set power-limit globally (i.e. with only one call to nvidia-smi) 
+# Check if we can set power-limit globally (i.e. with only one call to nvidia-smi)
 # or we have to invoke it per GPU
 unset MY_WATT_X
 if set -o posix; set | grep -q -E "^MY\\_WATT\\_[0-9]{1,2}" ; then MY_WATT_X="1"; fi;
@@ -74,9 +74,9 @@ if [ -z "${MY_WATT_X+x}" ]; then
     MY_VAR="MY_WATT"
     unset MY_VAL
     if [ ! -z "${!MY_VAR}" ] ; then MY_VAL="${!MY_VAR}"; fi;
-    if [ ! -z "${MY_VAL+x}" ] ; 
+    if [ ! -z "${MY_VAL+x}" ] ;
     then
-        echo_title "Applying Power Limit for ALL GPUs" 
+        echo_title "Applying Power Limit for ALL GPUs"
         sudo nvidia-smi -pl "$MY_VAL" | sed "s/^/  /gi"
     fi;
 fi;
