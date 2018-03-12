@@ -403,9 +403,12 @@ Pull requests can regroup many commits at once.
 Just try to explain in the pull comment the ''why'' I should merge it (if it's not obvious).
 Please do not try to summarize several big changes (new features) in one pull.
 
-Check your shell scripts with [ShellCheck](https://www.shellcheck.net/) before submitting.
+And a few more things:
 
-Please use four spaces to indent.
+* Variables must be uppercase and must begin with `MY_`.
+* Functions must be lower case and must begin with `my_`.
+* Check your shell scripts with [ShellCheck](https://www.shellcheck.net/) before submitting.
+* Please use four spaces to indent.
 
 ## Known Issues
 
