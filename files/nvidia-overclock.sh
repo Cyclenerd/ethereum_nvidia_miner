@@ -84,7 +84,6 @@ fi;
 # For each graphics card
 nvidia-smi --format=csv,noheader --query-gpu=index | while read -r MY_DEVICE; do
     echo_title "Processing GPU $MY_DEVICE"
-    
     # Eventually apply power limiting per GPU
     if [ ! -z "${MY_WATT_X+x}" ]; then
         MY_VAR="MY_WATT_$MY_DEVICE"
@@ -97,7 +96,6 @@ nvidia-smi --format=csv,noheader --query-gpu=index | while read -r MY_DEVICE; do
         fi;
         if [ ! -z "${MY_VAL+x}" ] ; then sudo nvidia-smi -i "$MY_DEVICE" -pl "$MY_VAL" | sed "/All done./d;s/^/  /gi" ; fi;
     fi;
-    
     # Overclocking
     if [ -z "$MY_POWER_ONLY" ]; then
         # Init arguments
@@ -117,7 +115,7 @@ nvidia-smi --format=csv,noheader --query-gpu=index | while read -r MY_DEVICE; do
         MY_VAR="MY_FAN_$MY_DEVICE"
         unset MY_VAL
         if [ ! -z "${!MY_VAR}" ] ; then MY_VAL="${!MY_VAR}"; else MY_VAL="$MY_FAN"; fi
-        if [ ! -z "${MY_VAL+x}" ] ; then 
+        if [ ! -z "${MY_VAL+x}" ]; then
             MY_ARG+=" -a \"[gpu:$MY_DEVICE]/GPUFanControlState=1\""
             MY_ARG+=" -a \"[fan:$MY_DEVICE]/GPUTargetFanSpeed=$MY_VAL\""
         else
@@ -127,7 +125,6 @@ nvidia-smi --format=csv,noheader --query-gpu=index | while read -r MY_DEVICE; do
         MY_CMD="nvidia-settings $MY_ARG"
         eval "$MY_CMD" | grep -E "^  Attr"
     fi;
-    
     printf "  All done.\\n"
 done
 
