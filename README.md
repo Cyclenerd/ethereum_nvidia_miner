@@ -394,7 +394,18 @@ Enter the IP address and display in VNC Viewer to establish a direct connection.
 
 If you have found a bug (English is not my mother tongue) or have any improvements, send me a pull request.
 
+### Commits, Comments & Pull requests
 
+I like to have _elementary_ commits as it is much easier to manage for reviewing and debugging. 
+So please **don't** be afraid to make **as many** commits as needed.
+Merging many commits is as easy as merging one, if not easier.
+Pull requests can regroup many commits at once.
+Just try to explain in the pull comment the ''why'' I should merge it (if it's not obvious).
+Please do not try to summarize several big changes (new features) in one pull.
+
+Check your shell scripts with [ShellCheck](https://www.shellcheck.net/) before submitting.
+
+Please use four spaces to indent.
 
 ## Known Issues
 
