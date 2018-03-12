@@ -22,4 +22,8 @@ Start reading the code and you'll get the hang of it. It is optimized for readab
 * Check your shell scripts with [ShellCheck](https://www.shellcheck.net/) before submitting.
 * Please use four spaces to indent.
 
-Thanks! :heart: :heart: :heart:
+One more thing:
+
+* Keep it simple! 👍
+
+Thanks! ❤️❤️❤️
