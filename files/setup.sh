@@ -240,7 +240,7 @@ function my_nvidia_power_limit() {
     choices=$("${cmd[@]}" 2>&1 >/dev/tty)
     if [ "$choices" != "" ]; then
         MY_WATT=$choices
-        sed -i.bak '/MY_WATT/d' ~/settings.conf
+        sed -i.bak '/MY_WATT=/d' ~/settings.conf
         echo >> ~/settings.conf
         echo "MY_WATT='$MY_WATT'" >> ~/settings.conf
     fi
@@ -263,7 +263,7 @@ function my_nvidia_clock() {
     choices=$("${cmd[@]}" 2>&1 >/dev/tty)
     if [ "$choices" != "" ]; then
         MY_CLOCK=$choices
-        sed -i.bak '/MY_CLOCK/d' ~/settings.conf
+        sed -i.bak '/MY_CLOCK=/d' ~/settings.conf
         echo >> ~/settings.conf
         echo "MY_CLOCK='$MY_CLOCK'" >> ~/settings.conf
     fi
@@ -286,7 +286,7 @@ function my_nvidia_mem() {
     choices=$("${cmd[@]}" 2>&1 >/dev/tty)
     if [ "$choices" != "" ]; then
         MY_MEM=$choices
-        sed -i.bak '/MY_MEM/d' ~/settings.conf
+        sed -i.bak '/MY_MEM=/d' ~/settings.conf
         echo >> ~/settings.conf
         echo "MY_MEM='$MY_MEM'" >> ~/settings.conf
     fi
@@ -308,7 +308,7 @@ function my_nvidia_fan() {
     choices=$("${cmd[@]}" 2>&1 >/dev/tty)
     if [ "$choices" != "" ]; then
         MY_FAN=$choices
-        sed -i.bak '/MY_FAN/d' ~/settings.conf
+        sed -i.bak '/MY_FAN=/d' ~/settings.conf
         echo >> ~/settings.conf
         echo "MY_FAN='$MY_FAN'" >> ~/settings.conf
     fi
@@ -368,7 +368,7 @@ function my_address() {
     choices=$("${cmd[@]}" 2>&1 >/dev/tty)
     if [ "$choices" != "" ]; then
         MY_ADDRESS=$choices
-        sed -i.bak '/MY_ADDRESS/d' ~/settings.conf
+        sed -i.bak '/MY_ADDRESS=/d' ~/settings.conf
         echo >> ~/settings.conf
         echo "MY_ADDRESS='$MY_ADDRESS'" >> ~/settings.conf
     fi
@@ -390,7 +390,7 @@ function my_rig() {
     choices=$("${cmd[@]}" 2>&1 >/dev/tty)
     if [ "$choices" != "" ]; then
         MY_RIG=$choices
-        sed -i.bak '/MY_RIG/d' ~/settings.conf
+        sed -i.bak '/MY_RIG=/d' ~/settings.conf
         echo >> ~/settings.conf
         echo "MY_RIG='$MY_RIG'" >> ~/settings.conf
     fi
