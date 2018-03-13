@@ -102,8 +102,8 @@ With this ISO image, you can immediately mine Ethereum (ETH). Do not spend long 
 
 I would be happy about a small donation. Thank you very much.
 
-Ξ - Ethereum: 0xfbbc9f870bccadf8847eba29b0ed3755e30c9f0d
-Ƀ - Bitcoin:  13fQA3mCQPmnXBDSmfautP4VMq6Sj2GVSA
+Ethereum: 0xfbbc9f870bccadf8847eba29b0ed3755e30c9f0d
+Bitcoin:  13fQA3mCQPmnXBDSmfautP4VMq6Sj2GVSA
 "
 
 function my_thank_you(){
@@ -557,15 +557,15 @@ if ! command_exists dialog; then
 fi
 
 if ! command_exists nvidia-smi; then
-    exit_with_failure "'nvidia-smi' is needed. Please install 'nvidia-381'."
+    exit_with_failure "'nvidia-smi' is needed. Please install 'nvidia-390'."
 fi
 
 if ! command_exists nvidia-xconfig; then
-    exit_with_failure "'nvidia-xconfig' is needed. Please install 'nvidia-381'."
+    exit_with_failure "'nvidia-xconfig' is needed. Please install 'nvidia-390'."
 fi
 
 if ! command_exists nvidia-settings; then
-    exit_with_failure "'nvidia-settings' is needed. Please install 'nvidia-381'."
+    exit_with_failure "'nvidia-settings' is needed. Please install 'nvidia-390'."
 fi
 
 if ! command_exists sensors-detect; then
