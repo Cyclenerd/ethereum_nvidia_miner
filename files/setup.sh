@@ -98,12 +98,13 @@ function echo_title() {
 MY_THANK_YOU_TITLE="Leave a Tip"
 
 MY_THANK_YOU_MSG_TEXT="
-With this ISO image, you can immediately mine Ethereum (ETH). Do not spend long time searching and researching.
+With this ISO image, you can immediately mine cryptocurrencies. Do not spend long time searching and researching.
 
 I would be happy about a small donation. Thank you very much.
 
 Ethereum: 0xfbbc9f870bccadf8847eba29b0ed3755e30c9f0d
 Bitcoin:  13fQA3mCQPmnXBDSmfautP4VMq6Sj2GVSA
+Zcash:    t1VnaXGuJeNnoWxufT9EyqTieQoR78p3KmT
 "
 
 function my_thank_you(){
