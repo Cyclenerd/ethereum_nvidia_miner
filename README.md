@@ -51,6 +51,7 @@ Press the 👁️ "Watch" button to get updates. Do not forget the  🌟 "Star" 
 	* [Update Claymore's Dual Ethereum Miner](#update-claymores-dual-ethereum-miner)
 	* [Update XMR-Stak Monero Miner](#update-xmr-stak-monero-miner)
 	* [Update EWBF's CUDA Zcash Miner](#update-ewbfs-cuda-zcash-miner)
+	* [Install ccminer CUDA Miner](#install-ccminer-cuda-miner)
  * [Wi-Fi WLAN](#wi-fi-wlan)
 * [Monitoring](#monitoring)
 	* [Munin](#munin)
@@ -323,6 +324,21 @@ Unpack the tar.gz file into the `~/zcash-mining/ewbf/` folder:
 
 ```
 prospector@mine ~ $ tar xvfz "Zec Miner Linux Bin.tar.gz" -C ~/zcash-mining/ewbf/ --strip-components=1
+```
+
+
+#### Install ccminer CUDA Miner
+
+Compile [ccminer](https://github.com/tpruvot/ccminer):
+
+```
+prospector@mine:~ $ sudo apt-get install libcurl4-openssl-dev libssl-dev libjansson-dev automake autotools-dev build-essential
+prospector@mine:~ $ sudo ln -s /usr/local/cuda-8.0 /usr/local/cuda
+prospector@mine:~ $ git clone https://github.com/tpruvot/ccminer.git
+prospector@mine:~ $ cd ccminer
+prospector@mine:~/ccminer $ git checkout linux
+prospector@mine:~/ccminer $ ./build.sh
+prospector@mine:~/ccminer $ ./ccminer --version
 ```
 
 
