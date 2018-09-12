@@ -193,7 +193,7 @@ Use key combination <kbd>Ctrl</kbd> + <kbd>a</kbd>, and subsequently pressing a 
 * <kbd>n</kbd> : switches to the next available console
 * <kbd>p</kbd> : switches back to the previous console
 * <kbd>c</kbd> : creates a new virtual Bash console
-* <kbd>d</kbd> : detatches the current screen sessions and brings you back to the normal terminal
+* <kbd>d</kbd> : detaches the current screen sessions and brings you back to the normal terminal
 
 ![htop](https://www.nkn-it.de/img/ethereum_nvidia_miner/mine-top.jpg)
 ![nvidia-smi](https://www.nkn-it.de/img/ethereum_nvidia_miner/mine-gpu.jpg)
@@ -431,7 +431,7 @@ And a few more things:
 
 NVIDIA tools (especially `nvidia-smi`) seems to be lagging on 7 GPU rigs, 
 crashing the system and/or causing some system instabilities.
-Issue reproduced on two differents 7 GPUs rigs (different motherboard & GPU brands).
+Issue reproduced on two different 7 GPUs rigs (different motherboard & GPU brands).
 Six graphics cards work without problems.
 
 NVIDIA GeForce GTX 1050 Ti does not have Performance Level 3 (only Level 2) thus `nvidia-overclock.sh` has to be changed (change [3] with [2]).
