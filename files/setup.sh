@@ -104,7 +104,6 @@ I would be happy about a small donation. Thank you very much.
 
 Ethereum: 0xfbbc9f870bccadf8847eba29b0ed3755e30c9f0d
 Bitcoin:  13fQA3mCQPmnXBDSmfautP4VMq6Sj2GVSA
-Zcash:    t1VnaXGuJeNnoWxufT9EyqTieQoR78p3KmT
 "
 
 function my_thank_you(){
