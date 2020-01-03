@@ -3,8 +3,8 @@
 **USB** flash drive **ISO** image for **Ethereum** mining with **NVIDIA** graphics cards and Ubuntu **GNU/Linux** (64-bit Intel/AMD (x86_64)).
 Other cryptocurrencies, such as **Monero** or **Zcash**, can also be mined.
 
-![Ubuntu](https://www.nkn-it.de/img/distro/logos/ubuntu.png)
-![NVIDIA](https://www.nkn-it.de/img/logos/nvidia_cuda.jpg)
+![Ubuntu](img/ubuntu.png)
+![NVIDIA](img/nvidia_cuda.jpg)
 
 Press the 👁️ "Watch" button to get updates. Do not forget the  🌟 "Star" button 😀
 
@@ -90,7 +90,7 @@ If you want to get started quickly, simply use the pre-configured ISO image
 Download the ISO image via BitTorrent (`ethereum-ubuntu-nvidia-miner_v3.img.7z.torrent`).
 Compressed 1.8GB, unzipped 7.5GB.
 
-[![Download](https://www.nkn-it.de/img/download_button_200px.png)](https://github.com/Cyclenerd/ethereum_nvidia_miner/raw/master/ethereum-ubuntu-nvidia-miner_v3.img.7z.torrent)
+[![Download](img/download_button_200px.png)](https://github.com/Cyclenerd/ethereum_nvidia_miner/raw/master/ethereum-ubuntu-nvidia-miner_v3.img.7z.torrent)
 
 #### MD5
 
@@ -169,7 +169,7 @@ There is an extra program which helps you with the initial setup. Type `setup` t
 
     prospector@mine ~ $ setup
 
-![setup](https://www.nkn-it.de/img/ethereum_nvidia_miner/mine-setup.jpg)
+![setup](img/mine-setup.jpg)
 
 Go through __each__ step. If you have everything set you should do a `reboot`.
 
@@ -194,9 +194,9 @@ Use key combination <kbd>Ctrl</kbd> + <kbd>a</kbd>, and subsequently pressing a 
 * <kbd>c</kbd> : creates a new virtual Bash console
 * <kbd>d</kbd> : detaches the current screen sessions and brings you back to the normal terminal
 
-![htop](https://www.nkn-it.de/img/ethereum_nvidia_miner/mine-top.jpg)
-![nvidia-smi](https://www.nkn-it.de/img/ethereum_nvidia_miner/mine-gpu.jpg)
-![etherminer](https://www.nkn-it.de/img/ethereum_nvidia_miner/mine-miner.jpg)
+![htop](img/mine-top.jpg)
+![nvidia-smi](img/mine-gpu.jpg)
+![etherminer](img/mine-miner.jpg)
 
 More help is available here:
 https://help.ubuntu.com/community/Screen
@@ -376,7 +376,7 @@ Of course, with SSH.
 
 Here you can find diagrams of the sensors, etc.
 
-![munin](https://www.nkn-it.de/img/ethereum_nvidia_miner/munin-sensors.jpg)
+![munin](img/munin-sensors.jpg)
 
 
 ### Fail2ban
@@ -402,7 +402,7 @@ Enter the IP address and display in VNC Viewer to establish a direct connection.
 
     minerIP:0
 
-![x11vnc](https://www.nkn-it.de/img/ethereum_nvidia_miner/mine-x11vnc.jpg)
+![x11vnc](img/mine-x11vnc.jpg)
 
 
 
